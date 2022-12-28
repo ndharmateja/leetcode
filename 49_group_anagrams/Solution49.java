@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-class Solution {
+class Solution49 {
 
     private String sortString(String str) {
         char[] chars = str.toCharArray();

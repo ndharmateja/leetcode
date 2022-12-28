@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-class Solution {
+class Solution347 {
 
     // O(n log n) solution
     @SuppressWarnings("unused")

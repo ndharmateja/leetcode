@@ -1,4 +1,4 @@
-class Solution {
+class Solution238 {
 
     // Time: O(n)
     // Space: O(n)

@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-class Solution {
+class Solution322 {
     public int coinChange(int[] coins, int amount, HashMap<Integer, Integer> memo) {
         if (amount == 0)
             return 0;
