@@ -19,7 +19,6 @@ class Solution2133 {
             }
         }
 
-        set.clear();
         for (int col = 0; col < n; col++) {
             set.clear();
             for (int i = 0; i < n; i++) {

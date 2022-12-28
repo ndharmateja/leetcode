@@ -18,7 +18,6 @@ public class Solution36 {
             }
         }
 
-        set.clear();
         for (int col = 0; col < 9; col++) {
             set.clear();
             for (int i = 0; i < 9; i++) {
