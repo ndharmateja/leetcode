@@ -1,4 +1,4 @@
-class Solution {
+class Solution111 {
     static class TreeNode {
         int val;
         TreeNode left;
