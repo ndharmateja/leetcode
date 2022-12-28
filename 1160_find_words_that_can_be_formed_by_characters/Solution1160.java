@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-class Solution {
+class Solution1160 {
 
     private Map<Character, Integer> getCharCounts(String string) {
         Map<Character, Integer> counts = new HashMap<>();
