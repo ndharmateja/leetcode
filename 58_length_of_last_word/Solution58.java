@@ -21,12 +21,31 @@ class Solution58 {
     }
 
     // use string split
+    @SuppressWarnings("unused")
     private int solution2(String s) {
         String[] words = s.trim().split(" ");
         return words[words.length - 1].length();
     }
 
+    // Iterate from right
+    private int solution3(String s) {
+        int count = 0;
+        boolean wordEncountered = false;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            char c = s.charAt(i);
+            if (c == ' ') {
+                if (wordEncountered)
+                    break;
+                else
+                    continue;
+            }
+            wordEncountered = true;
+            count++;
+        }
+        return count;
+    }
+
     public int lengthOfLastWord(String s) {
-        return solution2(s);
+        return solution3(s);
     }
 }
