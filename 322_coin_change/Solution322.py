@@ -1,7 +1,7 @@
 from typing import List
 
 
-class Solution:
+class Solution322:
     def coinChangeHelper(self, coins, amount, memo):
         if amount == 0:
             return 0

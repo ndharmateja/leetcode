@@ -1,4 +1,4 @@
-class Solution:
+class Solution1143:
     def lcs_helper(self, text1: str, text2: str, memo: dict) -> int:
         if len(text1) == 0 or len(text2) == 0:
             return 0
