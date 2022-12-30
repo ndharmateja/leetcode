@@ -11,7 +11,7 @@ import java.util.List;
 // 4. While decoding we can get num chars and get the numchars number of
 // characters to form a word (doesn't matter even if the words themselves
 // contain delimiters as we have the numChars in the word)
-public class Solution659 {
+public class Solution271 {
     private final static char delimiter = '#';
 
     /*
