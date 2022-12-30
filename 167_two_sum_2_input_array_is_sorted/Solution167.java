@@ -1,3 +1,4 @@
+@SuppressWarnings("unused")
 class Solution167 {
 
     // Returns the index of the "key" in the array "numbers"
@@ -54,10 +55,46 @@ class Solution167 {
                 return new int[] { i + 1, complementNumberIndex + 1 };
             }
         }
+
+        // We wouldn't reach here as we are guaranteed a solution
+        return null;
+    }
+
+    // O(n) solution
+    // using two pointers, from left and right
+    // Reference: https://youtu.be/cQ1Oz4ckceM?t=236
+    //
+    // Method:
+    // 1. Initialize 2 pointers: left=0 right=numbers.length - 1
+    // 2. If sum of numbers at indices left and right:
+    // - a. > target, we decrement 'right' by 1 (because we want to decrease our
+    // target
+    // sum and array is sorted)
+    // - b. < target, we increment 'left' by 1 (because we want to increase our
+    // target
+    // sum and array is sorted)
+    // - c. = target, we return the indices
+    public int[] solution2(int[] numbers, int target) {
+        int left = 0;
+        int right = numbers.length - 1;
+
+        while (left < right) {
+            if (numbers[left] + numbers[right] > target) {
+                right--;
+                continue;
+            }
+            if (numbers[left] + numbers[right] < target) {
+                left++;
+                continue;
+            }
+            return new int[] { left + 1, right + 1 };
+        }
+
+        // We wouldn't reach here as we are guaranteed a solution
         return null;
     }
 
     public int[] twoSum(int[] numbers, int target) {
-        return solution1(numbers, target);
+        return solution2(numbers, target);
     }
 }
