@@ -41,7 +41,7 @@ class Solution15 {
         Arrays.sort(nums);
         List<List<Integer>> output = new ArrayList<>();
         for (int i = 0; i < nums.length - 2; i++) {
-            //
+            // to avoid duplicates for 'a'
             if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
@@ -59,6 +59,7 @@ class Solution15 {
                 else {
                     output.add(Arrays.asList(num, nums[left], nums[right]));
                     left++;
+                    // to avoid duplicates for 'b'
                     while (nums[left] == nums[left - 1] && left < right) {
                         left++;
                     }
