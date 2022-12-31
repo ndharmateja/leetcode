@@ -8,24 +8,14 @@ class Solution27 {
     }
 
     public int removeElement(int[] nums, int val) {
-        int count = 0;
+        int j = nums.length - 1;
         for (int i = nums.length - 1; i >= 0; i--) {
-            if (nums[i] == val)
-                count++;
-            else
-                break;
-        }
-
-        for (int i = 0; i < nums.length; i++) {
             if (nums[i] == val) {
-                swap(nums, i, nums.length - count - 1);
-                count++;
-            }
-            if (i > nums.length - count) {
-                break;
+                swap(nums, i, j);
+                j--;
             }
         }
-        return nums.length - count;
+        return j + 1;
     }
 
     public static void main(String[] args) {
