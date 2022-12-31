@@ -1,8 +1,12 @@
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+@SuppressWarnings("unused")
 class Solution242 {
 
-    public boolean isAnagram(String s, String t) {
+    // O(n log n) time as we sort both the strings first
+    private boolean solution1(String s, String t) {
         if (s.length() != t.length())
             return false;
 
@@ -21,5 +25,25 @@ class Solution242 {
         }
 
         return true;
+    }
+
+    private Map<Character, Integer> getCharCounts(String string) {
+        Map<Character, Integer> counts = new HashMap<>();
+
+        for (char c : string.toCharArray()) {
+            counts.put(c, counts.getOrDefault(c, 0) + 1);
+        }
+
+        return counts;
+    }
+
+    // O(n) time
+    // O(n) extra space
+    private boolean solution2(String s, String t) {
+        return getCharCounts(s).equals(getCharCounts(t));
+    }
+
+    public boolean isAnagram(String s, String t) {
+        return solution2(s, t);
     }
 }
