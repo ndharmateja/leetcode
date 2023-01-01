@@ -1,5 +1,5 @@
 @SuppressWarnings("unused")
-class Solution {
+class Solution28 {
 
     // improvement: Use Rabin-Karp's algorithm
     private int solution2(String haystack, String needle) {
