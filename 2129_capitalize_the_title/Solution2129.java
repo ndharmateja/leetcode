@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 @SuppressWarnings("unused")
-class Solution {
+class Solution2129 {
     public String capitalizeTitle(String title) {
         return solution2(title);
     }
