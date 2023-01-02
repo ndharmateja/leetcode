@@ -1,7 +1,7 @@
 /**
  * Definition for singly-linked list.
  */
-class Solution {
+class Solution206 {
     static class ListNode {
         int val;
         ListNode next;
