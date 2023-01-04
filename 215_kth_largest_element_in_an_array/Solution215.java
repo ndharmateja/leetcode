@@ -8,9 +8,9 @@ import java.util.PriorityQueue;
 import java.util.Random;
 
 @SuppressWarnings("unused")
-class Solution {
+class Solution215 {
     public int findKthLargest(int[] nums, int k) {
-        return solution1(nums, k);
+        return solution2(nums, k);
     }
 
     // O(n + k log n) solution
@@ -30,6 +30,51 @@ class Solution {
             pq.poll();
         }
         return pq.poll();
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    private int quickSelect(int[] nums, int k, int low, int high, Random random) {
+        // Select random pivot and swap it with the 'high' index
+        swap(nums, random.nextInt(low, high + 1), high);
+
+        // Partitioning nums[low, high] - same like quick sort
+        int p = low;
+        int pivot = nums[high];
+        for (int i = low; i < high; i++) {
+            if (nums[i] <= pivot) {
+                swap(nums, p++, i);
+            }
+        }
+        // because pivot is the last element, it needs to be
+        // swapped into its place
+        swap(nums, p, high);
+
+        // If the pivot index is equal to the the required index
+        // we return the value at the pivot index
+        if (p == nums.length - k)
+            return nums[p];
+
+        // If pivot index is greater than the required index
+        // we need to run quick select on the left half
+        if (p > nums.length - k)
+            return quickSelect(nums, k, low, p - 1, random);
+
+        // If pivot index is less than the required index
+        // we need to run quick select on the right half
+        return quickSelect(nums, k, p + 1, high, random);
+    }
+
+    // Quick select algorithm
+    // O(n) time on average
+    // O(n^2) time worst case
+    // Works like quick sort and partition and element one half based on 'k'
+    private int solution2(int[] nums, int k) {
+        return quickSelect(nums, k, 0, nums.length - 1, new Random());
     }
 
     // O(n log n) solution
