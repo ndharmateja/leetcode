@@ -1,4 +1,4 @@
-class Solution {
+class Solution287 {
     // O(n) time and O(1) space
     // Reference: https://youtu.be/wjYnzkAhcNk?t=375
     // Floyd's Algorithm
