@@ -2,8 +2,42 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
+@SuppressWarnings("unused")
 class Solution22 {
+
+    public List<String> generateParenthesis(int n) {
+        return solution2(n);
+    }
+
+    // Creates string from a stack of characters
+    private String createString(Stack<Character> stack) {
+        StringBuilder builder = new StringBuilder();
+        for (char c : stack) {
+            builder.append(c);
+        }
+        return builder.toString();
+    }
+
+    // Recursive backtracking algorithm
+    private void backtrack(Stack<Character> stack, List<String> output, int numOpen, int numClosed, int n) {
+        if (numClosed == n && numOpen == n) {
+            output.add(this.createString(stack));
+            return;
+        }
+        if (numOpen < n) {
+            stack.push('(');
+            backtrack(stack, output, numOpen + 1, numClosed, n);
+            stack.pop();
+        }
+        if (numClosed < numOpen) {
+            stack.push(')');
+            backtrack(stack, output, numOpen, numClosed + 1, n);
+            stack.pop();
+        }
+    }
+
     // Reference: https://youtu.be/s9fokUqJ76A
     // Ideas:
     // 1. number of total open and close parantheses should be each equal to 'n'
@@ -12,8 +46,14 @@ class Solution22 {
     // => We can add an opening paranthesis if numOpen < n
     // and we add a closing paranthesis if numClose < numOpen
     // and it is valid if numOpen = numClose = n
-    public List<String> generateParenthesis(int n) {
-        return solution1(n);
+    private List<String> solution2(int n) {
+        Stack<Character> stack = new Stack<>();
+        List<String> output = new ArrayList<>();
+
+        // Run the backtracking algorithm
+        backtrack(stack, output, 0, 0, n);
+
+        return output;
     }
 
     // We also store numOpen and numClose
