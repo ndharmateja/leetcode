@@ -8,6 +8,37 @@ class Solution1833 {
         return solution2(costs, coins);
     }
 
+    // O(n + m) time and O(m) space solution - m is the max cost
+    // Counting sort
+    // And iterate from left to right of the frequencies array
+    private int solution3(int[] costs, int coins) {
+        int maxCost = 0;
+        for (int cost : costs) {
+            if (cost > maxCost)
+                maxCost = cost;
+        }
+
+        int[] frequencies = new int[maxCost + 1];
+        for (int cost : costs) {
+            frequencies[cost]++;
+        }
+
+        int sum = 0;
+        int count = 0;
+        for (int i = 0; i < frequencies.length; i++) {
+            int frequency = frequencies[i];
+            for (int j = 0; j < frequency; j++) {
+                if (sum + i > coins) {
+                    return count;
+                }
+                sum += i;
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     // O(n + k log n) time - if the answer is 'k'
     // Heapify the array and run remove min 'k' times
     private int solution2(int[] costs, int coins) {
