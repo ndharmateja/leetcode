@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-class Solution {
+class Solution39 {
     private void backtrack(Set<List<Integer>> output, int[] candidates, int target, int currSum,
             List<Integer> currList) {
         if (currSum > target) {
