@@ -1,4 +1,4 @@
-class Solution {
+class Solution1299 {
     public int[] replaceElements(int[] arr) {
         int currMax = arr[arr.length - 1];
         arr[arr.length - 1] = -1;
