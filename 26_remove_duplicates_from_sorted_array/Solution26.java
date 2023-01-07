@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 class Solution26 {
     public int removeDuplicates(int[] nums) {
         int i = 0;
@@ -9,7 +11,13 @@ class Solution26 {
                 nums[i] = nums[j];
                 nums[j] = temp;
             }
+            System.out.println(Arrays.toString(nums));
         }
         return i + 1;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
+        System.out.println(new Solution26().removeDuplicates(nums));
     }
 }
