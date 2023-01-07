@@ -1,25 +1,17 @@
-import java.util.Arrays;
-
 class Solution283 {
-    private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
-    }
-
+    // O(n) time and O(1) space solution
+    // For each element from the right, start populating
+    // from the start of the array with the non-zero values
+    // At the end make all the remaining values as zero
     public void moveZeroes(int[] nums) {
-        int j = nums.length - 1;
-        for (int i = nums.length - 1; i >= 0; i--) {
-            if (nums[i] == 0) {
-                swap(nums, i, j);
-                j--;
+        int k = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
+                nums[k++] = nums[i];
             }
         }
-    }
-
-    public static void main(String[] args) {
-        int[] nums = new int[] { 0, 1, 0, 3, 12 };
-        new Solution283().moveZeroes(nums);
-        System.out.println(Arrays.toString(nums));
+        for (int i = k; i <= nums.length; i++) {
+            nums[i] = 0;
+        }
     }
 }
