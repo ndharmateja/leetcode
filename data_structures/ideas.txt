@@ -1,0 +1,14 @@
+Heap that also tracks top 'k' values
+Eg: to track top '3' values
+            9
+            |
+            8
+            |
+            7
+           / \
+          /   \
+         5     1
+        / \
+       4   3
+We can still use arrays to store and track parents and children. We need to have a pointer for the root of tree. Then we can get the max and kth max in O(1) time.
+Operations will run in O(k + log n)
