@@ -105,7 +105,7 @@ public class MyLinkedList {
             builder.append(" ⇌ ");
         }
 
-        builder.setLength(builder.length() - 4);
+        builder.setLength(builder.length() - 3);
         builder.append(']');
 
         return builder.toString();
