@@ -1,13 +1,11 @@
 class Solution2278 {
+    // O(n) time and O(1) space solution
     public int percentageLetter(String s, char letter) {
-        int totalCount = 0;
         int letterCount = 0;
         for (char c : s.toCharArray()) {
-            if (c == letter) {
+            if (c == letter)
                 letterCount++;
-            }
-            totalCount++;
         }
-        return 100 * letterCount / totalCount;
+        return 100 * letterCount / s.length();
     }
 }
