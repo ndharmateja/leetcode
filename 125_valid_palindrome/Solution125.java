@@ -1,5 +1,11 @@
 class Solution125 {
+
     public boolean isPalindrome(String s) {
+        return solution1(s);
+    }
+
+    // O(n) time and O(n) space solution
+    private boolean solution1(String s) {
         s = s.toLowerCase();
         s = s.replaceAll("[^a-z0-9]", "");
         if (s.length() == 0)
