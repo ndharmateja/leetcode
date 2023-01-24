@@ -1,9 +1,10 @@
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 class Solution389 {
     public char findTheDifference(String s, String t) {
-        return solution1(s, t);
+        return solution2(s, t);
     }
 
     private Map<Character, Integer> getCharCounts(String string) {
@@ -27,5 +28,19 @@ class Solution389 {
 
         // We will not reach here as there is a valid solution
         return '0';
+    }
+
+    // O(n) time and O(1) space solution
+    // Using difference of sum of ASCII values
+    private char solution2(String s, String t) {
+        int sCharsSum = 0;
+        for (char c : s.toCharArray())
+            sCharsSum += (int) c;
+
+        int tCharsSum = 0;
+        for (char c : t.toCharArray())
+            tCharsSum += (int) c;
+
+        return (char) (tCharsSum - sCharsSum);
     }
 }
