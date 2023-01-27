@@ -34,7 +34,7 @@ class Solution796 {
     }
 
     // O(n) time and O(n) space solution
-    public boolean solution2(String s, String goal) {
+    private boolean solution2(String s, String goal) {
         return s.length() == goal.length() && (s + s).contains(goal);
     }
 

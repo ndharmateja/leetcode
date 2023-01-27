@@ -40,7 +40,7 @@ class Solution167 {
 
     // O(n log n) solution
     // For each element, use binary search to find "target" - "element"
-    public int[] solution1(int[] numbers, int target) {
+    private int[] solution1(int[] numbers, int target) {
         // For each "number" in array, try to find index of
         // "target" - "number"
         for (int i = 0; i < numbers.length; i++) {
