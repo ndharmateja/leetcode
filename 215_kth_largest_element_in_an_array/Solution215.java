@@ -83,4 +83,8 @@ class Solution215 {
         Arrays.sort(nums);
         return nums[nums.length - k];
     }
+
+    public static void main(String[] args) {
+        System.out.println(new Solution215().findKthLargest(new int[] { 1, 2, 3, 5 }, 2));
+    }
 }
