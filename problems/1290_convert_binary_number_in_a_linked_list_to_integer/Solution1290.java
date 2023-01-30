@@ -1,4 +1,4 @@
-class Solution {
+class Solution1290 {
     static class ListNode {
         int val;
         ListNode next;
