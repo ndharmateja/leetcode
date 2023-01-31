@@ -24,7 +24,7 @@ class WordDictionary {
         TrieNode curr = this.root;
         for (char c : word.toCharArray()) {
             if (!curr.children.containsKey(c)) {
-                curr.children.put(c, new TrieNode(curr.text + c)); 
+                curr.children.put(c, new TrieNode(curr.text + c));
             }
             curr = curr.children.get(c);
         }
