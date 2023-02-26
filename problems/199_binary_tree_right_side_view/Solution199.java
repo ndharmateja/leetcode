@@ -23,20 +23,20 @@ class Solution199 {
         }
     }
 
-    static class Pair {
-        TreeNode node;
-        int level;
-
-        public Pair(TreeNode node, int level) {
-            this.node = node;
-            this.level = level;
-        }
-    }
-
     // O(n) time and O(n) space solution (n - num nodes in tree)
     // Do a level order traversal (right to left on each level)
     // and add the node's value to the list for every new level
-    public List<Integer> rightSideView(TreeNode root) {
+    private List<Integer> solution1(TreeNode root) {
+        final class Pair {
+            TreeNode node;
+            int level;
+
+            public Pair(TreeNode node, int level) {
+                this.node = node;
+                this.level = level;
+            }
+        }
+
         // Create list for the output
         List<Integer> output = new ArrayList<>();
 
@@ -71,5 +71,9 @@ class Solution199 {
         }
 
         return output;
+    }
+
+    public List<Integer> rightSideView(TreeNode root) {
+        return solution1(root);
     }
 }
