@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
+@SuppressWarnings("unused")
 class Solution1448 {
     static class TreeNode {
         int val;
@@ -71,7 +72,28 @@ class Solution1448 {
         return count;
     }
 
+    // O(n) time and O(height) space solution
+    // Reference: https://youtu.be/7cp5imvDzl4
+    // Recursive solution using DFS (preorder traversal)
+    private int solution2(TreeNode node, int maxValue) {
+        if (node == null)
+            return 0;
+
+        // If curr node is good node, we initialize the count to 1
+        // else to 0
+        // and update maxValue
+        int numGoodNodes = node.val >= maxValue ? 1 : 0;
+        maxValue = Math.max(maxValue, node.val);
+
+        // Recursively get the number of good nodes from
+        // both the children
+        numGoodNodes += solution2(node.left, maxValue);
+        numGoodNodes += solution2(node.right, maxValue);
+
+        return numGoodNodes;
+    }
+
     public int goodNodes(TreeNode root) {
-        return solution1(root);
+        return solution2(root, Integer.MIN_VALUE);
     }
 }
