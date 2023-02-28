@@ -41,7 +41,7 @@ class Solution567 {
         // Calculate #matches
         int matches = 0;
         for (char c = 'a'; c <= 'z'; c++)
-            matches += windowCharCounts.get(c) == s1CharCounts.get(c) ? 1 : 0;
+            matches += windowCharCounts.get(c).equals(s1CharCounts.get(c)) ? 1 : 0;
 
         // If #matches is 26, it is a match
         if (matches == 26)
@@ -54,7 +54,7 @@ class Solution567 {
             // If before removal of charL
             // charL has the same count in window and s1, we decrement matches
             // as we are changing it
-            if (windowCharCounts.get(charL) == s1CharCounts.get(charL))
+            if (windowCharCounts.get(charL).equals(s1CharCounts.get(charL)))
                 matches--;
 
             // Remove char at 'l' from window and increment 'l'
@@ -71,7 +71,7 @@ class Solution567 {
             // If before addition of charR
             // charR has the same count in window and s1, we decrement matches
             // as we are changing it
-            if (windowCharCounts.get(charR) == s1CharCounts.get(charR))
+            if (windowCharCounts.get(charR).equals(s1CharCounts.get(charR)))
                 matches--;
 
             // add char at 'r+1'
