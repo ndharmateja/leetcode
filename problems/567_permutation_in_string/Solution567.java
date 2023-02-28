@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 class Solution567 {
     // Return char counts
     // Assumes string only has lowercase a-z
@@ -14,6 +15,79 @@ class Solution567 {
             counts.put(c, counts.get(c) + 1);
         }
         return counts;
+    }
+
+    /**
+     * O(n) time and O(26) space solution
+     * Reference: https://youtu.be/UbyhOgBN834
+     * The optimization we get over solution1 is that while comparing
+     * the two hash maps, instead of comparing the whole hashmaps
+     * we keep track of number of matches (computed initially for the
+     * first window) and readjust the number of matches as we move the
+     * window (2 steps to readjust the number of matches based on the
+     * char removed and the char added)
+     * This solution is an optimization of solution1, refer that for any doubts
+     */
+    private boolean solution2(String s1, String s2) {
+        if (s2.length() < s1.length())
+            return false;
+
+        // Initialize the window and get char counts
+        int l = 0;
+        int r = s1.length() - 1;
+        Map<Character, Integer> windowCharCounts = getCharCounts(s2.substring(l, r + 1));
+        Map<Character, Integer> s1CharCounts = getCharCounts(s1);
+
+        // Calculate #matches
+        int matches = 0;
+        for (char c = 'a'; c <= 'z'; c++)
+            matches += windowCharCounts.get(c) == s1CharCounts.get(c) ? 1 : 0;
+
+        // If #matches is 26, it is a match
+        if (matches == 26)
+            return true;
+
+        while (r < s2.length() - 1) {
+
+            char charL = s2.charAt(l++);
+
+            // If before removal of charL
+            // charL has the same count in window and s1, we decrement matches
+            // as we are changing it
+            if (windowCharCounts.get(charL) == s1CharCounts.get(charL))
+                matches--;
+
+            // Remove char at 'l' from window and increment 'l'
+            windowCharCounts.put(charL, windowCharCounts.get(charL) - 1);
+
+            // If after removal of charL
+            // charL has the same count in window and s1, we increment matches
+            // as we are changing it
+            if (windowCharCounts.get(charL).equals(s1CharCounts.get(charL)))
+                matches++;
+
+            char charR = s2.charAt(++r);
+
+            // If before addition of charR
+            // charR has the same count in window and s1, we decrement matches
+            // as we are changing it
+            if (windowCharCounts.get(charR) == s1CharCounts.get(charR))
+                matches--;
+
+            // add char at 'r+1'
+            windowCharCounts.put(charR, windowCharCounts.get(charR) + 1);
+
+            // If after addition of charR
+            // charR has the same count in window and s1, we increment matches
+            // as we are changing it
+            if (windowCharCounts.get(charR).equals(s1CharCounts.get(charR)))
+                matches++;
+
+            if (matches == 26)
+                return true;
+        }
+
+        return false;
     }
 
     /**
@@ -76,6 +150,6 @@ class Solution567 {
     }
 
     public boolean checkInclusion(String s1, String s2) {
-        return solution1(s1, s2);
+        return solution2(s1, s2);
     }
 }
