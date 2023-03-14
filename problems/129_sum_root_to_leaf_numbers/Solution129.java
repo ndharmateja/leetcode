@@ -20,7 +20,7 @@ class Solution129 {
 
     // O(n) time and O(h) space (recursion stack)
     // recursive solution, that takes the number formed so far
-    private int sumNumbers(TreeNode node, int numSoFar) {
+    private int solution1(TreeNode node, int numSoFar) {
         // If node is null, we return 0
         if (node == null) {
             return 0;
@@ -35,10 +35,10 @@ class Solution129 {
         }
 
         // Otherwise, we recursively call the function on both the children
-        return sumNumbers(node.left, numSoFar) + sumNumbers(node.right, numSoFar);
+        return solution1(node.left, numSoFar) + solution1(node.right, numSoFar);
     }
 
     public int sumNumbers(TreeNode root) {
-        return sumNumbers(root, 0);
+        return solution1(root, 0);
     }
 }
