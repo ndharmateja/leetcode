@@ -11,6 +11,7 @@ class Solution2348 {
         return zeroSubarraySize * (zeroSubarraySize + 1) / 2;
     }
 
+    // O(n) time and O(1) space solution
     public long zeroFilledSubarray(int[] nums) {
         long count = 0;
 
