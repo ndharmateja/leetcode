@@ -1,13 +1,30 @@
+import java.util.Arrays;
 import java.util.HashSet;
 
-class Solution217 {
-    public boolean containsDuplicate(int[] nums) {
-        HashSet<Integer> numSet = new HashSet<>();
+@SuppressWarnings("unused")
+class Solution {
+    // O(n) time and O(n) space
+    private boolean solution1(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
         for (int num : nums) {
-            if (numSet.contains(num))
+            if (set.contains(num))
                 return true;
-            numSet.add(num);
+            set.add(num);
         }
         return false;
+    }
+
+    // O(n log n) time and O(1) space
+    private boolean solution2(int[] nums) {
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == nums[i + 1])
+                return true;
+        }
+        return false;
+    }
+
+    public boolean containsDuplicate(int[] nums) {
+        return solution1(nums);
     }
 }
