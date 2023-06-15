@@ -1,7 +1,29 @@
+@SuppressWarnings("unused")
 class Solution238 {
+    // O(n) time and O(1) space
+    // Reference: https://youtu.be/bNvIQI2wAjk?t=290
+    private int[] solution2(int[] nums) {
+        // Compute prefixes and store in output array (to one index on right)
+        int pre = 1;
+        int[] output = new int[nums.length];
+        output[0] = 1;
+        for (int i = 0; i < nums.length - 1; i++) {
+            pre *= nums[i];
+            output[i + 1] = pre;
+        }
 
-    // Time: O(n)
-    // Space: O(n)
+        // Compute postfix step by step and multiply with elements in output array
+        int post = 1;
+        for (int i = output.length - 1; i > 0; i--) {
+            post *= nums[i];
+            output[i - 1] *= post;
+        }
+
+        // Return output
+        return output;
+    }
+
+    // O(n) time and O(n) space
     private int[] solution1(int[] nums) {
         // 1. Get cumulative products of nums
         // both left to right (prefix) and right to left (postfix)
@@ -37,6 +59,6 @@ class Solution238 {
     }
 
     public int[] productExceptSelf(int[] nums) {
-        return solution1(nums);
+        return solution2(nums);
     }
 }
