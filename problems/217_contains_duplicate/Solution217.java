@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 @SuppressWarnings("unused")
-class Solution {
+class Solution217 {
     // O(n) time and O(n) space
     private boolean solution1(int[] nums) {
         HashSet<Integer> set = new HashSet<>();
