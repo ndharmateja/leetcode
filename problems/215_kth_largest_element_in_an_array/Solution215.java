@@ -38,6 +38,7 @@ class Solution215 {
         nums[j] = temp;
     }
 
+    // improvement: many duplicates => we need to do partitioning differently
     private int quickSelect(int[] nums, int k, int low, int high, Random random) {
         // Select random pivot and swap it with the 'high' index
         swap(nums, random.nextInt(low, high + 1), high);
