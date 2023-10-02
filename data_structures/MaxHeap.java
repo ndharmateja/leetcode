@@ -99,7 +99,18 @@ public class MaxHeap<T extends Comparable<T>> {
     }
 
     public void insert(T t) {
-        this.array.add(t);
+        // If the size of the arraylist is same as the number of elements
+        // then add the new element at the end
+        if (this.size == this.array.size())
+            this.array.add(t);
+
+        // If the size of the arraylist is greater than the
+        // number of elements, replace the element at 'size' index
+        // with the new element
+        else
+            this.array.set(this.size, t);
+
+        // Sift up from the new element and increment size
         this.siftUp(this.size);
         this.size++;
     }
