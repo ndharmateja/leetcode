@@ -24,6 +24,8 @@ public class Solution133 {
         }
     }
 
+    // O(|V| + |E|) time and O(|V|) space
+    // Straightforward DFS
     public Node cloneGraph(Node node) {
         // if node is null return null
         if (node == null)
