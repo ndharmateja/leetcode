@@ -3,8 +3,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Solution133 {
-    static class Node {
+public class Solution133 {
+    class Node {
         public int val;
         public List<Node> neighbors;
 
