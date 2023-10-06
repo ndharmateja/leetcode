@@ -31,18 +31,11 @@ public class Solution133 {
         if (node == null)
             return null;
 
-        // Create a map for storing the mapping
+        // A is required map for storing the mapping
         // from node in original graph to clone graph
-        Map<Node, Node> nodeMap = new HashMap<>();
-
-        // Create clone of node and add to map
-        Node nodeClone = new Node(node.val);
-
         // run dfs on the node
-        dfs(node, nodeClone, nodeMap);
-
         // return clone of the node
-        return nodeClone;
+        return dfs(node, new HashMap<>());
     }
 
     // This dfs is slightly different from the dfs we generally run
@@ -52,19 +45,23 @@ public class Solution133 {
     // This helps to simplify the code inside the for loop for each neighbor
     // where we don't need an if else for visited and unvisited neighbors
     // and have the same code for both
-    public void dfs(Node node, Node nodeClone, Map<Node, Node> nodeMap) {
+    // Returns the cloned counterpart of the node
+    public Node dfs(Node node, Map<Node, Node> nodeMap) {
         // If node is already visited skip
         // We check if the node is present in the node map
+        // And return the corresponding clone
         if (nodeMap.containsKey(node))
-            return;
+            return nodeMap.get(node);
 
+        // Create clone of node
         // Add node -> cloneNode to map
         // mark it visited
-        // We add it here instead of as soon as it is created
-        // the dfs call is made as soon as the clone of neighbor is created
-        // and it is better to call it here because the put call
-        // won't be called unnecessarily as dfs call will exit
-        // if node is already present in the map
+        // We could have done this in the loop where we could have
+        // create the clone for the neighbour and put in map
+        // before calling dfs function on the neighbour, but
+        // that would have required us to pass the neighbour clone
+        // into the dfs call as well
+        Node nodeClone = new Node(node.val);
         nodeMap.put(node, nodeClone);
 
         // For each of the neighbors
@@ -73,9 +70,11 @@ public class Solution133 {
         // 2. Call dfs on the neighbor
         // 3. Add the neighbor clone to the neighbors of the clone node
         for (Node neighbor : node.neighbors) {
-            Node neighborClone = nodeMap.getOrDefault(neighbor, new Node(neighbor.val));
-            dfs(neighbor, neighborClone, nodeMap);
+            Node neighborClone = dfs(neighbor, nodeMap);
             nodeClone.neighbors.add(neighborClone);
         }
+
+        // Return the cloned node
+        return nodeClone;
     }
 }
