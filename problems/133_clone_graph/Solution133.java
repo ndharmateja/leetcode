@@ -49,30 +49,34 @@ class Solution133 {
         return nodeClone;
     }
 
+    // This dfs is slightly different from the dfs we generally run
+    // We call dfs on all the neighbors irrespective of whether
+    // it has been visited or not and check if the node has been visited at the
+    // start of the dfs call
+    // This helps to simplify the code inside the for loop for each neighbor
+    // where we don't need an if else for visited and unvisited neighbors
+    // and have the same code for both
     public void dfs(Node node, Set<Node> visited, Node nodeClone, Map<Node, Node> nodeMap) {
+        // If node is already visited skip
+        if (visited.contains(node))
+            return;
+
         // Add node to visited
         visited.add(node);
 
+        // For each of the neighbors
+        // 1. Get the clone of the neighbor, from the map if exists or create
+        // a clone of the neighbor
+        // 2. Add that to the node map (if already exists, nothing will happen. just
+        // a duplicate call to the put method
+        // ? might slow this down a little bit due to this)
+        // 3. Call dfs on the neighbor
+        // 4. Add the neighbor clone to the neighbors of the clone node
         for (Node neighbor : node.neighbors) {
-            // If we are visiting the neighbor for the first time
-            // create a clone for that neighbour
-            // and put it in the map
-            // and run dfs on the neighbor node
-            // and add the neighbor clone to the list of neighbors of the clone node
-            if (!visited.contains(neighbor)) {
-                Node neighborClone = new Node(neighbor.val);
-                nodeMap.put(neighbor, neighborClone);
-                dfs(neighbor, visited, neighborClone, nodeMap);
-                nodeClone.neighbors.add(neighborClone);
-            }
-
-            // If neighbor is already visited
-            // just add the connection from the clone node
-            // to the clone neighbor (by getting it from the map)
-            else {
-                nodeClone.neighbors.add(nodeMap.get(neighbor));
-            }
+            Node neighborClone = nodeMap.getOrDefault(neighbor, new Node(neighbor.val));
+            nodeMap.put(neighbor, neighborClone);
+            dfs(neighbor, visited, neighborClone, nodeMap);
+            nodeClone.neighbors.add(neighborClone);
         }
-
     }
 }
