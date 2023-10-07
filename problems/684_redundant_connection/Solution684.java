@@ -32,8 +32,8 @@ public class Solution684 {
 
         /*
          * unions sets which contain i and j
-         * returns true if i and j were in different sets
-         * returns false otherwise
+         * 
+         * @return true if i and j were in different sets, false otherwise
          */
         public boolean union(int i, int j) {
             // Get ids of both elements
