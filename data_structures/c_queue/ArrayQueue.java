@@ -150,9 +150,9 @@ public class ArrayQueue<T> implements Queue<T> {
         printRQ(rq);
     }
 
-    private static <Item> void printRQ(Queue<Item> rq) {
+    private static <T> void printRQ(Queue<T> rq) {
         System.out.print("Queue items: [ ");
-        for (Item item : rq) {
+        for (T item : rq) {
             System.out.print(item + " ");
         }
         System.out.println("]");

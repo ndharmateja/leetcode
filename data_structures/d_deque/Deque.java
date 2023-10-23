@@ -1,6 +1,6 @@
 package data_structures.d_deque;
 
-public interface Deque<Item> extends Iterable<Item> {
+public interface Deque<T> extends Iterable<T> {
     // is the deque empty?
     public boolean isEmpty();
 
@@ -8,15 +8,14 @@ public interface Deque<Item> extends Iterable<Item> {
     public int size();
 
     // add the item to the front
-    public void addFirst(Item item);
+    public void addFirst(T item);
 
     // add the item to the back
-    public void addLast(Item item);
+    public void addLast(T item);
 
     // remove and return the item from the front
-    public Item removeFirst();
+    public T removeFirst();
 
     // remove and return the item from the back
-    public Item removeLast();
+    public T removeLast();
 }
-

@@ -3,14 +3,14 @@ package data_structures.d_deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedDeque<Item> implements Deque<Item> {
+public class LinkedDeque<T> implements Deque<T> {
     // sentinel nodes head and tail
     private Node head;
     private Node tail;
     private int size = 0;
 
     private class Node {
-        Item item;
+        T item;
         Node next;
         Node prev;
     }
@@ -35,7 +35,7 @@ public class LinkedDeque<Item> implements Deque<Item> {
     }
 
     // add the item to the front
-    public void addFirst(Item item) {
+    public void addFirst(T item) {
         // Throw exception if item is null
         if (item == null) {
             throw new IllegalArgumentException("item to add can't be null");
@@ -56,7 +56,7 @@ public class LinkedDeque<Item> implements Deque<Item> {
     }
 
     // add the item to the back
-    public void addLast(Item item) {
+    public void addLast(T item) {
         // Throw exception if item is null
         if (item == null) {
             throw new IllegalArgumentException("item to add can't be null");
@@ -77,7 +77,7 @@ public class LinkedDeque<Item> implements Deque<Item> {
     }
 
     // remove and return the item from the front
-    public Item removeFirst() {
+    public T removeFirst() {
         // Throw exception if deque is empty
         if (isEmpty()) {
             throw new NoSuchElementException("Deque is empty");
@@ -94,7 +94,7 @@ public class LinkedDeque<Item> implements Deque<Item> {
     }
 
     // remove and return the item from the back
-    public Item removeLast() {
+    public T removeLast() {
         // Throw exception if deque is empty
         if (isEmpty()) {
             throw new NoSuchElementException("Deque is empty");
@@ -111,11 +111,11 @@ public class LinkedDeque<Item> implements Deque<Item> {
     }
 
     // return an iterator over items in order from front to back
-    public Iterator<Item> iterator() {
+    public Iterator<T> iterator() {
         return new ListIterator();
     }
 
-    private class ListIterator implements Iterator<Item> {
+    private class ListIterator implements Iterator<T> {
         private Node current = head.next;
 
         @Override
@@ -124,12 +124,12 @@ public class LinkedDeque<Item> implements Deque<Item> {
         }
 
         @Override
-        public Item next() {
+        public T next() {
             if (!hasNext()) {
                 throw new NoSuchElementException("Reached the end of iterator");
             }
 
-            Item item = current.item;
+            T item = current.item;
             current = current.next;
             return item;
         }

@@ -212,9 +212,9 @@ public class RandomizedQueue<T> implements Queue<T> {
         printRQ(rq);
     }
 
-    private static <Item> void printRQ(RandomizedQueue<Item> rq) {
+    private static <T> void printRQ(RandomizedQueue<T> rq) {
         System.out.print("Randomized items: [ ");
-        for (Item item : rq) {
+        for (T item : rq) {
             System.out.print(item + " ");
         }
         System.out.println("]");
