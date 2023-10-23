@@ -7,6 +7,7 @@ public class WeightedQuickUnionPathCompression implements UnionFind {
 
     public WeightedQuickUnionPathCompression(int n) {
         parent = new int[n];
+        size = new int[n];
         numSets = n;
         for (int i = 0; i < parent.length; i++) {
             parent[i] = i;
@@ -26,6 +27,7 @@ public class WeightedQuickUnionPathCompression implements UnionFind {
         if (pRoot == qRoot)
             return;
 
+        numSets--;
         if (size[pRoot] < size[qRoot]) {
             parent[pRoot] = qRoot;
             size[qRoot] += size[pRoot];
