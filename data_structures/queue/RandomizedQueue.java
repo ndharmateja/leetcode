@@ -56,7 +56,7 @@ public class RandomizedQueue<T> implements Queue<T> {
     public void enqueue(T item) {
         // Throw exception if item is null
         if (item == null) {
-            throw new IllegalArgumentException("item to add can't be null");
+            throw new IllegalArgumentException();
         }
 
         // Resize the array to double size if full
@@ -82,7 +82,7 @@ public class RandomizedQueue<T> implements Queue<T> {
     public T dequeue() {
         // Throw exception if deque is empty
         if (isEmpty()) {
-            throw new NoSuchElementException("RandomizedQueue is empty");
+            throw new NoSuchElementException();
         }
 
         // Swap head element with a randomly selected element
@@ -106,7 +106,7 @@ public class RandomizedQueue<T> implements Queue<T> {
     public T peek() {
         // Throw exception if deque is empty
         if (isEmpty()) {
-            throw new NoSuchElementException("RandomizedQueue is empty");
+            throw new NoSuchElementException();
         }
 
         // Get a random index and return the item at that index

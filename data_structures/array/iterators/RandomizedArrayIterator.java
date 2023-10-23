@@ -63,7 +63,7 @@ public class RandomizedArrayIterator<T> implements Iterator<T> {
     @Override
     public T next() {
         if (!hasNext()) {
-            throw new NoSuchElementException("Reached the end of iterator");
+            throw new NoSuchElementException();
         }
 
         return iteratorArray[curr++];

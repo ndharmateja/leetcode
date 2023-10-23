@@ -49,7 +49,7 @@ public class ArrayQueue<T> implements Queue<T> {
     public void enqueue(T item) {
         // Throw exception if item is null
         if (item == null) {
-            throw new IllegalArgumentException("item to add can't be null");
+            throw new IllegalArgumentException();
         }
 
         // Resize the array to double size if full
@@ -67,7 +67,7 @@ public class ArrayQueue<T> implements Queue<T> {
     public T dequeue() {
         // Throw exception if queue is empty
         if (isEmpty()) {
-            throw new NoSuchElementException("Queue is empty");
+            throw new NoSuchElementException();
         }
 
         // Return head
@@ -88,7 +88,7 @@ public class ArrayQueue<T> implements Queue<T> {
     public T peek() {
         // Throw exception if queue is empty
         if (isEmpty()) {
-            throw new NoSuchElementException("Queue is empty");
+            throw new NoSuchElementException();
         }
 
         return array[head];

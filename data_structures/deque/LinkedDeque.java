@@ -35,7 +35,7 @@ public class LinkedDeque<T> implements Deque<T> {
     public void addFirst(T t) {
         // Throw exception if item is null
         if (t == null) {
-            throw new IllegalArgumentException("item to add can't be null");
+            throw new IllegalArgumentException();
         }
 
         // Create new node with item
@@ -56,7 +56,7 @@ public class LinkedDeque<T> implements Deque<T> {
     public void addLast(T item) {
         // Throw exception if item is null
         if (item == null) {
-            throw new IllegalArgumentException("item to add can't be null");
+            throw new IllegalArgumentException();
         }
 
         // Create new node with item
@@ -77,7 +77,7 @@ public class LinkedDeque<T> implements Deque<T> {
     public T removeFirst() {
         // Throw exception if deque is empty
         if (isEmpty()) {
-            throw new NoSuchElementException("Deque is empty");
+            throw new NoSuchElementException();
         }
 
         // Adjust connections to remove the node after head
@@ -94,7 +94,7 @@ public class LinkedDeque<T> implements Deque<T> {
     public T removeLast() {
         // Throw exception if deque is empty
         if (isEmpty()) {
-            throw new NoSuchElementException("Deque is empty");
+            throw new NoSuchElementException();
         }
 
         // Adjust connections to remove the node before tail

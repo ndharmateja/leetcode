@@ -48,7 +48,7 @@ public class ArrayDeque<T> implements Deque<T> {
     public void addFirst(T item) {
         // Throw exception if item is null
         if (item == null) {
-            throw new IllegalArgumentException("item to add can't be null");
+            throw new IllegalArgumentException();
         }
 
         // Resize the array to double size if full
@@ -64,7 +64,7 @@ public class ArrayDeque<T> implements Deque<T> {
     public void addLast(T item) {
         // Throw exception if item is null
         if (item == null) {
-            throw new IllegalArgumentException("item to add can't be null");
+            throw new IllegalArgumentException();
         }
 
         // Resize the array to double size if full
@@ -81,7 +81,7 @@ public class ArrayDeque<T> implements Deque<T> {
     public T removeFirst() {
         // Throw exception if queue is empty
         if (isEmpty()) {
-            throw new NoSuchElementException("Queue is empty");
+            throw new NoSuchElementException();
         }
 
         // Return head
@@ -102,7 +102,7 @@ public class ArrayDeque<T> implements Deque<T> {
     public T removeLast() {
         // Throw exception if queue is empty
         if (isEmpty()) {
-            throw new NoSuchElementException("Queue is empty");
+            throw new NoSuchElementException();
         }
 
         // Return head
@@ -123,7 +123,7 @@ public class ArrayDeque<T> implements Deque<T> {
     public T peek() {
         // Throw exception if queue is empty
         if (isEmpty()) {
-            throw new NoSuchElementException("Queue is empty");
+            throw new NoSuchElementException();
         }
 
         return array[head];
