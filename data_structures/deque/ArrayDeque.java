@@ -129,7 +129,6 @@ public class ArrayDeque<T> implements Deque<T> {
         return array[head];
     }
 
-    // return an independent iterator over items in random order
     public Iterator<T> iterator() {
         return new ForwardArrayIterator<>(array, head, size);
     }
