@@ -3,6 +3,8 @@ package data_structures.c_queue;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import data_structures.iterators.ForwardArrayIterator;
+
 @SuppressWarnings("unchecked")
 public class ArrayQueue<T> implements Queue<T> {
     private T[] array;
@@ -92,36 +94,8 @@ public class ArrayQueue<T> implements Queue<T> {
         return array[head];
     }
 
-    // return an independent iterator over items in random order
     public Iterator<T> iterator() {
-        return new ArrayIterator();
-    }
-
-    private class ArrayIterator implements Iterator<T> {
-        int curr = head;
-        int numElementsIterated = 0;
-
-        @Override
-        public boolean hasNext() {
-            return numElementsIterated < size;
-        }
-
-        @Override
-        public T next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException("Reached the end of iterator");
-            }
-
-            numElementsIterated++;
-            T nextElement = array[curr++];
-            curr = curr % array.length;
-            return nextElement;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
+        return new ForwardArrayIterator<>(array, head, size);
     }
 
     // unit testing (required)
