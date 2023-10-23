@@ -122,45 +122,44 @@ public class RandomizedQueue<T> implements Queue<T> {
     // unit testing (required)
     public static void main(String[] args) {
         RandomizedQueue<Integer> rq = new RandomizedQueue<>();
-        printRQ(rq);
+        Utils.printQueue(rq);
 
-        rq.enqueue(1);
-        rq.enqueue(2);
-        rq.enqueue(3);
-        rq.enqueue(4);
-        rq.enqueue(5);
-        printRQ(rq);
-        printRQ(rq);
-        printRQ(rq);
-        printRQ(rq);
-        printRQ(rq);
-        printRQ(rq);
-
-        System.out.println(rq.peek());
-        System.out.println(rq.peek());
-        System.out.println(rq.peek());
-        System.out.println(rq.peek());
-        System.out.println(rq.peek());
-        System.out.println(rq.peek());
-        System.out.println(rq.peek());
-        System.out.println(rq.peek());
-
-        System.out.println(rq.dequeue());
-        printRQ(rq);
-        System.out.println(rq.dequeue());
-        printRQ(rq);
-        System.out.println(rq.dequeue());
-        printRQ(rq);
-        System.out.println(rq.dequeue());
-        printRQ(rq);
-    }
-
-    private static <T> void printRQ(RandomizedQueue<T> rq) {
-        System.out.print("Randomized items: [ ");
-        for (T item : rq) {
-            System.out.print(item + " ");
+        for (int i = 0; i < 10; i++) {
+            rq.enqueue(i);
         }
-        System.out.println("]");
-        System.out.println("Size: " + rq.size() + "\n");
+
+        System.out.print("Randomized ");
+        Utils.printQueue(rq);
+        System.out.print("Randomized ");
+        Utils.printQueue(rq);
+        System.out.print("Randomized ");
+        Utils.printQueue(rq);
+        System.out.print("Randomized ");
+        Utils.printQueue(rq);
+        System.out.print("Randomized ");
+        Utils.printQueue(rq);
+        System.out.print("Randomized ");
+        Utils.printQueue(rq);
+
+        System.out.println("Random sample: " + rq.peek());
+        System.out.println("Random sample: " + rq.peek());
+        System.out.println("Random sample: " + rq.peek());
+        System.out.println("Random sample: " + rq.peek());
+        System.out.println("Random sample: " + rq.peek());
+        System.out.println("Random sample: " + rq.peek());
+        System.out.println("Random sample: " + rq.peek());
+        System.out.println("Random sample: " + rq.peek());
+        System.out.println();
+
+        System.out.println("Dequeued: " + rq.dequeue());
+        Utils.printQueue(rq);
+        System.out.println("Dequeued: " + rq.dequeue());
+        Utils.printQueue(rq);
+        System.out.println("Dequeued: " + rq.dequeue());
+        Utils.printQueue(rq);
+        System.out.println("Dequeued: " + rq.dequeue());
+        Utils.printQueue(rq);
+        System.out.println("Dequeued: " + rq.dequeue());
+        Utils.printQueue(rq);
     }
 }

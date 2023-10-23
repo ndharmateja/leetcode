@@ -97,39 +97,4 @@ public class ArrayQueue<T> implements Queue<T> {
     public Iterator<T> iterator() {
         return new ForwardArrayIterator<>(array, head, size);
     }
-
-    // unit testing (required)
-    public static void main(String[] args) {
-        ArrayQueue<Integer> rq = new ArrayQueue<>();
-        printRQ(rq);
-
-        rq.enqueue(1);
-        rq.enqueue(2);
-        rq.enqueue(3);
-        rq.enqueue(4);
-        rq.enqueue(5);
-        rq.enqueue(6);
-        rq.enqueue(7);
-        rq.enqueue(8);
-        rq.enqueue(9);
-        printRQ(rq);
-
-        System.out.println(rq.dequeue());
-        printRQ(rq);
-        System.out.println(rq.dequeue());
-        printRQ(rq);
-        System.out.println(rq.dequeue());
-        printRQ(rq);
-        System.out.println(rq.dequeue());
-        printRQ(rq);
-    }
-
-    private static <T> void printRQ(Queue<T> rq) {
-        System.out.print("Queue items: [ ");
-        for (T item : rq) {
-            System.out.print(item + " ");
-        }
-        System.out.println("]");
-        System.out.println("Size: " + rq.size() + "\n");
-    }
 }
