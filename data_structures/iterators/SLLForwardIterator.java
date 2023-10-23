@@ -8,6 +8,13 @@ import data_structures.nodes.linked_list.SLLNode;
 public class SLLForwardIterator<T> implements Iterator<T> {
     private SLLNode<T> curr;
 
+    /**
+     * Forward iterator for a singly linked list
+     * without sentinel nodes
+     * (head is the first node, not the sentinel node)
+     * 
+     * @param head
+     */
     public SLLForwardIterator(SLLNode<T> head) {
         curr = head;
     }
