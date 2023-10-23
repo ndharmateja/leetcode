@@ -27,6 +27,7 @@ public class LinkedStack<T> implements Stack<T> {
             throw new NoSuchElementException();
         T t = head.data;
         head = head.next;
+        size--;
         return t;
     }
 
