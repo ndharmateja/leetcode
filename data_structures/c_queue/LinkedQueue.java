@@ -3,21 +3,19 @@ package data_structures.c_queue;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedQueue<T> implements Queue<T> {
-    private Node head;
-    private Node tail;
-    private int size = 0;
+import data_structures.iterators.SLLForwardIterator;
+import data_structures.nodes.linked_list.SLLNode;
 
-    private class Node {
-        T data;
-        Node next;
-    }
+public class LinkedQueue<T> implements Queue<T> {
+    private SLLNode<T> head;
+    private SLLNode<T> tail;
+    private int size = 0;
 
     @Override
     public void enqueue(T t) {
         size++;
-        Node oldTail = tail;
-        tail = new Node();
+        SLLNode<T> oldTail = tail;
+        tail = new SLLNode<T>();
         tail.data = t;
         if (isEmpty())
             head = tail;
@@ -61,29 +59,6 @@ public class LinkedQueue<T> implements Queue<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new ListIterator();
-    }
-
-    private class ListIterator implements Iterator<T> {
-        private Node curr = head;
-
-        @Override
-        public boolean hasNext() {
-            return curr != null;
-        }
-
-        @Override
-        public T next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-            T t = curr.data;
-            curr = curr.next;
-            return t;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
+        return new SLLForwardIterator<>(head);
     }
 }

@@ -3,23 +3,20 @@ package data_structures.d_deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import data_structures.iterators.DLLForwardIterator;
+import data_structures.nodes.linked_list.DLLNode;
+
 public class LinkedDeque<T> implements Deque<T> {
     // sentinel nodes head and tail
-    private Node head;
-    private Node tail;
+    private DLLNode<T> head;
+    private DLLNode<T> tail;
     private int size = 0;
-
-    private class Node {
-        T item;
-        Node next;
-        Node prev;
-    }
 
     // construct an empty deque
     public LinkedDeque() {
-        // initialize sentinel nodes and connect head and tail
-        head = new Node();
-        tail = new Node();
+        // initialize sentinel SLLNode<T>s and connect head and tail
+        head = new DLLNode<T>();
+        tail = new DLLNode<T>();
         head.next = tail;
         tail.prev = head;
     }
@@ -35,15 +32,15 @@ public class LinkedDeque<T> implements Deque<T> {
     }
 
     // add the item to the front
-    public void addFirst(T item) {
+    public void addFirst(T t) {
         // Throw exception if item is null
-        if (item == null) {
+        if (t == null) {
             throw new IllegalArgumentException("item to add can't be null");
         }
 
         // Create new node with item
-        Node newNode = new Node();
-        newNode.item = item;
+        DLLNode<T> newNode = new DLLNode<>();
+        newNode.data = t;
 
         // Insert it after the head sentinel node
         head.next.prev = newNode;
@@ -63,8 +60,8 @@ public class LinkedDeque<T> implements Deque<T> {
         }
 
         // Create new node with item
-        Node newNode = new Node();
-        newNode.item = item;
+        DLLNode<T> newNode = new DLLNode<>();
+        newNode.data = item;
 
         // Insert it after the head sentinel node
         tail.prev.next = newNode;
@@ -84,13 +81,13 @@ public class LinkedDeque<T> implements Deque<T> {
         }
 
         // Adjust connections to remove the node after head
-        Node toRemove = head.next;
+        DLLNode<T> toRemove = head.next;
         head.next = toRemove.next;
         head.next.prev = head;
 
         // Decrement size and return item
         size--;
-        return toRemove.item;
+        return toRemove.data;
     }
 
     // remove and return the item from the back
@@ -101,42 +98,17 @@ public class LinkedDeque<T> implements Deque<T> {
         }
 
         // Adjust connections to remove the node before tail
-        Node toRemove = tail.prev;
+        DLLNode<T> toRemove = tail.prev;
         tail.prev = toRemove.prev;
         tail.prev.next = tail;
 
         // Decrement size and return item
         size--;
-        return toRemove.item;
+        return toRemove.data;
     }
 
     // return an iterator over items in order from front to back
     public Iterator<T> iterator() {
-        return new ListIterator();
-    }
-
-    private class ListIterator implements Iterator<T> {
-        private Node current = head.next;
-
-        @Override
-        public boolean hasNext() {
-            return current != tail;
-        }
-
-        @Override
-        public T next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException("Reached the end of iterator");
-            }
-
-            T item = current.item;
-            current = current.next;
-            return item;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
+        return new DLLForwardIterator<>(head);
     }
 }

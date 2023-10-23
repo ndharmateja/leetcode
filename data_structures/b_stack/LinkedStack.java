@@ -3,21 +3,19 @@ package data_structures.b_stack;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedStack<T> implements Stack<T> {
-    private Node head;
-    private int size = 0;
+import data_structures.iterators.SLLForwardIterator;
+import data_structures.nodes.linked_list.SLLNode;
 
-    private class Node {
-        T data;
-        Node next;
-    }
+public class LinkedStack<T> implements Stack<T> {
+    private SLLNode<T> head;
+    private int size = 0;
 
     @Override
     public void push(T t) {
         if (t == null)
             throw new IllegalArgumentException();
-        Node oldHead = head;
-        head = new Node();
+        SLLNode<T> oldHead = head;
+        head = new SLLNode<T>();
         head.data = t;
         head.next = oldHead;
         size++;
@@ -51,29 +49,6 @@ public class LinkedStack<T> implements Stack<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new ListIterator();
-    }
-
-    private class ListIterator implements Iterator<T> {
-        private Node curr = head;
-
-        @Override
-        public boolean hasNext() {
-            return curr != null;
-        }
-
-        @Override
-        public T next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-            T t = curr.data;
-            curr = curr.next;
-            return t;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
+        return new SLLForwardIterator<>(head);
     }
 }
