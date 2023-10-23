@@ -3,6 +3,8 @@ package data_structures.b_stack;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import data_structures.iterators.ReverseArrayIterator;
+
 @SuppressWarnings("unchecked")
 public class ArrayStack<T> implements Stack<T> {
     private T[] s;
@@ -59,27 +61,6 @@ public class ArrayStack<T> implements Stack<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new ReverseArrayIterator();
-    }
-
-    private class ReverseArrayIterator implements Iterator<T> {
-        private int currIndex = size - 1;
-
-        @Override
-        public boolean hasNext() {
-            return currIndex >= 0;
-        }
-
-        @Override
-        public T next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-            return s[currIndex--];
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
+        return new ReverseArrayIterator<>(s, size, size);
     }
 }
