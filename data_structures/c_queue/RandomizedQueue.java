@@ -1,4 +1,4 @@
-package data_structures.queue;
+package data_structures.c_queue;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

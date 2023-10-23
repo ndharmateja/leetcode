@@ -1,4 +1,4 @@
-package data_structures.stack;
+package data_structures.b_stack;
 
 public interface Stack<T> extends Iterable<T> {
     public void push(T t);

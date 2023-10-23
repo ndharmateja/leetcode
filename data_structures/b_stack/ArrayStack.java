@@ -1,4 +1,4 @@
-package data_structures.stack;
+package data_structures.b_stack;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

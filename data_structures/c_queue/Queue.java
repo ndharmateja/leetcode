@@ -1,4 +1,4 @@
-package data_structures.queue;
+package data_structures.c_queue;
 
 public interface Queue<T> extends Iterable<T> {
     public void enqueue(T t);
