@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-import data_structures.iterators.RandomizedArrayIterator;
+import data_structures.iterators.array.RandomizedArrayIterator;
 
 @SuppressWarnings("unchecked")
 public class RandomizedQueue<T> implements Queue<T> {

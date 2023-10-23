@@ -3,7 +3,7 @@ package data_structures.c_queue;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import data_structures.iterators.SLLForwardIterator;
+import data_structures.iterators.linked_list.SLLForwardIterator;
 import data_structures.nodes.linked_list.SLLNode;
 
 public class LinkedQueue<T> implements Queue<T> {

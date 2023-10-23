@@ -1,4 +1,4 @@
-package data_structures.iterators;
+package data_structures.iterators.linked_list;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
