@@ -3,7 +3,7 @@ package data_structures.queue;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import data_structures.iterators.array.ForwardArrayIterator;
+import data_structures.array.iterators.ForwardArrayIterator;
 
 @SuppressWarnings("unchecked")
 public class ArrayQueue<T> implements Queue<T> {

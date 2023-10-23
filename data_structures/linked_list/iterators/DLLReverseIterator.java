@@ -1,29 +1,29 @@
-package data_structures.iterators.linked_list;
+package data_structures.linked_list.iterators;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import data_structures.nodes.linked_list.DLLNode;
 
-public class DLLForwardIterator<T> implements Iterator<T> {
+public class DLLReverseIterator<T> implements Iterator<T> {
     private DLLNode<T> curr;
-    private DLLNode<T> tail;
+    private DLLNode<T> head;
 
     /**
-     * Forward iterator for a doubly linked list
+     * Reverse iterator for a doubly linked list
      * with sentinel nodes head and tail
      * 
      * @param head
      * @param tail
      */
-    public DLLForwardIterator(DLLNode<T> head, DLLNode<T> tail) {
-        curr = head.next;
-        this.tail = tail;
+    public DLLReverseIterator(DLLNode<T> head, DLLNode<T> tail) {
+        curr = tail.prev;
+        this.head = head;
     }
 
     @Override
     public boolean hasNext() {
-        return curr != tail;
+        return curr != head;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class DLLForwardIterator<T> implements Iterator<T> {
         if (!hasNext())
             throw new NoSuchElementException();
         T t = curr.data;
-        curr = curr.next;
+        curr = curr.prev;
         return t;
     }
 

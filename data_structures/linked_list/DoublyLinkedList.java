@@ -2,7 +2,7 @@ package data_structures.linked_list;
 
 import java.util.Iterator;
 
-import data_structures.iterators.linked_list.DLLForwardIterator;
+import data_structures.linked_list.iterators.DLLForwardIterator;
 import data_structures.nodes.linked_list.DLLNode;
 
 public class DoublyLinkedList<T> implements Iterable<T> {

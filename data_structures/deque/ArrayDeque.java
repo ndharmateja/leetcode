@@ -3,7 +3,7 @@ package data_structures.deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import data_structures.iterators.array.ForwardArrayIterator;
+import data_structures.array.iterators.ForwardArrayIterator;
 
 @SuppressWarnings("unchecked")
 public class ArrayDeque<T> implements Deque<T> {

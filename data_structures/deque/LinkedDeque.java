@@ -3,7 +3,7 @@ package data_structures.deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import data_structures.iterators.linked_list.DLLForwardIterator;
+import data_structures.linked_list.iterators.DLLForwardIterator;
 import data_structures.nodes.linked_list.DLLNode;
 
 public class LinkedDeque<T> implements Deque<T> {

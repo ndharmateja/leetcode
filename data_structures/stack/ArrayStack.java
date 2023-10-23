@@ -3,7 +3,7 @@ package data_structures.stack;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import data_structures.iterators.array.ReverseArrayIterator;
+import data_structures.array.iterators.ReverseArrayIterator;
 
 @SuppressWarnings("unchecked")
 public class ArrayStack<T> implements Stack<T> {
