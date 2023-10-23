@@ -34,6 +34,20 @@ public class DynamicArray<T> implements Iterable<T> {
         array[size++] = t;
     }
 
+    public void add(int index, T t) {
+        if (index < 0 || index > size)
+            throw new IndexOutOfBoundsException();
+
+        if (size == array.length)
+            resize(array.length * 2);
+
+        for (int i = size; i > index; i--) {
+            array[i] = array[i - 1];
+        }
+        array[index] = t;
+        size++;
+    }
+
     private void resize(int capacity) {
         T[] copy = (T[]) new Object[capacity];
         for (int i = 0; i < size; i++) {
@@ -42,10 +56,11 @@ public class DynamicArray<T> implements Iterable<T> {
         array = copy;
     }
 
-    public void remove(int index) {
+    public T remove(int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
 
+        T toRemove = array[index];
         for (int i = index; i < size - 1; i++) {
             array[i] = array[i + 1];
         }
@@ -55,6 +70,8 @@ public class DynamicArray<T> implements Iterable<T> {
         if (size > 0 && size == array.length / 4) {
             resize(array.length / 2);
         }
+
+        return toRemove;
     }
 
     @Override
@@ -84,34 +101,5 @@ public class DynamicArray<T> implements Iterable<T> {
         builder.setLength(builder.length() - 2);
         builder.append("}");
         return builder.toString();
-    }
-
-    public static void main(String[] args) {
-        DynamicArray<Integer> array = new DynamicArray<>();
-        System.out.println(array);
-
-        for (int i = 0; i < 10; i++) {
-            array.add(i);
-            System.out.println(array);
-            System.out.println(array.size());
-        }
-
-        array.remove(2);
-        System.out.println(array);
-        System.out.println(array.size());
-        array.set(2, 33);
-        System.out.println(array);
-        System.out.println(array.size());
-
-        System.out.println();
-
-        for (Integer item : array) {
-            System.out.println(item);
-        }
-
-        for (int i = 0; i < 9; i++) {
-            array.remove(0);
-            System.out.println(array);
-        }
     }
 }
