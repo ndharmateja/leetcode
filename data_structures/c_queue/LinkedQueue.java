@@ -30,6 +30,7 @@ public class LinkedQueue<T> implements Queue<T> {
             throw new NoSuchElementException();
         }
 
+        size--;
         T t = head.data;
         head = head.next;
         if (isEmpty())
