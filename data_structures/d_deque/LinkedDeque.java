@@ -109,6 +109,6 @@ public class LinkedDeque<T> implements Deque<T> {
 
     // return an iterator over items in order from front to back
     public Iterator<T> iterator() {
-        return new DLLForwardIterator<>(head);
+        return new DLLForwardIterator<>(head, tail);
     }
 }

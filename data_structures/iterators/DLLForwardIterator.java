@@ -7,14 +7,23 @@ import data_structures.nodes.linked_list.DLLNode;
 
 public class DLLForwardIterator<T> implements Iterator<T> {
     private DLLNode<T> curr;
+    private DLLNode<T> tail;
 
-    public DLLForwardIterator(DLLNode<T> head) {
-        curr = head;
+    /**
+     * Forward iterator for a doubly linked list
+     * with sentinel nodes head and tail
+     * 
+     * @param head
+     * @param tail
+     */
+    public DLLForwardIterator(DLLNode<T> head, DLLNode<T> tail) {
+        curr = head.next;
+        this.tail = tail;
     }
 
     @Override
     public boolean hasNext() {
-        return curr != null;
+        return curr != tail;
     }
 
     @Override
