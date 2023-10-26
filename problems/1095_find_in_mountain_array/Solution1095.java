@@ -28,15 +28,6 @@ public class Solution1095 {
             return -1;
         int mid = (lo + hi) / 2;
 
-        // If at right end of array, go left and vice versa
-        // We need this edge cases because we are comparing a[mid-1], a[mid], a[mid+1]
-        // (we can instead also use, say for going right bsmi(a, mid, hi) instead of
-        // bsmi(a, mid+1, hi))
-        if (mid == a.length() - 1)
-            return binarySearchMaxIndex(a, lo, mid - 1);
-        if (mid == 0)
-            return binarySearchMaxIndex(a, mid + 1, hi);
-
         // If a[mid-1], a[mid] and a[mid+1] are in decreasing order, go right and vice
         // versa
         if (a.get(mid - 1) > a.get(mid) && a.get(mid) > a.get(mid + 1))
@@ -75,7 +66,8 @@ public class Solution1095 {
         int n = a.length();
 
         // Find the index of the peak
-        int maxIndex = binarySearchMaxIndex(a, 0, n - 1);
+        // peak can only exist in [1, n-2]
+        int maxIndex = binarySearchMaxIndex(a, 1, n - 2);
         if (a.get(maxIndex) == target)
             return maxIndex;
 
