@@ -1,4 +1,4 @@
-package data_structures.nodes.linked_list;
+package data_structures.linked_list.nodes;
 
 public class SLLNode<T> {
     public T data;

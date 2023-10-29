@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import data_structures.linked_list.iterators.DLLForwardIterator;
-import data_structures.nodes.linked_list.DLLNode;
+import data_structures.linked_list.nodes.DLLNode;
 
 public class LinkedDeque<T> implements Deque<T> {
     // sentinel nodes head and tail

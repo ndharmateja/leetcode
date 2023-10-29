@@ -3,7 +3,7 @@ package data_structures.linked_list.iterators;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import data_structures.nodes.linked_list.DLLNode;
+import data_structures.linked_list.nodes.DLLNode;
 
 public class DLLForwardIterator<T> implements Iterator<T> {
     private DLLNode<T> curr;

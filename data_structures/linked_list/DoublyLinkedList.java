@@ -3,7 +3,7 @@ package data_structures.linked_list;
 import java.util.Iterator;
 
 import data_structures.linked_list.iterators.DLLForwardIterator;
-import data_structures.nodes.linked_list.DLLNode;
+import data_structures.linked_list.nodes.DLLNode;
 
 public class DoublyLinkedList<T> implements Iterable<T> {
     // Sentinel nodes

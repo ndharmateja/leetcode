@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import data_structures.linked_list.iterators.SLLForwardIterator;
-import data_structures.nodes.linked_list.SLLNode;
+import data_structures.linked_list.nodes.SLLNode;
 
 public class LinkedStack<T> implements Stack<T> {
     private SLLNode<T> head;

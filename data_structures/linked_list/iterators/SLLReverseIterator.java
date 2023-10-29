@@ -3,7 +3,7 @@ package data_structures.linked_list.iterators;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import data_structures.nodes.linked_list.SLLNode;
+import data_structures.linked_list.nodes.SLLNode;
 
 public class SLLReverseIterator<T> implements Iterator<T> {
     private SLLNode<T> head;
