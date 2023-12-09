@@ -22,14 +22,6 @@ class Solution230 {
         }
     }
 
-    static class MutableInteger {
-        int value = 0;
-
-        public void increment() {
-            value++;
-        }
-    }
-
     /**
      * 
      * @param root
