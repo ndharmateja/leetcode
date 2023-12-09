@@ -34,6 +34,8 @@ class Solution230 {
 
     /**
      * Iterative inorder
+     * Stop when we visit k nodes
+     * 
      * Reference: https://youtu.be/5LUXSvjmGCw?t=165
      * 
      * @param root
