@@ -44,7 +44,8 @@ class Solution230 {
         TreeNode curr = root;
         Stack<TreeNode> stack = new Stack<>();
         int numVisited = 0;
-        while (true) {
+
+        while (curr != null || !stack.isEmpty()) {
             // If curr node is null
             // We pop node from stack (thereby increasing numVisited)
             // and then process its right child
@@ -68,6 +69,9 @@ class Solution230 {
                 curr = curr.left;
             }
         }
+
+        // We will reach here in case k <= 0 or k > size of tree
+        return -1;
     }
 
     /**
