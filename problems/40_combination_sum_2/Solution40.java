@@ -1,10 +1,18 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 class Solution40 {
     private void backtrack(List<List<Integer>> output, List<Integer> currList, int[] nums, int maxIndex, int currSum,
-            int target) {
+            int target, Set<String> doneSet) {
+        // TODO: Add comments and improve time
+        if (doneSet.contains(currList.toString()))
+            return;
+
+        doneSet.add(currList.toString());
+
         // since only positive numbers are involved
         // once curr sum exceeds target we don't have to look along
         // this path anymore
@@ -35,21 +43,22 @@ class Solution40 {
         for (int i = maxIndex + 1; i < nums.length; i++) {
             int num = nums[i];
             currList.add(num);
-            backtrack(output, currList, nums, i, currSum + num, target);
+            backtrack(output, currList, nums, i, currSum + num, target, doneSet);
             currList.remove(currList.size() - 1);
         }
+
     }
 
-    public List<List<Integer>> combinationSum(int[] nums, int target) {
+    public List<List<Integer>> combinationSum2(int[] nums, int target) {
         // Sort the nums array - not necessary if nums is already in sorted order
         Arrays.sort(nums);
 
         List<List<Integer>> output = new ArrayList<>();
-        backtrack(output, new ArrayList<>(), nums, -1, 0, target);
+        backtrack(output, new ArrayList<>(), nums, -1, 0, target, new HashSet<>());
         return output;
     }
 
     public static void main(String[] args) {
-        System.out.println(new Solution40().combinationSum(new int[] { 10, 1, 2, 7, 6, 1, 5 }, 8));
+        System.out.println(new Solution40().combinationSum2(new int[] { 10, 1, 2, 7, 6, 1, 5 }, 8));
     }
 }
