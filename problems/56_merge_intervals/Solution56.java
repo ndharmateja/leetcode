@@ -2,6 +2,14 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 public class Solution56 {
+    private boolean hasIntersection(int[] currMerged, int[] currInterval) {
+        return currInterval[0] <= currMerged[1];
+    }
+
+    private void merge(int[] currMerged, int[] currInterval) {
+        currMerged[1] = Integer.max(currMerged[1], currInterval[1]);
+    }
+
     public int[][] merge(int[][] intervals) {
         // Edge case - only one interval
         // we return intervals itself
@@ -19,9 +27,9 @@ public class Solution56 {
         while (!pq.isEmpty()) {
             int[] currInterval = pq.poll();
             // If currInterval has an intersection with currMerged
-            // merge them and store in currInterval
-            if (currInterval[0] <= currMerged[1])
-                currMerged[1] = Integer.max(currMerged[1], currInterval[1]);
+            // merge them and store in currMerged
+            if (hasIntersection(currMerged, currInterval))
+                merge(currMerged, currInterval);
 
             // If no intersection
             // add the currMerged to the mergedIntervals list
