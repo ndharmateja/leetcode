@@ -1,39 +1,37 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class Solution56 {
     public int[][] merge(int[][] intervals) {
-        ArrayList<int[]> mergedList = new ArrayList<>();
-        Arrays.sort(intervals, new Comparator<int[]>() {
-            public int compare(int[] o1, int[] o2) {
-                return o1[0] - o2[0];
-            }
-        });
+        // Priority queue so that we get intervals in increasing order
+        // of starts of intervals
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+        for (int[] interval : intervals)
+            pq.add(interval);
 
-        int[] currInterval = intervals[0];
-        for (int i = 0; i < intervals.length; i++) {
-            int[] interval = intervals[i];
-            if (interval[0] <= currInterval[1])
-                currInterval[1] = Integer.max(currInterval[1], interval[1]);
+        ArrayList<int[]> mergedList = new ArrayList<>();
+        int[] currMerged = pq.peek();
+        while (!pq.isEmpty()) {
+            int[] currInterval = pq.poll();
+            // If currInterval has an intersection with currMerged
+            // merge them and store in currInterval
+            if (currInterval[0] <= currMerged[1])
+                currMerged[1] = Integer.max(currMerged[1], currInterval[1]);
+
+            // If no intersection
+            // add the currMerged to the mergedIntervals list
+            // and make the currInterval the currMerged
             else {
-                mergedList.add(currInterval);
-                currInterval = interval;
+                mergedList.add(currMerged);
+                currMerged = currInterval;
             }
-            if (i == intervals.length - 1)
-                mergedList.add(currInterval);
+
+            // If this is the last interval we are processing
+            // we add the currMerged to the mergedList
+            if (pq.isEmpty())
+                mergedList.add(currMerged);
         }
 
         return mergedList.toArray(new int[0][0]);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(Arrays.deepToString(
-                new Solution56().merge(new int[][] {
-                        { 1, 3 },
-                        { 15, 18 },
-                        { 2, 6 },
-                        { 8, 10 },
-                })));
     }
 }
