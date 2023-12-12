@@ -1,31 +1,31 @@
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 class Solution39 {
-    private void backtrack(Set<List<Integer>> output, int[] candidates, int target, int currSum,
-            List<Integer> currList) {
-        if (currSum > target) {
+    private void backtrack(List<List<Integer>> output, List<Integer> currList, int[] nums, int maxSoFar, int currSum,
+            int target) {
+        if (currSum > target)
             return;
-        }
         if (currSum == target) {
-            List<Integer> list = new ArrayList<>(currList);
-            Collections.sort(list);
-            output.add(list);
+            output.add(List.copyOf(currList));
             return;
         }
-        for (int candidate : candidates) {
-            currList.add(candidate);
-            backtrack(output, candidates, target, currSum + candidate, currList);
+        for (int num : nums) {
+            if (num < maxSoFar)
+                continue;
+            currList.add(num);
+            backtrack(output, currList, nums, num, currSum + num, target);
             currList.remove(currList.size() - 1);
         }
     }
 
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        Set<List<Integer>> output = new HashSet<>();
-        backtrack(output, candidates, target, target, new ArrayList<>());
-        return new ArrayList<>(output);
+    public List<List<Integer>> combinationSum(int[] nums, int target) {
+        List<List<Integer>> output = new ArrayList<>();
+        backtrack(output, new ArrayList<>(), nums, Integer.MIN_VALUE, 0, target);
+        return output;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new Solution39().combinationSum(new int[] { 2, 3, 6, 7 }, 7));
     }
 }
