@@ -20,17 +20,12 @@ class Solution39 {
 
         // Since we want only unique combinations
         // we don't want to get both [2, 2, 3] and [2, 3, 2] for sum 7
-        // So we always get combinations in ascending order
-        // Initially we sort nums to make it easier to do that
+        // So we always get combinations in ascending order of indexes in nums array
         // In every call of backtrack, we have a maxIndex which is the max index
         // of any number used in the combination so far
-        // so we can only look for numbers at >= maxIndex because new numbers
-        // in the combination can only be >= max value in the curr list
-        //
-        // We could have also stored the maxSoFar int value
-        // for each call and loop through all the nums in nums array
-        // and skip smaller numbers than maxSoFar
-        // We can have a shorter for loop using maxIndex
+        // so we can only look for numbers at >= maxIndex
+        // since we only use ascending order of indexes (from original array)
+        // for unique combinations
         for (int i = maxIndex; i < nums.length; i++) {
             int num = nums[i];
             currList.add(num);
@@ -40,9 +35,6 @@ class Solution39 {
     }
 
     public List<List<Integer>> combinationSum(int[] nums, int target) {
-        // Sort the nums array - not necessary if nums is already in sorted order
-        // Arrays.sort(nums);
-
         List<List<Integer>> output = new ArrayList<>();
         backtrack(output, new ArrayList<>(), nums, 0, 0, target);
         return output;
