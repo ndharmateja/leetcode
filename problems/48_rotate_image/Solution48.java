@@ -70,7 +70,8 @@ public class Solution48 {
     public void rotate(int[][] matrix) {
         int n = matrix.length;
         for (int r = 0; r <= n / 2; r++) {
-            for (int k = 0; k < n - 2 * r - 1; k++) {
+            int innerSquareSize = n - 2 * r;
+            for (int k = 0; k < innerSquareSize - 1; k++) {
                 oneCyclicRotation(matrix, r, k, n);
             }
         }
