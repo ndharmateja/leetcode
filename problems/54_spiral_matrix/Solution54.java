@@ -16,6 +16,33 @@ public class Solution54 {
         //
         // The remaining valid rectangle (or square) keeps shrinking
         // as the limits close on each other
+        //
+        // Initial rectangle is
+        // a b c d
+        // e f g h
+        // i j k l
+        //
+        // After adding first row, valid rectangle is
+        // e f g h
+        // i j k l
+        // Output list is: [a, b, c, d]
+        //
+        // After adding last col, valid rectangle is
+        // e f g
+        // i j k
+        // Output list is: [a, b, c, d, h, l]
+        //
+        // After adding last row, valid rectangle is
+        // e f g
+        // Output list is: [a, b, c, d, h, l, k, j, i]
+        //
+        // After adding first col, valid rectangle is
+        // f g
+        // Output list is: [a, b, c, d, h, l, k, j, i, e]
+        //
+        // After adding first row, valid rectangle is
+        // <empty>
+        // Output list is: [a, b, c, d, h, l, k, j, i, e, f, g]
         int rLo = 0;
         int rHi = m - 1;
         int cLo = 0;
