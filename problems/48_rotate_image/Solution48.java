@@ -62,6 +62,11 @@ public class Solution48 {
         matrix[r + k][n - r - 1] = x;
     }
 
+    /**
+     * O(n*n) time and O(1) space complexity
+     * 
+     * @param matrix
+     */
     public void rotate(int[][] matrix) {
         int n = matrix.length;
         for (int r = 0; r <= n / 2; r++) {
