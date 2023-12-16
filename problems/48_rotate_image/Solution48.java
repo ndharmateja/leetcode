@@ -1,4 +1,4 @@
-class Solution48 {
+public class Solution48 {
     /**
      * Eg:
      * For r = 0, k = 1 the elements in # will be cyclically
