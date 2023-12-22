@@ -3,7 +3,7 @@ import java.util.List;
 
 public class Solution57 {
     private boolean hasIntersection(int[] interval1, int[] interval2) {
-        // Intervals are not intersecting if start of interval is greater than
+        // Intervals are not intersecting if start of one interval is greater than
         // the end of another
         int start1 = interval1[0];
         int end1 = interval1[1];
