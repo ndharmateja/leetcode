@@ -3,6 +3,7 @@ public class Solution221 {
         return Math.min(Math.min(a, b), c);
     }
 
+    // O(n^2) time and O(n^2) space solution
     public int maximalSquare(char[][] a) {
         // Base case
         int m = a.length;
