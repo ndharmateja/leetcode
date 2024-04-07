@@ -48,7 +48,7 @@ class Solution23 {
     }
 
     // O(nk log(nk)) time
-    // Reference: https://www.youtube.com/watch?v=kpCesr9VXDA
+    // Reference: https://www.youtube.com/watch?v=kpCesr9VXDA&t=659
     // Idea: Use min-heap
     private ListNode solution4(ListNode[] lists) {
         return null;
