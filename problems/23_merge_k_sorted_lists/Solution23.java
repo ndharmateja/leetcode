@@ -88,7 +88,8 @@ class Solution23 {
         return dummy.next;
     }
 
-    // O(kn) time if each list is of size 'n'
+    // O(n*k^2) time because the length of the resulting list keeps on increasing
+    // total time = 2k + 3k + ... + nk = n * k * (k - 1) / 2
     // Merge two lists at a time
     // and return the final merged list
     private ListNode solution1(ListNode[] lists) {
