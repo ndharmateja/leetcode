@@ -37,8 +37,7 @@ class Solution242 {
         return counts;
     }
 
-    // O(n) time
-    // O(n) extra space
+    // O(n) time and O(n) space
     private boolean solution2(String s, String t) {
         return getCharCounts(s).equals(getCharCounts(t));
     }
