@@ -12,7 +12,7 @@ import java.util.List;
 // characters to form a word (doesn't matter even if the words themselves
 // contain delimiters as we have the numChars in the word)
 public class Solution271 {
-    private final static char delimiter = '#';
+    private final static char DELIMITER = '#';
 
     /*
      * @param strs: a list of strings
