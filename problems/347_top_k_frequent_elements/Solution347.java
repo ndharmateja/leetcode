@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
 
+@SuppressWarnings("unused")
 class Solution347 {
 
     // O(n log n) solution
@@ -17,7 +19,6 @@ class Solution347 {
             counts.put(num, counts.getOrDefault(num, 0) + 1);
 
         // 2. Sort the elements based on counts
-        // improvement: Build heap from the counts and get top k - runs in O(k log n)
         List<Entry<Integer, Integer>> entries = new ArrayList<>(counts.entrySet());
         Collections.sort(entries, new Comparator<Entry<Integer, Integer>>() {
             @Override
@@ -73,7 +74,39 @@ class Solution347 {
         return output;
     }
 
+    // O(n log n) time complexity
+    // O(n + k log n) if build heap is used
+    private int[] solution3(int[] nums, int k) {
+        // 1. Get counts of all elements
+        Map<Integer, Integer> counts = new HashMap<>();
+        for (int num : nums)
+            counts.put(num, counts.getOrDefault(num, 0) + 1);
+
+        // 2. Build heap from the counts - runs in O(n log n)
+        // and get top k - runs in O(k log n)
+        // Improvement: Instead of a priority queue use a build heap for O(n) time
+        List<Entry<Integer, Integer>> entries = new ArrayList<>(counts.entrySet());
+        PriorityQueue<Entry<Integer, Integer>> pq = new PriorityQueue<>(new Comparator<Entry<Integer, Integer>>() {
+            @Override
+            public int compare(Entry<Integer, Integer> e1, Entry<Integer, Integer> e2) {
+                return -(e1.getValue() - e2.getValue());
+            }
+        });
+        for (Entry<Integer, Integer> entry : counts.entrySet()) {
+            pq.add(entry);
+        }
+
+        // 3. get top k elements
+        int[] output = new int[k];
+        int i = 0;
+        for (int j = 0; j < k; j++) {
+            output[i++] = pq.poll().getKey();
+        }
+
+        return output;
+    }
+
     public int[] topKFrequent(int[] nums, int k) {
-        return solution2(nums, k);
+        return solution3(nums, k);
     }
 }
