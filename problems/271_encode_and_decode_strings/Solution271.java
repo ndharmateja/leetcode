@@ -20,15 +20,15 @@ public class Solution271 {
      * @return: encodes a list of strings to a single string.
      */
     public String encode(List<String> strs) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
         for (String str : strs) {
-            builder.append(str.length());
-            builder.append(delimiter);
-            builder.append(str);
+            sb.append(str.length());
+            sb.append(DELIMITER);
+            sb.append(str);
         }
 
-        return builder.toString();
+        return sb.toString();
     }
 
     /*
@@ -37,50 +37,50 @@ public class Solution271 {
      * @return: dcodes a single string to a list of strings
      */
     public List<String> decode(String str) {
-        List<String> list = new ArrayList<>();
+        List<String> output = new ArrayList<>();
 
-        boolean isNewWord = true;
-        int numChars = -1;
-        StringBuilder numCharsBuilder = new StringBuilder();
-        StringBuilder currWordBuilder = new StringBuilder();
-
-        // Iterate over the chars
         int i = 0;
+        StringBuilder sb = new StringBuilder();
+        int currLength = 0;
         while (i < str.length()) {
-            char ch = str.charAt(i);
-
-            // if new word and char is digit
-            // append digit to numCharsBuilder
-            if (isNewWord && Character.isDigit(ch)) {
-                numCharsBuilder.append(ch);
-                i++;
+            // As soon as we reach the delimiter
+            // we parse the next currLength chars and add it to our output
+            // and reset currLength and stringBuilder
+            char c = str.charAt(i++);
+            if (c == DELIMITER) {
+                for (int j = 0; j < currLength; j++) {
+                    sb.append(str.charAt(i++));
+                }
+                output.add(sb.toString());
+                sb.setLength(0);
+                currLength = 0;
                 continue;
             }
 
-            // If new word and char is delimiter
-            // get numChars from numCharsBuilder
-            // make isNewWord false and reset numCharsBuilder
-            if (isNewWord && ch == delimiter) {
-                numChars = Integer.parseInt(numCharsBuilder.toString());
-                numCharsBuilder.setLength(0);
-                isNewWord = false;
-                i++;
-                continue;
-            }
-
-            // Read 'numChar' number of characters and add word to list
-            for (int j = 0; j < numChars; j++) {
-                currWordBuilder.append(str.charAt(i + j));
-            }
-
-            // Add word to list and reset string builder
-            i += numChars;
-            list.add(currWordBuilder.toString());
-            currWordBuilder.setLength(0);
-            isNewWord = true;
+            // If it is not a delimiter
+            // it means this is a digit and part of the number
+            // wo add the digit at the end of 'currLength'
+            int digit = c - '0';
+            currLength = currLength * 10 + digit;
         }
 
-        return list;
+        return output;
+    }
+
+    public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+        list.add("");
+        // list.add("neet");
+        // list.add("code");
+        // list.add("love");
+        // list.add("you");
+
+        Solution271 s = new Solution271();
+        String encoded = s.encode(list);
+        System.out.printf("'%s'\n", encoded);
+        List<String> decoded = s.decode(encoded);
+        System.out.println(decoded.size());
+        System.out.println(decoded);
     }
 
 }
