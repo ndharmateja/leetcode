@@ -1,3 +1,4 @@
+@SuppressWarnings("unused")
 public class Solution21 {
     private static class ListNode {
         int val;
@@ -44,11 +45,5 @@ public class Solution21 {
             curr = addNext(curr, curr2);
 
         return dummy.next;
-    }
-
-    public static void main(String[] args) {
-        ListNode list1 = new ListNode(-9, new ListNode(3));
-        ListNode list2 = new ListNode(5, new ListNode(7));
-        ListNode merged = new Solution21().mergeTwoLists(list1, list2);
     }
 }
