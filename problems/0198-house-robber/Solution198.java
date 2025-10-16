@@ -110,7 +110,7 @@ class Solution198 {
     // O(n) time and O(n) space
     // O(n) space because the recursion stack size can go up to n
     private int solution5(int[] nums) {
-        return solution5(nums, nums.length, new HashMap<>());
+        return solution5(nums, nums.length - 1, new HashMap<>());
     }
 
     // Recursive function for top down DP approach
