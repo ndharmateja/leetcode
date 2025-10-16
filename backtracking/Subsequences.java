@@ -70,6 +70,11 @@ public class Subsequences {
     // we only need to keep track of the sequence sum and pass it across
     // the recursive calls
     private static int numSubsequencesWithTargetSum(List<Integer> list, int i, int sequenceSum, int targetSum) {
+        // Assuming only non negative integers we can return once the sequence sum
+        // exceeds the target sum
+        if (sequenceSum > targetSum)
+            return 0;
+
         // When we reach the end of the list
         // that is when the sequence is completed
         // So we print it if the sum of the sequence matches the target
