@@ -11,9 +11,7 @@ class Solution:
             # If we reach the end with sum == target
             # then we return 1 as this is one such way
             if i == n:
-                if sum == target:
-                    return 1
-                return 0
+                return 1 if sum == target else 0
 
             # If the result is already computed and stored, return it
             if (i, sum) in memo:
