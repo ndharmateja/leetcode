@@ -84,6 +84,7 @@ public class Solution1498 {
         return totalSubsequences;
     }
 
+    // TODO: Both solution 1 and 2 are exceeding time limit
     public int numSubseq(int[] nums, int targetSum) {
         return solution2(nums, targetSum);
     }
