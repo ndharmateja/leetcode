@@ -41,7 +41,10 @@ class Solution215 {
     // improvement: many duplicates => we need to do partitioning differently
     private int quickSelect(int[] nums, int k, int low, int high, Random random) {
         // Select random pivot and swap it with the 'high' index
-        swap(nums, random.nextInt(low, high + 1), high);
+        // random.nextInt(high - low + 1) generates a random number in
+        // [0, high - low + 1) or [0, high - low]
+        // random.nextInt(high - low + 1) + low generates a random number in [low, high]
+        swap(nums, random.nextInt(high - low + 1) + low, high);
 
         // Partitioning nums[low, high] - same like quick sort
         int p = low;
