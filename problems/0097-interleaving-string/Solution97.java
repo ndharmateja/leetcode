@@ -90,6 +90,7 @@ public class Solution97 {
         // If the s1[i] matches the s3[i+j]
         // we can remove it and check the interleaving between s1[i+1..m-1] and
         // s2[j..n-1] to form s3[i+j+1..m+n-1]
+        // and if that returns true, we know the answer is true
         if (i < this.m && s1.charAt(i) == s3.charAt(i + j) && solution2(i + 1, j, memo)) {
             memo.put(index, true);
             return true;
@@ -98,6 +99,7 @@ public class Solution97 {
         // If the s2[j] matches the s3[i+j]
         // we can remove it and check the interleaving between s1[i..m-1] and
         // s2[j+1..n-1] to form s3[i+j+1..m+n-1]
+        // and if that returns true, we know the answer is true
         if (j < this.n && s2.charAt(j) == s3.charAt(i + j) && solution2(i, j + 1, memo)) {
             memo.put(index, true);
             return true;
