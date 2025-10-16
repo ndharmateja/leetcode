@@ -61,9 +61,11 @@ public class Subsequences {
         printAllSubsequencesWithTargetSum(list, 0, new ArrayList<>(), 0, targetSum);
     }
 
-    private static int numSubsequencesWithTargetSum(List<Integer> list, int i, List<Integer> sequence,
-            int sequenceSum,
-            int targetSum) {
+    // => For this function we don't need the list that is tracking the sequence
+    // As we are only interested in the target sum and the count of the sequences
+    // we only need to keep track of the sequence sum and pass it across
+    // the recursive calls
+    private static int numSubsequencesWithTargetSum(List<Integer> list, int i, int sequenceSum, int targetSum) {
         // When we reach the end of the list
         // that is when the sequence is completed
         // So we print it if the sum of the sequence matches the target
@@ -80,20 +82,18 @@ public class Subsequences {
         // 1. Choose the element at 'i' and run it on the next index and
         // then remove the added element after the recursive call is done
         int result = 0;
-        sequence.add(list.get(i));
-        result += numSubsequencesWithTargetSum(list, i + 1, sequence, sequenceSum + list.get(i), targetSum);
-        sequence.remove(sequence.size() - 1);
+        result += numSubsequencesWithTargetSum(list, i + 1, sequenceSum + list.get(i), targetSum);
 
         // 2. Do not choose the element at 'i' and run it on the next
         // index recursively
-        result += numSubsequencesWithTargetSum(list, i + 1, sequence, sequenceSum, targetSum);
+        result += numSubsequencesWithTargetSum(list, i + 1, sequenceSum, targetSum);
 
         // Return the count of subsequences with a matching target sum
         return result;
     }
 
     private static int numSubsequencesWithTargetSum(List<Integer> list, int targetSum) {
-        return numSubsequencesWithTargetSum(list, 0, new ArrayList<>(), 0, targetSum);
+        return numSubsequencesWithTargetSum(list, 0, 0, targetSum);
     }
 
     private static boolean printAnySubsequencesWithTargetSum(List<Integer> list, int i, List<Integer> sequence,
