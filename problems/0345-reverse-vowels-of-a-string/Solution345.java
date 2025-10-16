@@ -1,11 +1,17 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 class Solution345 {
     public String reverseVowels(String s) {
         List<Character> vowels = new ArrayList<>();
-        Set<Character> vowelsSet = Set.of('a', 'e', 'i', 'o', 'u');
+        Set<Character> vowelsSet = new HashSet<>();
+        vowelsSet.add('a');
+        vowelsSet.add('e');
+        vowelsSet.add('i');
+        vowelsSet.add('o');
+        vowelsSet.add('u');
 
         for (char c : s.toCharArray()) {
             if (vowelsSet.contains(Character.toLowerCase(c)))

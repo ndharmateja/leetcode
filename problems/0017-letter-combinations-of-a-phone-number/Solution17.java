@@ -1,17 +1,22 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 class Solution17 {
-    private static Map<Character, String> map = Map.of(
-            '2', "abc",
-            '3', "def",
-            '4', "ghi",
-            '5', "jkl",
-            '6', "mno",
-            '7', "pqrs",
-            '8', "tuv",
-            '9', "wxyz");
+    private static Map<Character, String> map = new HashMap<>();
+
+    // Static initialization block
+    static {
+        map.put('2', "abc");
+        map.put('3', "def");
+        map.put('4', "ghi");
+        map.put('5', "jkl");
+        map.put('6', "mno");
+        map.put('7', "pqrs");
+        map.put('8', "tuv");
+        map.put('9', "wxyz");
+    }
 
     private void backtrack(StringBuilder builder, String digits, List<String> output) {
         // if length of builder is same as digits
