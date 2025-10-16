@@ -23,7 +23,7 @@ class Solution40 {
         // we found a combination
         // so we add it to the output and return
         if (currSum == target) {
-            output.add(List.copyOf(currList));
+            output.add(new ArrayList<>(currList));
             return;
         }
 
