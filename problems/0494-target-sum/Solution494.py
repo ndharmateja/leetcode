@@ -6,39 +6,38 @@ class Solution:
         n = len(nums)
         memo = {}
 
-        def dfs(i, target2):
+        def dfs(i, sum):
             # Base case
-            # If we reach the end with a target2 of 0, then
-            # it means that we were able to achieve the original target
-            # so we return 1 as this is one such way
+            # If we reach the end with sum == target
+            # then we return 1 as this is one such way
             if i == n:
-                if target2 == 0:
+                if sum == target:
                     return 1
                 return 0
 
             # If the result is already computed and stored, return it
-            if (i, target2) in memo:
-                return memo[(i, target2)]
+            if (i, sum) in memo:
+                return memo[(i, sum)]
 
             # We have 2 choices for each number
             # We either use the number with + sign or - sign
 
-            # If we use it with + sign, then the target2 reduces by the current
+            # If we use it with + sign, then the sum increases by the current
             # number, so we see the number of solutions for nums[i + 1:] with
-            # target2 as target2 - nums[i]
-            result_positive_sign = dfs(i + 1, target2 - nums[i])
+            # sum as sum + nums[i]
+            result_positive_sign = dfs(i + 1, sum + nums[i])
 
-            # If we use it with - sign, then the target2 increases by the current
+            # If we use it with - sign, then the sum decreases by the current
             # number, so we see the number of solutions for nums[i + 1:] with
-            # target2 as target2 + nums[i]
-            result_negative_sign = dfs(i + 1, target2 + nums[i])
+            # sum as sum - nums[i]
+            result_negative_sign = dfs(i + 1, sum - nums[i])
 
             # Store the result and return the result
             result = result_positive_sign + result_negative_sign
-            memo[(i, target2)] = result
+            memo[(i, sum)] = result
             return result
 
-        return dfs(0, target)
+        return dfs(0, 0)
 
 
 s = Solution()
