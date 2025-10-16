@@ -7,7 +7,7 @@ public class Solution78 {
     private void backtrack(List<List<Integer>> output, int[] nums, Set<Integer> addedSoFar, int maxAddedSoFar,
             List<Integer> currList) {
         // Add the current list to the output
-        output.add(List.copyOf(currList));
+        output.add(new ArrayList<>(currList));
 
         // If max size is reached then return
         if (currList.size() == nums.length)
