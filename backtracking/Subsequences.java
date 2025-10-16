@@ -2,6 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Subsequences {
+    // O(2^n) time and O(n) space
+    // where n is the length of the string
+    // The space complexity is O(n) as we are using a list to track the sequence
+    // and the stack at any point has 'n' frames during the deepest recursion call
     private static void printAllSubsequences(String string, int i, List<Character> sequence) {
         // When we reach the end of the list
         // that is when the sequence is completed
