@@ -3,7 +3,7 @@ class Solution1662 {
         StringBuilder builder1 = getStringBuilder(words1);
         StringBuilder builder2 = getStringBuilder(words2);
 
-        return builder1.compareTo(builder2) == 0;
+        return builder1.toString().equals(builder2.toString());
     }
 
     private StringBuilder getStringBuilder(String[] words) {

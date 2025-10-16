@@ -13,6 +13,6 @@ class Solution844 {
     }
 
     public boolean backspaceCompare(String s, String t) {
-        return process(s).compareTo(process(t)) == 0;
+        return process(s).toString().equals(process(t).toString());
     }
 }
