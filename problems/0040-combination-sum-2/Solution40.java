@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 class Solution40 {
     private void backtrack(List<List<Integer>> output, List<Integer> currList, int[] nums, int maxIndex, int currSum,
             int target, Set<String> doneSet) {
@@ -49,7 +50,7 @@ class Solution40 {
 
     }
 
-    public List<List<Integer>> combinationSum2(int[] nums, int target) {
+    private List<List<Integer>> solution1(int[] nums, int target) {
         // Sort the nums array - not necessary if nums is already in sorted order
         Arrays.sort(nums);
 
@@ -58,7 +59,48 @@ class Solution40 {
         return output;
     }
 
-    public static void main(String[] args) {
-        System.out.println(new Solution40().combinationSum2(new int[] { 10, 1, 2, 7, 6, 1, 5 }, 8));
+    private void dfs(int[] nums, int target, Set<List<Integer>> set, int index, List<Integer> currList, int currSum) {
+        // If sum of the combination so far has already exceeded the target
+        // no point in exploring further as all the numbers are positive
+        if (currSum > target)
+            return;
+
+        // If we found a combination (a subsequence) that adds up to the target sum
+        // we add that list to the set
+        // Since the nums array is sorted, duplicate combinations will not be added
+        // more than once as they will be same because of the sorting
+        if (currSum == target) {
+            set.add(new ArrayList<>(currList));
+            return;
+        }
+
+        // Base case
+        // If we reach the end of the list, we can return
+        if (index == nums.length)
+            return;
+
+        // Explore further by choosing current element
+        // We use 'index + 1' because we are only choosing each element only once
+        // unlike the combination sum 1 problem where we were allowed to choose
+        // each element more than once
+        // After the exploration is done, we remove the current element
+        // from the combination (subsequence)
+        currList.add(nums[index]);
+        dfs(nums, target, set, index + 1, currList, currSum + nums[index]);
+        currList.remove(currList.size() - 1);
+
+        // Backtrack by not choosing current element
+        dfs(nums, target, set, index + 1, currList, currSum);
+    }
+
+    private List<List<Integer>> solution2(int[] nums, int target) {
+        Arrays.sort(nums);
+        Set<List<Integer>> result = new HashSet<>();
+        dfs(nums, target, result, 0, new ArrayList<>(), 0);
+        return new ArrayList<>(result);
+    }
+
+    public List<List<Integer>> combinationSum2(int[] nums, int target) {
+        return solution2(nums, target);
     }
 }
