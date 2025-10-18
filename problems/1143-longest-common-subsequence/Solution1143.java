@@ -1,5 +1,13 @@
+import java.util.HashMap;
+
 @SuppressWarnings("unused")
 class Solution1143 {
+    private String s1;
+    private String s2;
+    private int m;
+    private int n;
+    private HashMap<Integer, Integer> memo;
+
     public int longestCommonSubsequence(String s1, String s2) {
         return solution1(s1, s2);
     }
@@ -52,12 +60,54 @@ class Solution1143 {
         return dp[0][0];
     }
 
+    // O(mn) time and O(mn) space (memo)
+    // Top down DP approach
+    // related to solution 1 (read and understand that thoroughly first)
+    private int solution2(String s1, String s2) {
+        this.s1 = s1;
+        this.s2 = s2;
+        this.m = s1.length();
+        this.n = s2.length();
+        this.memo = new HashMap<>();
+
+        return dfs(0, 0);
+    }
+
+    private int dfs(int i, int j) {
+        // Base cases
+        if (i == m || j == n)
+            return 0;
+
+        // If the memo already contains the solution, we return it
+        // Encode (i, j) into a unique 'index' using row-major order
+        // (0, 0) - 0, (0, 1) - 1, ..., (0, n) - n
+        // (1, 0) - n+1, (1, 2) - n+2, ..., (1, n) - (n+1)+1
+        // ...
+        // (m, 0) - m(n+1)+0, ..., (m, n) - m(n+1)+n
+        int index = getIndex(i, j);
+        if (memo.containsKey(index))
+            return memo.get(index);
+
+        // Compute and store the result in the memo
+        int result = s1.charAt(i) == s2.charAt(j)
+                ? 1 + dfs(i + 1, j + 1)
+                : max(dfs(i + 1, j), dfs(i, j + 1));
+        memo.put(index, result);
+
+        // Return the result
+        return result;
+    }
+
     private int max(int a, int b) {
         return a > b ? a : b;
     }
 
+    private int getIndex(int i, int j) {
+        return i * (n + 1) + j;
+    }
+
     public static void main(String[] args) {
         Solution1143 s = new Solution1143();
-        System.out.println(s.longestCommonSubsequence("ABCDE", "ACE"));
+        System.out.println(s.longestCommonSubsequence("ABCDEE", "ACE"));
     }
 }
