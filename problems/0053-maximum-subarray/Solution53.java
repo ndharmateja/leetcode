@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 @SuppressWarnings("unused")
 public class Solution53 {
     public int maxSubArray(int[] nums) {
@@ -80,6 +82,26 @@ public class Solution53 {
         }
         return maxSoFar;
 
+    }
+
+    // Top down DP version of solution 2 - read that first
+    private int solution4(int[] nums) {
+        // Create the memo and store the base case in it
+        HashMap<Integer, Integer> memo = new HashMap<>();
+        memo.put(0, nums[0]);
+
+        return dfs(nums, nums.length - 1, memo);
+    }
+
+    private int dfs(int[] nums, int i, HashMap<Integer, Integer> memo) {
+        if (memo.containsKey(i))
+            return memo.get(i);
+
+        int prevResult = dfs(nums, i - 1, memo);
+        int result = nums[i] + (prevResult < 0 ? 0 : prevResult);
+        memo.put(i, result);
+
+        return result;
     }
 
     // O(n logn) time and O(logn) space (max depth of the recursive stack) solution
