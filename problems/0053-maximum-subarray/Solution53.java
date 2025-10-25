@@ -81,4 +81,58 @@ public class Solution53 {
         return maxSoFar;
 
     }
+
+    // O(n logn) time and O(logn) space (max depth of the recursive stack) solution
+    // Recursive Divide and Conquer solution
+    // Recurrence relation for runtime:
+    // T(n) = 2T(n/2) + O(n)
+    // => O(n logn) running time using Master's theorem
+    public int solution4(int[] nums) {
+        return solution4(nums, 0, nums.length - 1);
+    }
+
+    // This function recursively computes the max subarray sum of the array 'nums'
+    // in the range of l to h (both inclusive)
+    private int solution4(int[] nums, int l, int h) {
+        if (l == h)
+            return nums[l];
+
+        int m = (l + h) / 2;
+        int maxLeftSubArraySum = solution4(nums, l, m);
+        int maxRightSubArraySum = solution4(nums, m + 1, h);
+        int maxCrossArraySum = maxSuffixSum(nums, l, m) + maxPrefixSum(nums, m + 1, h);
+
+        return max(maxLeftSubArraySum, maxRightSubArraySum, maxCrossArraySum);
+    }
+
+    private int max(int a, int b) {
+        return a > b ? a : b;
+    }
+
+    private int max(int a, int b, int c) {
+        return max(max(a, b), c);
+    }
+
+    private int maxSuffixSum(int[] nums, int l, int end) {
+        int maxSum = nums[end];
+        int currSum = nums[end];
+        for (int i = end - 1; i >= l; i--) {
+            currSum += nums[i];
+            if (currSum > maxSum)
+                maxSum = currSum;
+        }
+        return maxSum;
+    }
+
+    private int maxPrefixSum(int[] nums, int start, int h) {
+        int maxSum = nums[start];
+        int currSum = nums[start];
+        for (int i = start + 1; i <= h; i++) {
+            currSum += nums[i];
+            if (currSum > maxSum)
+                maxSum = currSum;
+        }
+        return maxSum;
+    }
+
 }
