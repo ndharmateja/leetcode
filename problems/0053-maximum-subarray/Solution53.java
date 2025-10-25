@@ -87,13 +87,13 @@ public class Solution53 {
     // Recurrence relation for runtime:
     // T(n) = 2T(n/2) + O(n)
     // => O(n logn) running time using Master's theorem
-    public int solution4(int[] nums) {
-        return solution4(nums, 0, nums.length - 1);
+    public int solution5(int[] nums) {
+        return solution5(nums, 0, nums.length - 1);
     }
 
     // This function recursively computes the max subarray sum of the array 'nums'
     // in the range of l to h (both inclusive)
-    private int solution4(int[] nums, int l, int h) {
+    private int solution5(int[] nums, int l, int h) {
         // Base case
         // If only one element, then max sum would be the element itself
         // as the subarray has to be non-empty according the definition provided
@@ -103,10 +103,10 @@ public class Solution53 {
         int m = (l + h) / 2;
 
         // Find the max sum of a subarray completely contained in the left half
-        int maxLeftSubArraySum = solution4(nums, l, m);
+        int maxLeftSubArraySum = solution5(nums, l, m);
 
         // Find the max sum of a subarray completely contained in the right half
-        int maxRightSubArraySum = solution4(nums, m + 1, h);
+        int maxRightSubArraySum = solution5(nums, m + 1, h);
 
         // Find the max subarray sum of a subarray that crosses both halves
         // That means that a part of this subarray would be the suffix of the left half
