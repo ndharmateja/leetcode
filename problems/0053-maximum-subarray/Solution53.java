@@ -90,7 +90,14 @@ public class Solution53 {
         HashMap<Integer, Integer> memo = new HashMap<>();
         memo.put(0, nums[0]);
 
-        return dfs(nums, nums.length - 1, memo);
+        dfs(nums, nums.length - 1, memo);
+
+        // Get the max subarray sum by iterating through all the values
+        // as the subarray can end at any index
+        int max = Integer.MIN_VALUE;
+        for (int value : memo.values())
+            max = value > max ? value : max;
+        return max;
     }
 
     private int dfs(int[] nums, int i, HashMap<Integer, Integer> memo) {
