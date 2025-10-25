@@ -94,14 +94,30 @@ public class Solution53 {
     // This function recursively computes the max subarray sum of the array 'nums'
     // in the range of l to h (both inclusive)
     private int solution4(int[] nums, int l, int h) {
+        // Base case
+        // If only one element, then max sum would be the element itself
+        // as the subarray has to be non-empty according the definition provided
+        // So we take the element even if it is negative
         if (l == h)
             return nums[l];
-
         int m = (l + h) / 2;
+
+        // Find the max sum of a subarray completely contained in the left half
         int maxLeftSubArraySum = solution4(nums, l, m);
+
+        // Find the max sum of a subarray completely contained in the right half
         int maxRightSubArraySum = solution4(nums, m + 1, h);
+
+        // Find the max subarray sum of a subarray that crosses both halves
+        // That means that a part of this subarray would be the suffix of the left half
+        // and the remaining part of this subarray would be the prefix of the right half
+        // To maximize the this sum, we maximize the suffix and the prefix
+        // So we take the max among all the suffixes from the left half
+        // and the max among all the prefixes from the right half
+        // and their sum would be the max sum of a subarray that crosses both halves
         int maxCrossArraySum = maxSuffixSum(nums, l, m) + maxPrefixSum(nums, m + 1, h);
 
+        // Take the max among these 3 sums
         return max(maxLeftSubArraySum, maxRightSubArraySum, maxCrossArraySum);
     }
 
@@ -134,5 +150,4 @@ public class Solution53 {
         }
         return maxSum;
     }
-
 }
