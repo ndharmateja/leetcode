@@ -17,12 +17,11 @@ public class Solution21 {
         }
     }
 
-    private static ListNode addNext(ListNode to, ListNode next) {
-        to.next = next;
-        return next;
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        return solution2(list1, list2);
     }
 
-    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+    private ListNode solution1(ListNode list1, ListNode list2) {
         ListNode dummy = new ListNode();
         ListNode curr = dummy;
         ListNode curr1 = list1;
@@ -45,5 +44,28 @@ public class Solution21 {
             curr = addNext(curr, curr2);
 
         return dummy.next;
+    }
+
+    private static ListNode addNext(ListNode to, ListNode next) {
+        to.next = next;
+        return next;
+    }
+
+    // Recursive solution
+    private ListNode solution2(ListNode list1, ListNode list2) {
+        if (list1 == null)
+            return list2;
+        if (list2 == null)
+            return list1;
+
+        ListNode head;
+        if (list1.val < list2.val) {
+            head = list1;
+            head.next = mergeTwoLists(list1.next, list2);
+        } else {
+            head = list2;
+            head.next = mergeTwoLists(list1, list2.next);
+        }
+        return head;
     }
 }
