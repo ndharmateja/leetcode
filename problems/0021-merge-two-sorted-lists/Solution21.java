@@ -23,25 +23,26 @@ public class Solution21 {
 
     private ListNode solution1(ListNode list1, ListNode list2) {
         ListNode dummy = new ListNode();
-        ListNode curr = dummy;
+        ListNode tail = dummy;
+
         ListNode curr1 = list1;
         ListNode curr2 = list2;
 
         while (curr1 != null && curr2 != null) {
             if (curr1.val < curr2.val) {
-                curr = addNext(curr, curr1);
+                tail = addNext(tail, curr1);
                 curr1 = curr1.next;
             } else {
-                curr = addNext(curr, curr2);
+                tail = addNext(tail, curr2);
                 curr2 = curr2.next;
             }
         }
 
         // Attach the remaining lists if not empty
         if (curr1 != null)
-            curr = addNext(curr, curr1);
+            tail = addNext(tail, curr1);
         if (curr2 != null)
-            curr = addNext(curr, curr2);
+            tail = addNext(tail, curr2);
 
         return dummy.next;
     }
