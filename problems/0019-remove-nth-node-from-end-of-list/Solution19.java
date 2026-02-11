@@ -81,27 +81,52 @@ class Solution19 {
         return head;
     }
 
-    private ListNode solution3(ListNode head, int n) {
-        ListNode curr = head;
+    private static int getSize(ListNode head) {
         int size = 0;
-
-        while (curr != null) {
-            curr = curr.next;
+        while (head != null) {
             size++;
+            head = head.next;
         }
+        return size;
+    }
 
-        if (size == n) {
+    // Deletes the node at index 'index' and returns the new head
+    // Assumes that index is valid => 0 <= index <= size-1
+    // Assumes that head is not null
+    private static ListNode deleteNode(ListNode head, int index) {
+        // If head needs to be deleted
+        if (index == 0)
             return head.next;
-        }
 
-        curr = head;
-        for (int i = 0; i < (size - n) - 1; i++) {
+        // jump 'index-1' times to reach the node that precedes
+        // the node that we need to delete
+        ListNode curr = head;
+        for (int i = 0; i < index - 1; i++)
             curr = curr.next;
-        }
 
+        // Delete the node after curr
+        // Since the index is valid, curr.next (the node to delete) won't be null
         curr.next = curr.next.next;
-
         return head;
+    }
+
+    private ListNode solution3(ListNode head, int k) {
+        // Get the size of the list
+        int size = getSize(head);
+
+        // Determine the index of the node to delete (from front 0-based)
+        // k = 1 => index = size - 1
+        // k = 2 => index = size - 2
+        // ...
+        // k = size - 1 => index = 1 (size - (size - 1))
+        // k = size => index = 0 (size - (size))
+        int index = size - k;
+
+        // Delete the node in the list at that index
+        // 1 <= k <= size (from the problem constraints)
+        // that means that 0 <= i <= size-1
+        // so the index will be valid
+        return deleteNode(head, index);
     }
 
     public ListNode removeNthFromEnd(ListNode head, int n) {
