@@ -45,7 +45,7 @@ private:
      * Theta(nk log n) time and Theta(n) space
      * where n = #lists, k - #nodes per list
      */
-    ListNode *solution1(std::vector<ListNode *> &lists)
+    static ListNode *solution1(std::vector<ListNode *> &lists)
     {
         std::vector<ListNode *> filtered_lists{filter_null_lists(lists)};
 
@@ -96,7 +96,7 @@ private:
     /**
      * O(N + M) time and Theta(1) space
      */
-    ListNode *merge(ListNode *list1, ListNode *list2)
+    static ListNode *merge(ListNode *list1, ListNode *list2)
     {
         // If one of them is null return the other
         // It also handles the case of both being null (first if gets executed)
@@ -162,7 +162,7 @@ private:
      *
      * Theta(nk lgn) time and Theta(1) space complexity
      */
-    ListNode *solution2(std::vector<ListNode *> &lists)
+    static ListNode *solution2(std::vector<ListNode *> &lists)
     {
         // Filter the null lists
         std::vector<ListNode *> filtered_lists{filter_null_lists(lists)};
@@ -193,7 +193,7 @@ private:
         return filtered_lists[0];
     }
 
-    ListNode *solution3(std::vector<ListNode *> &lists, int lo, int hi)
+    static ListNode *solution3(std::vector<ListNode *> &lists, int lo, int hi)
     {
         if (lo >= hi)
             return lists[lo];
@@ -208,7 +208,7 @@ private:
      * Theta(nk lgn) time and Theta(lg n) space complexity (for recursion)
      *
      */
-    ListNode *solution3(std::vector<ListNode *> &lists)
+    static ListNode *solution3(std::vector<ListNode *> &lists)
     {
         // Filter the null lists
         std::vector<ListNode *> filtered_lists{filter_null_lists(lists)};
@@ -250,7 +250,7 @@ private:
         return right_head;
     }
 
-    ListNode *merge_sort(ListNode *head)
+    static ListNode *merge_sort(ListNode *head)
     {
         // Base case: if 0 or 1 elements in the list, we can simply return
         if (!head || !head->next)
@@ -273,7 +273,7 @@ private:
      * Theta(nk log(nk)) time and Theta(1) space
      * where n = #lists, k - #nodes per list
      */
-    ListNode *solution4(std::vector<ListNode *> &lists)
+    static ListNode *solution4(std::vector<ListNode *> &lists)
     {
         // Join all the lists
         ListNode dummy{};
@@ -303,7 +303,7 @@ private:
      *
      * Theta((n^2)k) running time and Theta(1) space complexity
      */
-    ListNode *solution5(std::vector<ListNode *> &lists)
+    static ListNode *solution5(std::vector<ListNode *> &lists)
     {
         // Filter the null lists
         std::vector<ListNode *> filtered_lists{filter_null_lists(lists)};
