@@ -223,6 +223,49 @@ private:
     }
 
     /**
+     * @brief Splits the list into two halves and returns the head of the
+     * right linked list. Assumes that there are atleast 2 nodes in the list.
+     * If the number of total nodes is odd, the left list will have the
+     * extra node.
+     * @return Returns the head of the right linked list
+     */
+    static ListNode *split_list(ListNode *head)
+    {
+        // Use slow and fast pointers
+        // If list is A -> B -> C -> D -> E ->
+        // after the loop is done, slow will point to C and fast will point to E
+        // If list is A -> B -> C -> D -> E -> F -> G -> H ->
+        // after the loop is done, slow will point to D and fast will point to G
+        ListNode *slow = head, *fast = head;
+        while (fast->next && fast->next->next)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        // At this point slow points to the last node of the left list
+        // So we sever the connection and return the head of the right list
+        ListNode *right_head = slow->next;
+        slow->next = nullptr;
+        return right_head;
+    }
+
+    ListNode *merge_sort(ListNode *head)
+    {
+        // Base case: if 0 or 1 elements in the list, we can simply return
+        if (!head || !head->next)
+            return head;
+
+        // Split the list into 2 halves and sort each recursively
+        ListNode *right_head = split_list(head);
+        head = merge_sort(head);
+        right_head = merge_sort(right_head);
+
+        // Merge the two sorted lists
+        return merge(head, right_head);
+    }
+
+    /**
      * Sorting the mega list solution
      * Creating the mega list - Theta(nk) time as we have to find the tail of each list
      * Sorting the mega list of nk elements: Theta(nk log nk)
@@ -232,7 +275,24 @@ private:
      */
     ListNode *solution4(std::vector<ListNode *> &lists)
     {
-        return nullptr;
+        // Join all the lists
+        ListNode dummy{};
+        ListNode *tail(&dummy);
+        for (ListNode *head : lists)
+        {
+            if (!head)
+                continue;
+
+            // Insert the head of the list at the end of the mega list
+            tail->next = head;
+
+            // Move the tail to the end of the list
+            while (tail->next)
+                tail = tail->next;
+        }
+
+        // Sort the mega list and return it
+        return merge_sort(dummy.next);
     }
 
     /**
@@ -264,5 +324,5 @@ private:
     }
 
 public:
-    ListNode *mergeKLists(std::vector<ListNode *> &lists) { return solution5(lists); }
+    ListNode *mergeKLists(std::vector<ListNode *> &lists) { return solution2(lists); }
 };
