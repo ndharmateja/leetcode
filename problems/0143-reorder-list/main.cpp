@@ -22,7 +22,7 @@ private:
 
     /**
      * @brief Splits the list into two halves and returns the head of the
-     * right linked list. Assumes that there are atleast 3 nodes in the list.
+     * right linked list. Assumes that there are atleast 2 nodes in the list.
      * If the number of total nodes is odd, the left list will have the
      * extra node.
      * @return Returns the head of the right linked list
