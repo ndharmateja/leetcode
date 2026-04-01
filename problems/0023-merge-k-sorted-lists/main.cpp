@@ -204,7 +204,10 @@ private:
      * Theta(nk log(nk)) time and Theta(1) space
      * where n = #lists, k - #nodes per list
      */
-    ListNode *solution3(std::vector<ListNode *> &lists) { return nullptr; }
+    ListNode *solution4(std::vector<ListNode *> &lists)
+    {
+        return nullptr;
+    }
 
     /**
      * Keep accumulating each list one by one by merging with a
@@ -214,8 +217,26 @@ private:
      *
      * Theta((n^2)k) running time and Theta(1) space complexity
      */
-    ListNode *solution4(std::vector<ListNode *> &lists) { return nullptr; }
+    ListNode *solution5(std::vector<ListNode *> &lists)
+    {
+        // Filter the null lists
+        std::vector<ListNode *> filtered_lists{filter_null_lists(lists)};
+
+        // If the lists is empty or only has one list, we can exit early
+        if (filtered_lists.empty())
+            return nullptr;
+        if (filtered_lists.size() == 1)
+            return filtered_lists.at(0);
+
+        // Go through each list starting from index 1 and merge it with
+        // the list at index 0 (we keep accumulating the result in index 0)
+        for (auto it = filtered_lists.begin() + 1; it != filtered_lists.end(); ++it)
+            filtered_lists[0] = merge(filtered_lists[0], *it);
+
+        // Return the merged iist that is at index 0
+        return filtered_lists.at(0);
+    }
 
 public:
-    ListNode *mergeKLists(std::vector<ListNode *> &lists) { return solution2(lists); }
+    ListNode *mergeKLists(std::vector<ListNode *> &lists) { return solution5(lists); }
 };
