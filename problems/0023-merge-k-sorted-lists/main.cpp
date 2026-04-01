@@ -24,11 +24,6 @@ private:
         ListNode(int x, ListNode *next) : val(x), next(next) {}
     };
 
-    struct NodeCompare
-    {
-        bool operator()(const ListNode *l1, const ListNode *l2) const { return l1->val > l2->val; }
-    };
-
     static std::vector<ListNode *> filter_null_lists(std::vector<ListNode *> &lists)
     {
         // Filter out the empty lists
@@ -39,6 +34,99 @@ private:
                      { return l != nullptr; });
         return filtered_lists;
     }
+
+    /**
+     * O(N + M) time and Theta(1) space
+     */
+    static ListNode *merge(ListNode *list1, ListNode *list2)
+    {
+        // If one of them is null return the other
+        // It also handles the case of both being null (first if gets executed)
+        if (!list1)
+            return list2;
+        if (!list2)
+            return list1;
+
+        // Create a dummy sentinel node for storing the resulting linked list
+        // We are creating the dummy node on the stack instead of the heap,
+        // so lesser overhead (heap creation and also manual deletion)
+        ListNode dummy{};
+        ListNode *tail = &dummy;
+        while (list1 && list2)
+        {
+            if (list1->val <= list2->val)
+            {
+                tail->next = list1;
+                list1 = list1->next;
+            }
+            else
+            {
+                tail->next = list2;
+                list2 = list2->next;
+            }
+            tail = tail->next;
+
+            // We don't need to explicitly set the tail's next to null
+            // as at the start of each iteration (and even after the loop)
+            // we are setting the tail's next
+            // tail->next = nullptr;
+        }
+
+        // At this point, we'd have reached the end of one of the lists
+        // So we can attach the remaining list
+        tail->next = list1 ? list1 : list2;
+
+        // Return the head of the merged list
+        return dummy.next;
+    }
+
+    /**
+     * @brief Splits the list into two halves and returns the head of the
+     * right linked list. Assumes that there are atleast 2 nodes in the list.
+     * If the number of total nodes is odd, the left list will have the
+     * extra node.
+     * @return Returns the head of the right linked list
+     */
+    static ListNode *split_list(ListNode *head)
+    {
+        // Use slow and fast pointers
+        // If list is A -> B -> C -> D -> E ->
+        // after the loop is done, slow will point to C and fast will point to E
+        // If list is A -> B -> C -> D -> E -> F -> G -> H ->
+        // after the loop is done, slow will point to D and fast will point to G
+        ListNode *slow = head, *fast = head;
+        while (fast->next && fast->next->next)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        // At this point slow points to the last node of the left list
+        // So we sever the connection and return the head of the right list
+        ListNode *right_head = slow->next;
+        slow->next = nullptr;
+        return right_head;
+    }
+
+    static ListNode *merge_sort(ListNode *head)
+    {
+        // Base case: if 0 or 1 elements in the list, we can simply return
+        if (!head || !head->next)
+            return head;
+
+        // Split the list into 2 halves and sort each recursively
+        ListNode *right_head = split_list(head);
+        head = merge_sort(head);
+        right_head = merge_sort(right_head);
+
+        // Merge the two sorted lists
+        return merge(head, right_head);
+    }
+
+    struct NodeCompare
+    {
+        bool operator()(const ListNode *l1, const ListNode *l2) const { return l1->val > l2->val; }
+    };
 
     /**
      * Min Heap solution
@@ -90,51 +178,6 @@ private:
         tail->next = min_pq.top();
 
         // Return the new list
-        return dummy.next;
-    }
-
-    /**
-     * O(N + M) time and Theta(1) space
-     */
-    static ListNode *merge(ListNode *list1, ListNode *list2)
-    {
-        // If one of them is null return the other
-        // It also handles the case of both being null (first if gets executed)
-        if (!list1)
-            return list2;
-        if (!list2)
-            return list1;
-
-        // Create a dummy sentinel node for storing the resulting linked list
-        // We are creating the dummy node on the stack instead of the heap,
-        // so lesser overhead (heap creation and also manual deletion)
-        ListNode dummy{};
-        ListNode *tail = &dummy;
-        while (list1 && list2)
-        {
-            if (list1->val <= list2->val)
-            {
-                tail->next = list1;
-                list1 = list1->next;
-            }
-            else
-            {
-                tail->next = list2;
-                list2 = list2->next;
-            }
-            tail = tail->next;
-
-            // We don't need to explicitly set the tail's next to null
-            // as at the start of each iteration (and even after the loop)
-            // we are setting the tail's next
-            // tail->next = nullptr;
-        }
-
-        // At this point, we'd have reached the end of one of the lists
-        // So we can attach the remaining list
-        tail->next = list1 ? list1 : list2;
-
-        // Return the head of the merged list
         return dummy.next;
     }
 
@@ -220,49 +263,6 @@ private:
             return filtered_lists.at(0);
 
         return solution3(filtered_lists, 0, filtered_lists.size() - 1);
-    }
-
-    /**
-     * @brief Splits the list into two halves and returns the head of the
-     * right linked list. Assumes that there are atleast 2 nodes in the list.
-     * If the number of total nodes is odd, the left list will have the
-     * extra node.
-     * @return Returns the head of the right linked list
-     */
-    static ListNode *split_list(ListNode *head)
-    {
-        // Use slow and fast pointers
-        // If list is A -> B -> C -> D -> E ->
-        // after the loop is done, slow will point to C and fast will point to E
-        // If list is A -> B -> C -> D -> E -> F -> G -> H ->
-        // after the loop is done, slow will point to D and fast will point to G
-        ListNode *slow = head, *fast = head;
-        while (fast->next && fast->next->next)
-        {
-            slow = slow->next;
-            fast = fast->next->next;
-        }
-
-        // At this point slow points to the last node of the left list
-        // So we sever the connection and return the head of the right list
-        ListNode *right_head = slow->next;
-        slow->next = nullptr;
-        return right_head;
-    }
-
-    static ListNode *merge_sort(ListNode *head)
-    {
-        // Base case: if 0 or 1 elements in the list, we can simply return
-        if (!head || !head->next)
-            return head;
-
-        // Split the list into 2 halves and sort each recursively
-        ListNode *right_head = split_list(head);
-        head = merge_sort(head);
-        right_head = merge_sort(right_head);
-
-        // Merge the two sorted lists
-        return merge(head, right_head);
     }
 
     /**
