@@ -64,6 +64,31 @@ private:
         return dummy.next;
     }
 
+    // Recursive solution
+    // Theta(N + M) time and Theta(N + M) space (recursive frames on the stack)
+    ListNode *solution2(ListNode *list1, ListNode *list2)
+    {
+        // Base cases
+        if (!list1)
+            return list2;
+        if (!list2)
+            return list1;
+
+        // Recursive case
+        // If list1's value is smaller, we recursively merge the two lists
+        // (the first list starts from the next node)
+        if (list1->val <= list2->val)
+        {
+            list1->next = solution2(list1->next, list2);
+            return list1;
+        }
+        else
+        {
+            list2->next = solution2(list1, list2->next);
+            return list2;
+        }
+    }
+
 public:
-    ListNode *mergeTwoLists(ListNode *list1, ListNode *list2) { return solution1(list1, list2); }
+    ListNode *mergeTwoLists(ListNode *list1, ListNode *list2) { return solution2(list1, list2); }
 };
