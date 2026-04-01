@@ -24,10 +24,10 @@ public class Solution141 {
     // Proof (that slow and fast have to come to same node eventually):
     // At some point both 'slow' and 'fast' pointers
     // are going to be in the cycle (if it exists)
-    // let the 'slow' pointer be ahead of 'fast' by 'n' nodes
+    // let the 'slow' pointer be ahead of 'fast' by 'k' nodes
     // After one iteration, 'slow' will move by 1 and 'fast' will move by 2
-    // => 'slow' will be ahead of 'fast' by n + 1 - 2 = 'n - 1' nodes
-    // So after 'n' iterations, they both point to the same node
+    // => 'slow' will be ahead of 'fast' by k + 1 - 2 = 'k - 1' nodes
+    // So after 'k' iterations, they both point to the same node
     // So even if 'slow' is ahead of 'fast' by 'n' nodes, it still runs in O(n)
     private boolean solution2(ListNode head) {
         ListNode slow = head, fast = head;
