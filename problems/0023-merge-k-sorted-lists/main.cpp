@@ -29,12 +29,7 @@ private:
         bool operator()(const ListNode *l1, const ListNode *l2) const { return l1->val > l2->val; }
     };
 
-    /**
-     * Min Heap solution
-     * Theta(nk log n) time and Theta(n) space
-     * where n = #lists, k - #nodes per list
-     */
-    ListNode *solution1(std::vector<ListNode *> &lists)
+    static std::vector<ListNode *> filter_null_lists(std::vector<ListNode *> &lists)
     {
         // Filter out the empty lists
         std::vector<ListNode *> filtered_lists;
@@ -42,6 +37,17 @@ private:
                      std::back_inserter(filtered_lists),
                      [](ListNode *l)
                      { return l != nullptr; });
+        return filtered_lists;
+    }
+
+    /**
+     * Min Heap solution
+     * Theta(nk log n) time and Theta(n) space
+     * where n = #lists, k - #nodes per list
+     */
+    ListNode *solution1(std::vector<ListNode *> &lists)
+    {
+        std::vector<ListNode *> filtered_lists{filter_null_lists(lists)};
 
         // If the lists is empty or only has one list, we can exit early
         if (filtered_lists.empty())
