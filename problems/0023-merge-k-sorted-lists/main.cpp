@@ -167,6 +167,35 @@ private:
         return nullptr;
     }
 
+    ListNode *solution3(std::vector<ListNode *> &lists, int lo, int hi)
+    {
+        if (lo >= hi)
+            return lists[lo];
+
+        int mid = lo + (hi - lo) / 2;
+        return merge(solution3(lists, lo, mid), solution3(lists, mid + 1, hi));
+    }
+
+    /**
+     * Recursive version of solution2
+     *
+     * Theta(nk lgn) time and Theta(lg n) space complexity (for recursion)
+     *
+     */
+    ListNode *solution3(std::vector<ListNode *> &lists)
+    {
+        // Filter the null lists
+        std::vector<ListNode *> filtered_lists{filter_null_lists(lists)};
+
+        // If the lists is empty or only has one list, we can exit early
+        if (filtered_lists.empty())
+            return nullptr;
+        if (filtered_lists.size() == 1)
+            return filtered_lists.at(0);
+
+        return solution3(filtered_lists, 0, filtered_lists.size() - 1);
+    }
+
     /**
      * Sorting the mega list solution
      * Creating the mega list - Theta(nk) time as we have to find the tail of each list
