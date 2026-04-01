@@ -164,7 +164,33 @@ private:
      */
     ListNode *solution2(std::vector<ListNode *> &lists)
     {
-        return nullptr;
+        // Filter the null lists
+        std::vector<ListNode *> filtered_lists{filter_null_lists(lists)};
+
+        // If the lists is empty or only has one list, we can exit early
+        if (filtered_lists.empty())
+            return nullptr;
+        if (filtered_lists.size() == 1)
+            return filtered_lists.at(0);
+
+        // Like bottom up merge sort
+        // Merge starting with interval sizes of 1, 2, 4, ...
+        // Each time we merge two intervals [lo, lo + sz - 1] and [lo + sz, lo + 2sz - 1]
+        // We assume that the merged list of [lo, lo + sz - 1] is at lists[lo]
+        // and that the merged list of [lo + sz, lo + 2sz - 1] is at lists[lo + sz]
+        // and we put the resulting merged list of these two intervals in lists[lo] to
+        // keep the invariant of storing the merged list at lo going.
+        // Interval size starts at 1 and goes until it is less than n (keeps doubling)
+        // For each interval size we keep going until there are atleast 2 intervals
+        // the left interval of sz and the right interval of atleast 1
+        // That is why we go until lo < n - sz
+        int n(static_cast<int>(filtered_lists.size()));
+        for (int sz = 1; sz < n; sz <<= 1)
+        {
+            for (int lo = 0; lo < n - sz; lo += (sz << 1))
+                filtered_lists[lo] = merge(filtered_lists[lo], filtered_lists[lo + sz]);
+        }
+        return filtered_lists[0];
     }
 
     ListNode *solution3(std::vector<ListNode *> &lists, int lo, int hi)
