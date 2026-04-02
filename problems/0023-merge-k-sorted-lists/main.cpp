@@ -1,6 +1,7 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <limits>
 
 /**
  * Definition for singly-linked list.
@@ -327,7 +328,8 @@ private:
     static int get_index_of_min_node(std::vector<ListNode *> &lists)
     {
         // leet code constraints: each value is between -10000 and 10000
-        int min = 10001;
+        // We can use 10001 here too
+        int min = std::numeric_limits<int>::max();
         int min_index = -1;
         int k{static_cast<int>(lists.size())};
         for (int i = 0; i < k; ++i)
