@@ -125,6 +125,7 @@ private:
         return merge(head, right_head);
     }
 
+    // We need a min heap
     struct NodeCompare
     {
         bool operator()(const ListNode *l1, const ListNode *l2) const { return l1->val > l2->val; }
