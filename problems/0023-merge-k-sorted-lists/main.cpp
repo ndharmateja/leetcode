@@ -328,8 +328,8 @@ private:
         // leet code constraints: each value is between -10000 and 10000
         int min = 10001;
         int min_index = -1;
-        int n{static_cast<int>(lists.size())};
-        for (int i = 0; i < n; ++i)
+        int k{static_cast<int>(lists.size())};
+        for (int i = 0; i < k; ++i)
         {
             ListNode *curr{lists[i]};
             if (!curr)
@@ -347,8 +347,9 @@ private:
 
     /**
      * Extend the idea of merging two lists.
-     * Pick the minimum among all the n list nodes each time and add it to the resulting list
-     * Theta(n * nk) time and Theta(1) space
+     * Pick the minimum among all the k list nodes each time and add it to the resulting list
+     * Theta(k * nk)=Theta(n(k^2)) time and Theta(1) space
+     * where k = #lists, n = #nodes per list
      */
     static ListNode *solution6(std::vector<ListNode *> &lists)
     {
