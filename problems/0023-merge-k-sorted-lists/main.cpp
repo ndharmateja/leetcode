@@ -182,28 +182,28 @@ private:
     }
 
     /**
-     * Merge 2 lists at a time. so n lists become n/2 lists
+     * Merge 2 lists at a time. so k lists become k/2 lists
      * and keep repeating that until we have one list left
      *
-     * n = #lists, k - #nodes per list
+     * k = #lists, n = #nodes per list
      *
-     * Running time for merge on two lists of size 'k' each = 2k
+     * Running time for merge on two lists of size 'n' each = 2n
      *
-     * Running time analysis (Assume that n is a power of 2, n = 2^m)
+     * Running time analysis (Assume that k is a power of 2, k = 2^m)
      * #merge-operations     work-per-merge-operation
-     *  n/2 = 2^(m-1)                   2k
-     *  n/4 = 2^(m-2)                   4k
-     *  n/8 = 2^(m-3)                   8k
+     *  k/2 = 2^(m-1)                   2n
+     *  k/4 = 2^(m-2)                   4n
+     *  k/8 = 2^(m-3)                   8n
      *      .                           .
      *      .                           .
-     *  2 = 2^(m-(m-1))             (2^(m-1))k
-     *  2 = 2^(m-m)                   (2^m)k
+     *  2 = 2^(m-(m-1))             (2^(m-1))n
+     *  1 = 2^(m-m)                   (2^m)n
      *
-     * Work per level = (2^m)k = nk
-     * #Levels = lgn
-     * Total running time = nk * lgn
+     * Work per level = (2^m)n = nk
+     * #Levels = lg(k)
+     * Total running time = nk * lgk
      *
-     * Theta(nk lgn) time and Theta(1) space complexity
+     * Theta(nk lgk) time and Theta(1) space complexity
      */
     static ListNode *solution2(std::vector<ListNode *> &lists)
     {
@@ -223,14 +223,14 @@ private:
         // and that the merged list of [lo + sz, lo + 2sz - 1] is at lists[lo + sz]
         // and we put the resulting merged list of these two intervals in lists[lo] to
         // keep the invariant of storing the merged list at lo going.
-        // Interval size starts at 1 and goes until it is less than n (keeps doubling)
+        // Interval size starts at 1 and goes until it is less than k (keeps doubling)
         // For each interval size we keep going until there are atleast 2 intervals
         // the left interval of sz and the right interval of atleast 1
-        // That is why we go until lo < n - sz
-        int n(static_cast<int>(filtered_lists.size()));
-        for (int sz = 1; sz < n; sz <<= 1)
+        // That is why we go until lo < k - sz
+        int k(static_cast<int>(filtered_lists.size()));
+        for (int sz = 1; sz < k; sz <<= 1)
         {
-            for (int lo = 0; lo < n - sz; lo += (sz << 1))
+            for (int lo = 0; lo < k - sz; lo += (sz << 1))
                 filtered_lists[lo] = merge(filtered_lists[lo], filtered_lists[lo + sz]);
         }
         return filtered_lists[0];
@@ -248,8 +248,8 @@ private:
     /**
      * Recursive version of solution2
      *
-     * Theta(nk lgn) time and Theta(lg n) space complexity (for recursion)
-     *
+     * Theta(nk lgk) time and Theta(lg k) space complexity (for recursion)
+     * where k = #lists, n = #nodes per list
      */
     static ListNode *solution3(std::vector<ListNode *> &lists)
     {
