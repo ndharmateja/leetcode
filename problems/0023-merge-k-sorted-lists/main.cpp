@@ -271,7 +271,7 @@ private:
      * Sorting the mega list of nk elements: Theta(nk log nk)
      *
      * Theta(nk log(nk)) time and Theta(1) space
-     * where n = #lists, k - #nodes per list
+     * where k = #lists, n = #nodes per list
      */
     static ListNode *solution4(std::vector<ListNode *> &lists)
     {
