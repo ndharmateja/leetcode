@@ -370,15 +370,15 @@ private:
 
         // Get the min node among all the lists each time
         // If the min_index is -1, it means that there are no more non null nodes left
-        while ((min_index = get_index_of_min_node(lists)) != -1)
+        while ((min_index = get_index_of_min_node(filtered_lists)) != -1)
         {
-            // Get the min most node among the n lists and add it to the resulting list
-            ListNode *min_node = lists[min_index];
+            // Get the min most node among the k lists and add it to the resulting list
+            ListNode *min_node = filtered_lists[min_index];
             tail->next = min_node;
             tail = tail->next;
 
             // Update the node at the min_index to its next as we just plucked it
-            lists[min_index] = lists[min_index]->next;
+            filtered_lists[min_index] = filtered_lists[min_index]->next;
         }
 
         // Return the new list
