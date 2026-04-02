@@ -36,7 +36,8 @@ private:
     }
 
     /**
-     * O(N + M) time and Theta(1) space
+     * O(m + n) time and Theta(1) space
+     * where m = #nodes in list1, n = #nodes in list2
      */
     static ListNode *merge(ListNode *list1, ListNode *list2)
     {
@@ -130,8 +131,8 @@ private:
 
     /**
      * Min Heap solution
-     * Theta(nk log n) time and Theta(n) space
-     * where n = #lists, k - #nodes per list
+     * Theta(nk log k) time and Theta(k) space
+     * where k = #lists, n = #nodes per list
      */
     static ListNode *solution1(std::vector<ListNode *> &lists)
     {
