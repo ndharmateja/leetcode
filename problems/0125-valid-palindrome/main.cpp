@@ -80,5 +80,5 @@ private:
     }
 
 public:
-    bool isPalindrome(std::string s) { return solution2(s); }
+    bool isPalindrome(std::string s) { return solution1(s); }
 };
