@@ -5,8 +5,11 @@
 
 class Solution
 {
-public:
-    std::vector<int> topKFrequent(std::vector<int> &nums, int k)
+private:
+    /**
+     * Theta(n) time and Theta(n) space solution
+     */
+    static std::vector<int> solution1(std::vector<int> &nums, int k)
     {
         // Get the counts of each number
         std::unordered_map<int, int> counts(nums.size());
@@ -34,6 +37,7 @@ public:
         std::vector<int> result;
         for (int i = max_count; i >= 1; i--)
         {
+            // If there are no elements in the current bucket, we skip it
             if (buckets[i].empty())
                 continue;
 
@@ -52,4 +56,7 @@ public:
         // We would never reach here as we know that a valid solution exists
         return {};
     }
+
+public:
+    std::vector<int> topKFrequent(std::vector<int> &nums, int k) { return solution1(nums, k); }
 };
