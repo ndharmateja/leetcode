@@ -48,9 +48,12 @@ private:
         std::unordered_set<int> set(n);
         for (auto num : nums)
         {
-            if (set.count(num))
+            // insert tries to insert it, and returns a pair of iterator to the element and
+            // bool indicating whether insertion took place (false if already present).
+            // This is better than count() and emplace() as two hashes are required
+            auto result = set.insert(num);
+            if (!result.second)
                 return true;
-            set.emplace(num);
         }
 
         // If we reach here, it means that there aren't any duplicates
