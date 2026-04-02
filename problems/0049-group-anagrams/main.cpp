@@ -19,7 +19,7 @@ public:
     /**
      * Say n - #strings, k - length of each string
      * Theta(n * klgk) time and Theta(n) space
-     * Each of the n strings is sorted
+     * Each of the n strings is being sorted
      * and the space is for the unordered map
      */
     std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string> &strs)
