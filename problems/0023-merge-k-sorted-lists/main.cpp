@@ -323,6 +323,66 @@ private:
         return filtered_lists.at(0);
     }
 
+    static int get_index_of_min_node(std::vector<ListNode *> &lists)
+    {
+        // leet code constraints: each value is between -10000 and 10000
+        int min = 10001;
+        int min_index = -1;
+        int n{static_cast<int>(lists.size())};
+        for (int i = 0; i < n; ++i)
+        {
+            ListNode *curr{lists[i]};
+            if (!curr)
+                continue;
+            if (curr->val < min)
+            {
+                min = curr->val;
+                min_index = i;
+            }
+        }
+
+        // Return min index
+        return min_index;
+    }
+
+    /**
+     * Extend the idea of merging two lists.
+     * Pick the minimum among all the n list nodes each time and add it to the resulting list
+     * Theta(n * nk) time and Theta(1) space
+     */
+    static ListNode *solution6(std::vector<ListNode *> &lists)
+    {
+        // Filter the null lists
+        std::vector<ListNode *> filtered_lists{filter_null_lists(lists)};
+
+        // If the lists is empty or only has one list, we can exit early
+        if (filtered_lists.empty())
+            return nullptr;
+        if (filtered_lists.size() == 1)
+            return filtered_lists.at(0);
+
+        // Dummy sentinel node for the new list
+        ListNode dummy{};
+        ListNode *tail{&dummy};
+        int min_index;
+
+        // Get the min node among all the lists each time
+        // If the min_index is -1, it means that there are no more non null nodes left
+        while ((min_index = get_index_of_min_node(lists)) != -1)
+        {
+            // Get the min most node among the n lists and add it to the resulting list
+            ListNode *min_node = lists[min_index];
+            tail->next = min_node;
+            tail = tail->next;
+
+            // Update the node at the min_index to its next as we just plucked it
+            lists[min_index] = lists[min_index]->next;
+        }
+
+        // Return the new list
+        return dummy.next;
+    }
+
 public:
-    ListNode *mergeKLists(std::vector<ListNode *> &lists) { return solution2(lists); }
+    ListNode *mergeKLists(std::vector<ListNode *> &lists) { return solution6(lists); }
 };
