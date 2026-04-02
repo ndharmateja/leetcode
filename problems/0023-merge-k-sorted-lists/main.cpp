@@ -298,10 +298,10 @@ private:
     /**
      * Keep accumulating each list one by one by merging with a
      * resulting list
-     * where n = #lists, k - #nodes per list
-     * Total running time: 2k + 3k + 4k + ... + nk = k(2 + 3 + ... + n) = k(n(n+1)/2 - 1)
+     * where k = #lists, n = #nodes per list
+     * Total running time: 2n + 3n + 4n + ... + kn = n(2 + 3 + ... + k) = n(k(k+1)/2 - 1)
      *
-     * Theta((n^2)k) running time and Theta(1) space complexity
+     * Theta(n(k^2)) running time and Theta(1) space complexity
      */
     static ListNode *solution5(std::vector<ListNode *> &lists)
     {
