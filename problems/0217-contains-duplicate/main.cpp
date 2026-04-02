@@ -43,6 +43,7 @@ private:
      */
     static bool solution3(std::vector<int> &nums)
     {
+        // We reserve the space for n elements in the set to avoid potential rehashes
         int n{static_cast<int>(nums.size())};
         std::unordered_set<int> set(n);
         for (auto num : nums)
