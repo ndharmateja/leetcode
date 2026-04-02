@@ -28,8 +28,8 @@ private:
     static bool solution2(std::vector<int> &nums)
     {
         int n{static_cast<int>(nums.size())};
-        for (size_t i = 0; i < n - 1; ++i)
-            for (size_t j = i + 1; j < n; j++)
+        for (int i = 0; i < n - 1; ++i)
+            for (int j = i + 1; j < n; j++)
                 if (nums[i] == nums[j])
                     return true;
 
