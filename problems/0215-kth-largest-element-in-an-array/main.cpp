@@ -153,6 +153,14 @@ private:
         return pq.top();
     }
 
+    /**
+     * TODO: implement
+     *
+     * Worst case linear time selection algorithm using the median of medians.
+     * See section 9.3 of CLRS 4e
+     */
+    static int solution4(std::vector<int> &nums, int k) { return -1; }
+
 public:
     int findKthLargest(std::vector<int> &nums, int k) { return solution1(nums, k); }
 };
