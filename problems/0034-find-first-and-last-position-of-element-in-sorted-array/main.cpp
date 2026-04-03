@@ -61,28 +61,23 @@ private:
             // If the target is smaller than the middle element
             // we can look for the lower end in the left half
             if (target < nums[mid])
-            {
                 hi = mid - 1;
-                continue;
-            }
 
             // Similarly if the target is greater than the middle element
             // we can look for the lower end in the right half
             else if (target > nums[mid])
-            {
                 lo = mid + 1;
-                continue;
-            }
 
             // At this point, the target is equal to the middle element
             // If the middle element is the starting value in the target range
             // we can exit early as we found the starting range of the target
-            if (mid == 0 || nums[mid - 1] < target)
+            else if (mid == 0 || nums[mid - 1] < target)
                 break;
 
             // If the middle element is not the starting range of the target
             // we know it is going to be in the left half
-            hi = mid - 1;
+            else
+                hi = mid - 1;
         }
 
         // If at this point, lo > hi, it means that target doesn't exist
@@ -103,28 +98,23 @@ private:
             // If the target is smaller than the middle element
             // we can look for the lower end in the left half
             if (target < nums[mid])
-            {
                 hi = mid - 1;
-                continue;
-            }
 
             // Similarly if the target is greater than the middle element
             // we can look for the lower end in the right half
             else if (target > nums[mid])
-            {
                 lo = mid + 1;
-                continue;
-            }
 
             // At this point, the target is equal to the middle element
             // If the middle element is the ending value in the target range
             // we can exit early as we found the ending range of the target
-            if (mid == n - 1 || nums[mid + 1] > target)
+            else if (mid == n - 1 || nums[mid + 1] > target)
                 break;
 
             // If the middle element is not the ending range of the target
             // we know it is going to be in the right half
-            lo = mid + 1;
+            else
+                lo = mid + 1;
         }
 
         // At this point mid keeps track of the right end of the range
