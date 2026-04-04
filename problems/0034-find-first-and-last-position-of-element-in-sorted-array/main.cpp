@@ -128,7 +128,6 @@ private:
      * Asymptotically same running time and space complexity as solution 2
      */
     static std::vector<int> solution3(const std::vector<int> &nums, int target)
-
     {
         // Find the lower end of the range
         // Eg: initial range of data: [5, 7, 7, 8, 8, 10] => lo = 0, hi = 5
@@ -186,6 +185,63 @@ private:
         return {range_start, mid};
     }
 
+    static int binary_search(const std::vector<int> &nums, int target, bool is_lower_bound)
+    {
+        // Init variables
+        int n{static_cast<int>(nums.size())};
+        int lo{0}, hi{n - 1}, mid;
+        int answer{-1};
+
+        // Search for the index of the left/right most occurrence of the target
+        while (lo <= hi)
+        {
+            // Depending on if the target is smaller or larger we can go left or right
+            mid = lo + (hi - lo) / 2;
+            if (target < nums[mid])
+                hi = mid - 1;
+            else if (target > nums[mid])
+                lo = mid + 1;
+
+            // If the key is equal to the middle value, it means we found a potential
+            // solution but the left half/right half might have a better solution
+            // If is_lower_bound is true, then we are looking for the left most occurrence
+            // so even though we found an answer, we still keep looking for a better
+            // solution in the left half
+            else if (is_lower_bound)
+            {
+                answer = mid;
+                hi = mid - 1;
+            }
+
+            // If is_lower_bound is false, then we are looking for the right most occurrence
+            // so even though we found an answer, we still keep looking for a better
+            // solution in the right half
+            else
+            {
+                answer = mid;
+                lo = mid + 1;
+            }
+        }
+
+        return answer;
+    }
+
+    /**
+     * Binary search using a candidate variable pattern
+     */
+    static std::vector<int> solution4(const std::vector<int> &nums, int target)
+    {
+        // Look for the left most occurrence
+        // If the left most occurrence is -1, it means that the target doesn't exist in nums
+        int lower_end{binary_search(nums, target, true)};
+        if (lower_end == -1)
+            return {-1, -1};
+
+        // At this point target exists in the nums vector
+        // Look for the right most occurrence and return the range
+        return {lower_end, binary_search(nums, target, false)};
+    }
+
 public:
-    std::vector<int> searchRange(const std::vector<int> &nums, int target) { return solution3(nums, target); }
+    std::vector<int> searchRange(const std::vector<int> &nums, int target) { return solution4(nums, target); }
 };
