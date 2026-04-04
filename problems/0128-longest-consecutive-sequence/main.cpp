@@ -95,6 +95,98 @@ private:
         // Return the max sequence length from a sorted vector of unique numbers
         return find_longest_consecutive_seq_len_in_sorted(nums);
     }
+
+    /**
+     * TODO: implement own version of radix sort
+     *
+     * Radix sort
+     * Reference: Gemini
+     *
+     * LSD Radix Sort for 32-bit Signed Integers
+     * Space: O(n) | Time: Theta(4 * (n + 256))
+     * Optimization: Double Buffering to avoid O(n) vector copies.
+     */
+    static void radix_sort(std::vector<int> &nums)
+    {
+        int n = static_cast<int>(nums.size());
+        if (n < 2)
+            return;
+
+        std::vector<int> buffer(n);
+        std::vector<int> *src = &nums;
+        std::vector<int> *dst = &buffer;
+
+        // 4 passes, 8 bits (one byte) each
+        for (int shift = 0; shift < 32; shift += 8)
+        {
+            int count[256] = {0};
+            for (int x : *src)
+                count[(x >> shift) & 0xFF]++;
+
+            // Pass 4 (shift 24): Handle Two's Complement Signed Integers
+            if (shift == 24)
+            {
+                int tmp = count[128];
+                count[128] = 0;
+                // Negative numbers (128-255) come first in signed order
+                for (int i = 129; i < 256; ++i)
+                {
+                    int next = count[i];
+                    count[i] = count[i - 1] + tmp;
+                    tmp = next;
+                }
+                // Positive numbers (0-127) come after negatives
+                int first_pos = tmp + count[255];
+                tmp = count[0];
+                count[0] = first_pos;
+                for (int i = 1; i < 128; ++i)
+                {
+                    int next = count[i];
+                    count[i] = count[i - 1] + tmp;
+                    tmp = next;
+                }
+            }
+            else
+            {
+                // Standard Counting Sort Prefix Sum
+                int start = 0;
+                for (int i = 0; i < 256; ++i)
+                {
+                    int tmp = count[i];
+                    count[i] = start;
+                    start += tmp;
+                }
+            }
+
+            // Move data to destination buffer
+            for (int x : *src)
+                (*dst)[count[(x >> shift) & 0xFF]++] = x;
+
+            // DOUBLE BUFFERING: Swap pointers instead of copying vector data
+            std::swap(src, dst);
+        }
+
+        // After 4 swaps, src might point to the local 'buffer' vector.
+        // If so, move the data back into the original 'nums'.
+        if (src != &nums)
+        {
+            nums = std::move(buffer);
+        }
+    }
+
+    /**
+     * Exactly same as solution 2 except we use radix sort of the numbers
+     * instead of using std::sort
+     */
+    static int solution4(std::vector<int> &nums)
+    {
+        // Take only the unique elements and sort it
+        radix_sort(nums);
+
+        // Return the max sequence length from a sorted vector of unique numbers
+        return find_longest_consecutive_seq_len_in_sorted(nums);
+    }
+
 public:
-    int longestConsecutive(std::vector<int> &nums) { return solution1(nums); }
+    int longestConsecutive(std::vector<int> &nums) { return solution2(nums); }
 };
