@@ -185,7 +185,7 @@ private:
         return {range_start, mid};
     }
 
-    static int binary_search(const std::vector<int> &nums, int target, bool is_lower_bound)
+    static int binary_search(const std::vector<int> &nums, int target, bool find_lower_bound)
     {
         // Init variables
         int n{static_cast<int>(nums.size())};
@@ -204,16 +204,16 @@ private:
 
             // If the key is equal to the middle value, it means we found a potential
             // solution but the left half/right half might have a better solution
-            // If is_lower_bound is true, then we are looking for the left most occurrence
+            // If find_lower_bound is true, then we are looking for the left most occurrence
             // so even though we found an answer, we still keep looking for a better
             // solution in the left half
-            else if (is_lower_bound)
+            else if (find_lower_bound)
             {
                 answer = mid;
                 hi = mid - 1;
             }
 
-            // If is_lower_bound is false, then we are looking for the right most occurrence
+            // If find_lower_bound is false, then we are looking for the right most occurrence
             // so even though we found an answer, we still keep looking for a better
             // solution in the right half
             else
