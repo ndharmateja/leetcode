@@ -44,6 +44,8 @@ private:
      * If the original list is not to be mutated or if memory leaks (all the
      * other nodes and zero nodes still exist in memory) is an issue
      * use solution 2
+     *
+     * Theta(n) time and Theta(1) space
      */
     static ListNode *solution1(ListNode *head)
     {
@@ -72,12 +74,11 @@ private:
      * 2. the pointer to the head of the next group
      *
      * Eg: 3 -> 4 -> 5 -> 0 -> 1 -> 2 -> 3 -> 4 -> 0 -> -4 -> ...
-     * will be made into (3 + 4 + 5) -> 1 -> 2 -> 3 -> 4 -> 0 -> -4 ...
-     * 12 -> 1 -> 2 -> 3 -> 4 -> 0 -> ...
+     * will return a Pair of (12, 1 -> 2 -> 3 -> 4 -> 0 -> -4 ...)
      */
     static std::pair<ListNode *, ListNode *> merge_one_group_and_create_new_node(const ListNode *head)
     {
-        int sum{0};
+        int sum{head->val};
         ListNode *curr = head->next;
         while (curr->val)
         {
@@ -87,20 +88,34 @@ private:
 
         return {new ListNode(sum), curr->next};
     }
+
+    /**
+     * Very similar to solution 1 except we create new nodes for the resulting list
+     * without modifying the given list
+     *
+     * Theta(n) time and Theta(1) space
+     */
     static ListNode *solution2(const ListNode *head)
     {
-        ListNode dummy{};
-        ListNode *tail{&dummy}, *curr{head->next};
+        // Use a dummy sentinel node as the new head
+        ListNode dummy{}, *tail{&dummy}, *curr{head->next};
+
+        // Start from the first non-zero node and get the merged node
+        // and the next node to go to until there are no more nodes in the list
         while (curr)
         {
+            // Get the merged node and append it to the new list
+            // and update the curr to the head of the next group
             auto result = merge_one_group_and_create_new_node(curr);
             tail->next = result.first;
             tail = tail->next;
             curr = result.second;
         }
+
+        // Return the start of the linked list which is dummy's next
         return dummy.next;
     }
 
 public:
-    ListNode *mergeNodes(ListNode *head) { return solution2(head); }
+    ListNode *mergeNodes(ListNode *head) { return solution1(head); }
 };
