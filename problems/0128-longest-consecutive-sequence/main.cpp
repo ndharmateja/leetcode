@@ -83,6 +83,18 @@ private:
         // Return the max sequence length from a sorted vector of unique numbers
         return find_longest_consecutive_seq_len_in_sorted(unique_nums);
     }
+
+    /**
+     * Similar to solution2 except we don't make the numbers unique
+     */
+    static int solution3(std::vector<int> &nums)
+    {
+        // Take only the unique elements and sort it
+        std::sort(nums.begin(), nums.end());
+
+        // Return the max sequence length from a sorted vector of unique numbers
+        return find_longest_consecutive_seq_len_in_sorted(nums);
+    }
 public:
     int longestConsecutive(std::vector<int> &nums) { return solution1(nums); }
 };
