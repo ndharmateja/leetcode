@@ -1,5 +1,6 @@
 #include <vector>
 #include <unordered_set>
+#include <algorithm>
 
 class Solution
 {
@@ -7,7 +8,7 @@ private:
     /**
      * Theta(n) time and Theta(n) space in the worst case
      */
-    static int solution1(std::vector<int> &nums)
+    static int solution1(const std::vector<int> &nums)
     {
         // Create an unordered set from the vector of ints
         std::unordered_set<int> set(nums.begin(), nums.end());
@@ -37,6 +38,51 @@ private:
         return max_seq_length;
     }
 
+    /**
+     * Gets the length of the longest consecutive sequence (of unique values) in a sorted array
+     */
+    static int find_longest_consecutive_seq_len_in_sorted(const std::vector<int> &nums)
+    {
+        // If array is empty return 0
+        if (nums.empty())
+            return 0;
+
+        int n{static_cast<int>(nums.size())}, curr_len{1}, max_len{0};
+        for (int i = 1; i < n; i++)
+        {
+            // If the curr value = prev value => part of the same sequence
+            // but this value won't be part of the sequence length
+            if (nums[i] == nums[i - 1])
+                continue;
+
+            // If the curr value = prev value + 1 => part of the same sequence
+            if (nums[i] == nums[i - 1] + 1)
+            {
+                curr_len++;
+                continue;
+            }
+
+            // Otherwise it is the start of a new sequence
+            // Update the max sequence length and reset curr sequence length
+            max_len = std::max(max_len, curr_len);
+            curr_len = 1;
+        }
+
+        // Update the max sequence length once at the end for the last sequence
+        max_len = std::max(max_len, curr_len);
+        return max_len;
+    }
+
+    static int solution2(const std::vector<int> &nums)
+    {
+        // Take only the unique elements and sort it
+        std::unordered_set<int> set(nums.begin(), nums.end());
+        std::vector<int> unique_nums(set.begin(), set.end());
+        std::sort(unique_nums.begin(), unique_nums.end());
+
+        // Return the max sequence length from a sorted vector of unique numbers
+        return find_longest_consecutive_seq_len_in_sorted(unique_nums);
+    }
 public:
     int longestConsecutive(std::vector<int> &nums) { return solution1(nums); }
 };
