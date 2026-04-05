@@ -46,7 +46,10 @@ public:
         while (l < r)
         {
             // At every range, see if the current area is better than the current solution
-            max_area = std::max(max_area, (r - l) * std::min(heights[l], heights[r]));
+            // Note: the current two lines of code is faster than the line below on leetcode
+            // max_area = std::max(max_area, (r - l) * std::min(heights[l], heights[r]));
+            int h = heights[l] <= heights[r] ? heights[l] : heights[r];
+            max_area = std::max(max_area, (r - l) * h);
 
             // If the left height is smaller, move the lower pointer inward
             if (heights[l] < heights[r])
