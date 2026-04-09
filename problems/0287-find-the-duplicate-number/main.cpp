@@ -75,6 +75,14 @@ private:
      * Using cycle sort
      * Theta(n) time and Theta(1) space
      * modifies the input array
+     *
+     * Put the number at nums[0] in index 'nums[0]'. At some point because there
+     * is a duplicate, we will find the same number again at nums[0].
+     *
+     * Visualize as removing the next node after head in the linked list cycle.
+     * Initially we will put the start of the cycle in its index and when we traverse
+     * the whole cycle again and come back to the start of the cycle, we find the
+     * duplicate as the start of the cycle is already in its index.
      */
     static int solution3(std::vector<int> &nums)
     {
