@@ -91,6 +91,22 @@ private:
         return nums[0];
     }
 
+    /**
+     * Brute force solution
+     * Theta(n^2) time and Theta(1) space
+     */
+    static int solution4(const std::vector<int> &nums)
+    {
+        int n{static_cast<int>(nums.size())};
+        for (int i = 0; i < n - 1; i++)
+            for (int j = i + 1; j < n; j++)
+                if (nums[i] == nums[j])
+                    return nums[j];
+
+        // We would never reach here as there is a duplicate that exists
+        return -1;
+    }
+
 public:
-    int findDuplicate(std::vector<int> &nums) { return solution3(nums); }
+    int findDuplicate(std::vector<int> &nums) { return solution4(nums); }
 };
