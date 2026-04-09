@@ -64,6 +64,25 @@ private:
         return -1;
     }
 
+    static void swap(std::vector<int> &nums, int i, int j)
+    {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    /**
+     * Using cycle sort
+     * Theta(n) time and Theta(1) space
+     * modifies the input array
+     */
+    static int solution3(std::vector<int> &nums)
+    {
+        while (nums[0] != nums[nums[0]])
+            swap(nums, 0, nums[0]);
+        return nums[0];
+    }
+
 public:
-    int findDuplicate(std::vector<int> &nums) { return solution2(nums); }
+    int findDuplicate(std::vector<int> &nums) { return solution3(nums); }
 };
