@@ -46,29 +46,28 @@ private:
     }
 
     /**
-     * Using a hashset
+     * Using an unordered set
      * Theta(N) time and Theta(N) space solution
      */
     static int solution2(const std::vector<int> &nums)
     {
         std::unordered_set<int> set(nums.size());
-        for (const int &num : nums)
+        for (int num : nums)
         {
-            if (set.count(num))
+            // This code does double hashing
+            // if (set.count(num))
+            //     return num;
+            // set.emplace(num);
+
+            // We can get away with a single hash
+            auto [it, is_inserted] = set.insert(num);
+            if (!is_inserted)
                 return num;
-            set.emplace(num);
         }
 
         // We would never reach here as the constraints of the problem say
         // that there is a duplicate
         return -1;
-    }
-
-    static void swap(std::vector<int> &nums, int i, int j)
-    {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
     }
 
     /**
@@ -87,7 +86,7 @@ private:
     static int solution3(std::vector<int> &nums)
     {
         while (nums[0] != nums[nums[0]])
-            swap(nums, 0, nums[0]);
+            std::swap(nums[0], nums[nums[0]]);
         return nums[0];
     }
 
@@ -108,5 +107,5 @@ private:
     }
 
 public:
-    int findDuplicate(std::vector<int> &nums) { return solution4(nums); }
+    int findDuplicate(std::vector<int> &nums) { return solution3(nums); }
 };
