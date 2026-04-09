@@ -13,7 +13,7 @@ private:
      *
      * Theta(N) time and Theta(1) space solution
      */
-    int solution1(std::vector<int> &nums)
+    static int solution1(const std::vector<int> &nums)
     {
         // Floyd's algorithm
         // Advance the slow pointer once and the fast pointer twice
@@ -45,7 +45,7 @@ private:
      * Using a hashset
      * Theta(N) time and Theta(N) space solution
      */
-    int solution2(std::vector<int> &nums)
+    static int solution2(const std::vector<int> &nums)
     {
         std::unordered_set<int> set(nums.size());
         for (const int &num : nums)
