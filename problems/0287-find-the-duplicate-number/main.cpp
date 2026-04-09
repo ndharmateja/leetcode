@@ -9,6 +9,10 @@ private:
      * of the cycle. See method.jpeg to know why this problem maps
      * to the finding the cycle starting point of the linked list.
      *
+     * The cycle has to be accessible from the index 0 as if we keep following
+     * the indices, we keep going forever (because all the values in the vector are in [1, n])
+     * in a finite list
+     *
      * Ref: https://youtu.be/wjYnzkAhcNk
      *
      * Theta(N) time and Theta(1) space solution
