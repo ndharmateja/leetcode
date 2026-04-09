@@ -5,7 +5,7 @@ class Solution
 {
 private:
     /**
-     * Uses the Floyd Warshall algorithm to find the starting point
+     * Uses the Floyd's algorithm to find the starting point
      * of the cycle. See method.jpeg to know why this problem maps
      * to the finding the cycle starting point of the linked list.
      *
