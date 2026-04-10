@@ -5,6 +5,10 @@ class Solution155 {
     private class MinStack1 {
         private Stack<Long> packedStack;
 
+        // long x = 0xFFFFFFFFL; // x = 2^32-1
+        // long y = 0xFFFFFFFF; // y = -1
+        private static final long F_32 = 0xFFFFFFFFL;
+
         public MinStack1() {
             this.packedStack = new Stack<>();
         }
@@ -19,15 +23,23 @@ class Solution155 {
         }
 
         public int top() {
-            return (int) (this.packedStack.peek() & 0xFFFFFFFFL);
+            return unpackVal(this.packedStack.peek());
         }
 
         public int getMin() {
-            return (int) (this.packedStack.peek() >> 32);
+            return unpackMin(this.packedStack.peek());
         }
 
-        private long pack(int min, int val) {
-            return ((long) min << 32) | (val & 0xFFFFFFFFL);
+        private static long pack(int min, int val) {
+            return ((long) min << 32) | (val & F_32);
+        }
+
+        private static int unpackMin(long top) {
+            return (int) (top >> 32);
+        }
+
+        private static int unpackVal(long top) {
+            return (int) (top & F_32);
         }
     }
 
