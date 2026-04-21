@@ -133,6 +133,60 @@ private:
         return {-1, -1};
     }
 
+    /**
+     * Regular binary search to find the target in the range [lo, hi] in nums
+     */
+    static int binary_search(const std::vector<int> &nums, int lo, int hi, int target)
+    {
+        int mid;
+        while (lo <= hi)
+        {
+            mid = lo + (hi - lo) / 2;
+            if (target < nums[mid])
+                hi = mid - 1;
+            else if (target > nums[mid])
+                lo = mid + 1;
+            else
+                return mid;
+        }
+        return -1;
+    }
+
+    /**
+     * Binary search solution
+     * Theta(n log n) time and Theta(1) space in worst case
+     */
+    static std::vector<int> solution3(const std::vector<int> &nums, int target)
+    {
+        // Init variables
+        int n{static_cast<int>(nums.size())};
+
+        // For each number do binary search and find its complement
+        for (int i = 0; i < n; i++)
+        {
+            // Find the occurrence of complement in nums in the range [i + 1, n - 1]
+            // We don't have to look throughout the whole array because we to prevent
+            // duplicate lookups as we are going from left to right
+            // It is similar to the brute force search solution except we are using
+            // binary search to find the complement
+            // This is better than solution2 as for each i, binary search is being performed
+            // throughout the whole array instead of just the range [i + 1, n - 1]
+            int complement = target - nums[i];
+            int complement_index = binary_search(nums, i + 1, n - 1, complement);
+
+            // If the complement doesn't exist, we can go to the next number
+            if (complement_index == -1)
+                continue;
+
+            // At this point we have a valid answer
+            // We add 1s as the answer is needed in 1-indexed format
+            return {i + 1, complement_index + 1};
+        }
+
+        // We would never reach here as there is a valid answer
+        return {-1, -1};
+    }
+
 public:
-    std::vector<int> twoSum(const std::vector<int> &nums, int target) { return solution1(nums, target); }
+    std::vector<int> twoSum(const std::vector<int> &nums, int target) { return solution3(nums, target); }
 };
