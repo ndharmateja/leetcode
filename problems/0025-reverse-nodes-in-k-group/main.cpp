@@ -60,9 +60,9 @@ private:
             // If there aren't enough nodes, curr becomes null before reaching the
             // end of the k iterations
             // In which case the reversal must be undoed
-            // if we were reversing A -> B -> C ->  and k = 4
-            // At the point curr becomes null the list is C -> B -> A ->
-            // with curr=null and prev pointing to C
+            // if we were reversing A -> B -> C -> nullptr and k = 4
+            // At the point curr becomes nullptr the list is C -> B -> A -> nullptr
+            // with curr=nullptr and prev pointing to C
             // So we can just reverse the list and return. It would essentially be
             // returning the list in the state the function received it in
             if (!curr)
