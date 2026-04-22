@@ -44,6 +44,9 @@ private:
     /**
      * Function that reverses the first 'k' nodes of the list
      * and returns the new head of the list.
+     * It also sets the new tail (old head)'s next pointer to the
+     * head of the new group (the rest of the list) even if it is null
+     * (which happens when there are exactly k nodes left).
      * If there are less than 'k' nodes in the given list then
      * no reversing happens and the original head itself is returned
      * with the list unmodified
