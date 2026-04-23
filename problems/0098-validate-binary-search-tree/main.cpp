@@ -75,6 +75,15 @@ private:
         int max_int = std::numeric_limits<int>::max();
         return solution2(root, min_int, max_int);
     }
+
+    /**
+     * TODO: Do an inorder traversal and see if all the values are in sorted order
+     */
+    static bool solution3(TreeNode *root)
+    {
+        return false;
+    }
+
 public:
-    bool isValidBST(TreeNode *root) { return solution1(root); }
+    bool isValidBST(TreeNode *root) { return solution2(root); }
 };
