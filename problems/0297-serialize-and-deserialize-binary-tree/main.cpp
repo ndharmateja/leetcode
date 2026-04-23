@@ -63,6 +63,7 @@ private:
             return nullptr;
 
         // Accumulate the value of the root using Horner's method
+        // TODO: into a separate function
         int root_val = 0;
         int i = start;
         bool is_root_val_negative = data[start] == '-';
