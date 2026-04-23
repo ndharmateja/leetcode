@@ -24,6 +24,8 @@ private:
 
     static int solution1(TreeNode *root, int k)
     {
+        // Do the inorder traversal of the tree and get the k-1 th (as k ia 1-indexed)
+        // value in the inorder result
         std::vector<int> result;
         inorder_traversal(root, result);
         return result[k - 1];
