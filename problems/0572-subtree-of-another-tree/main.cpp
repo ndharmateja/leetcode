@@ -77,6 +77,11 @@ private:
      */
     static bool solution3(TreeNode *root, TreeNode *sub_root) { return false; }
 
+    /**
+     * TODO: Merkle Hashing: Pre-calculate a hash for every node in the sub_root tree based on its value and its children's hashes
+     */
+    static bool solution4(TreeNode *root, TreeNode *sub_root) { return false; }
+
 public:
     bool isSubtree(TreeNode *root, TreeNode *sub_root) { return solution2(root, sub_root); }
 };
