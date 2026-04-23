@@ -31,7 +31,7 @@ private:
         // The height of the tree is: the max between the heights of the subtrees + 1
         auto [left_height, left_diameter] = find_height_and_diameter(root->left);
         auto [right_height, right_diameter] = find_height_and_diameter(root->right);
-        int height = std::max({left_height, right_height}) + 1;
+        int height = std::max(left_height, right_height) + 1;
         int diameter = std::max({left_diameter, right_diameter, left_height + right_height + 2});
         return {height, diameter};
     }
