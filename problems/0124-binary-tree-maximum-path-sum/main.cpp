@@ -18,7 +18,7 @@ private:
     static inline const int neg_inf = std::numeric_limits<int>::min();
 
     /**
-     * returns negative infinity if any of the values is negative infinity
+     * To avoid overflows, returns negative infinity if any of the values is negative infinity
      * otherwise returns the sum
      */
     static int sum(int x, int y, int z = 0)
