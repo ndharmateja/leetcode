@@ -35,6 +35,11 @@ private:
 
     static int solution1(TreeNode *root) { return solution1(root, std::numeric_limits<int>::min()); }
 
+    /**
+     * TODO: level order traversal solution
+     */
+    static int solution2(TreeNode *root) { return -1; }
+
 public:
     int goodNodes(TreeNode *root) { return solution1(root); }
 };
