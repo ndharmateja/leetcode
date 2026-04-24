@@ -1,4 +1,7 @@
 #include <limits>
+#include <queue>
+#include <utility>
+#include <algorithm>
 
 class Solution
 {
@@ -28,6 +31,7 @@ private:
             count = 1;
             max_so_far = root->val;
         }
+
         // And we compute the total #good nodes in the subtree by recursively calling it on
         // the left and right subtrees
         return count + solution1(root->left, max_so_far) + solution1(root->right, max_so_far);
@@ -36,9 +40,39 @@ private:
     static int solution1(TreeNode *root) { return solution1(root, std::numeric_limits<int>::min()); }
 
     /**
-     * TODO: level order traversal solution
+     * Level order traversal solution
      */
-    static int solution2(TreeNode *root) { return -1; }
+    static int solution2(TreeNode *root)
+    {
+        // Base case
+        if (!root)
+            return 0;
+
+        // We use level order traversal where in the queue we store the pair
+        // of the tree node and also the max value along the path
+        // from the root to the node
+        int num_good_nodes = 0;
+        std::queue<std::pair<TreeNode *, int>> q;
+        q.push({root, root->val});
+        while (!q.empty())
+        {
+            // Pop the node from the queue and see if it is a good node
+            auto pair = q.front();
+            q.pop();
+            TreeNode *curr = pair.first;
+            int max_so_far = pair.second;
+            if (curr->val >= max_so_far)
+                num_good_nodes++;
+
+            // Add the children of the node to the queue
+            if (curr->left)
+                q.push({curr->left, std::max(curr->left->val, max_so_far)});
+            if (curr->right)
+                q.push({curr->right, std::max(curr->right->val, max_so_far)});
+        }
+
+        return num_good_nodes;
+    }
 
 public:
     int goodNodes(TreeNode *root) { return solution1(root); }
