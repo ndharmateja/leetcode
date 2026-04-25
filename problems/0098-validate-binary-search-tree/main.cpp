@@ -1,19 +1,19 @@
 #include <limits>
 #include <stack>
 
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
 class Solution
 {
 private:
-    struct TreeNode
-    {
-        int val;
-        TreeNode *left;
-        TreeNode *right;
-        TreeNode() : val(0), left(nullptr), right(nullptr) {}
-        TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-        TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-    };
-
     static bool solution1(TreeNode *root, long long min, long long max)
     {
         // If no node, it is trivially true
