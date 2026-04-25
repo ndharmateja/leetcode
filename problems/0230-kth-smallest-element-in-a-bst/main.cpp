@@ -1,3 +1,4 @@
+#include <stack>
 #include <vector>
 
 class Solution
@@ -32,10 +33,45 @@ private:
     }
 
     /**
-     * TODO: solve using iterative inorder solution
+     * Solve using iterative inorder solution
+     * See problem 94 for more details
      */
-    static int solution2(TreeNode *root, int k) {}
+    static int solution2(TreeNode *root, int k)
+    {
+        // Do an iterative inorder traversal and return the kth element in the traversal
+        std::stack<TreeNode *> stack;
+        TreeNode *curr = root;
+        int count = 0;
+        while (curr || !stack.empty())
+        {
+            while (curr)
+            {
+                stack.push(curr);
+                curr = curr->left;
+            }
+
+            // The top most node element is the current node. Count keeps track of the #nodes
+            // we have seen so far (including the current one)
+            // so if count == k, then it means that this is the kth smallest element (the kth
+            // element in the inorder traversal)
+            // We could directly decrement k instead of count++ and check if k is 0
+            // but this is more readable and intuitive.
+            count++;
+            curr = stack.top();
+            if (count == k)
+                return curr->val;
+
+            // If it is not the kth element, then we pop the element and continue with the inorder
+            // traversal. We are only popping once the check is done so that we don't need to pop
+            // in when we reach the kth element.
+            stack.pop();
+            curr = curr->right;
+        }
+
+        // We will never reach here as the leetcode constraints say that k is in [1, n]
+        throw std::out_of_range("Invalid 'k'.");
+    }
 
 public:
-    int kthSmallest(TreeNode *root, int k) { return solution1(root, k); }
+    int kthSmallest(TreeNode *root, int k) { return solution2(root, k); }
 };
