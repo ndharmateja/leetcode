@@ -264,7 +264,6 @@ namespace Solution1
                 return nullptr;
 
             // Accumulate the value of the root using Horner's method
-            // TODO: into a separate function
             int root_val = 0;
             int i = start;
             bool is_root_val_negative = data[start] == '-';
@@ -287,7 +286,6 @@ namespace Solution1
             if (i > end)
                 return root;
 
-            // TODO: Linearly parse it without having to first find the end
             // Find the closing bracket corresponding to the opening paranthesis at 'i'
             // and deserialize the left subtree
             int left_closing_index = find_closing_paranthesis(data, i);
