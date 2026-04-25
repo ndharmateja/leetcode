@@ -79,6 +79,7 @@ private:
 
     /**
      * Do an inorder traversal and see if all the values are in sorted order
+     * See problem 94 for more details
      */
     static bool solution3(TreeNode *root)
     {
