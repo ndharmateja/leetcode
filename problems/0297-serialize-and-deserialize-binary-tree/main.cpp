@@ -9,6 +9,10 @@ struct TreeNode
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
+/**
+ * The deserialization works in linear time as it goes just forward
+ * in one pass.
+ */
 namespace Solution2
 {
     class Codec
@@ -180,22 +184,46 @@ namespace Solution2
     };
 }
 
+/**
+ * Deserialization works in n^2 time as it first finds the corresponding
+ * closing paranthesis of the opening bracket and deserializes everything
+ * in between
+ */
 namespace Solution1
 {
     class Codec
     {
     private:
+        /**
+         * Recursively serializes the tree rooted at root according to preorder
+         * traversal. We use empty brackets for empty children as otherwise we
+         * wouldn't know if it is the left/right child when there is only one child
+         *
+         * Eg: If the tree is
+         *       A
+         *      / \
+         *     B   C
+         *    / \
+         *   D   E
+         * Then the serialized string would be: A(B(D()())(E()()))(C())
+         */
         static void serialize(TreeNode *root, std::string &result)
         {
+            // If the root is nullptr, then nothing to add to the string
             if (!root)
                 return;
 
+            // Since it is preorder, we first append the value of the root
             result.append(std::to_string(root->val));
 
+            // We append the serialized string (which is recursively computed)
+            // of the left subtree (could be potentially nullptr in which case empty string)
+            // between paranthesis
             result.push_back('(');
             serialize(root->left, result);
             result.push_back(')');
 
+            // We do the same for the right subtree
             result.push_back('(');
             serialize(root->right, result);
             result.push_back(')');
