@@ -1,4 +1,5 @@
 #include <limits>
+#include <stack>
 
 class Solution
 {
@@ -77,13 +78,70 @@ private:
     }
 
     /**
-     * TODO: Do an inorder traversal and see if all the values are in sorted order
+     * Do an inorder traversal and see if all the values are in sorted order
      */
     static bool solution3(TreeNode *root)
     {
-        return false;
+        // Edge case (not necessary in leetcode as there is atleast one node)
+        // if (!root)
+        //     return true;
+
+        // When we do the iterative inorder traversal, we start curr as the root
+        // and proceed by adding to the stack and updating the curr accordingly
+        // For this particular problem that causes an issue as the values in the nodes
+        // are in the range of [-2^31, 2^31-1], so we have trouble initializing the prev_value
+        // with -2^31 as we wouldn't know if it is the initial value or an actual value
+        // Another idea is to have an if statement with a flag/std::optional to see if it is the initial value
+        // but that would require an if check every iteration.
+        // Another solution is make the prev_value as long with a value < -2^31 and cast each value
+        // into a long before checking if it is greater than the prev value.
+        // So the idea is to proceed with the inorder until we find the min and init the prev value
+        // and then continue the inorder traversal in the main loop
+        std::stack<TreeNode *> stack;
+        TreeNode *curr = root;
+        while (curr->left)
+        {
+            stack.push(curr);
+            curr = curr->left;
+        }
+
+        // At this point curr contains the min value in the tree, so we can init
+        // prev_value with this
+        int prev_value = curr->val;
+
+        // After this curr should move to its right and continue the main loop
+        curr = curr->right;
+
+        // Main loop
+        while (curr || !stack.empty())
+        {
+            // As long as curr is not null, keep moving to the left and all the nodes
+            // to the stack
+            while (curr)
+            {
+                stack.push(curr);
+                curr = curr->left;
+            }
+
+            // At this point, curr is null and we need to process the top most node on the stack
+            curr = stack.top();
+            stack.pop();
+
+            // This value should be strictly greater than the previous value
+            // otherwise it is not a valid BST with unique values
+            if (curr->val <= prev_value)
+                return false;
+
+            // Update the prev_val and curr node
+            prev_value = curr->val;
+            curr = curr->right;
+        }
+
+        // If we reach this point, then we don't have any out of order elements in the inorder traversal
+        // so it is a valid BST
+        return true;
     }
 
 public:
-    bool isValidBST(TreeNode *root) { return solution2(root); }
+    bool isValidBST(TreeNode *root) { return solution3(root); }
 };
