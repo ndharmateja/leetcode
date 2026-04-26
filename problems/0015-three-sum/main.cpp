@@ -97,8 +97,63 @@ private:
             // we already found the triplets for as the first number
             // Move i such that it is not the same as nums[i] because we already covered triplets
             // as nums[i] as the first number
-            int i_num = nums[i];
-            while (i < n - 2 && nums[i] == i_num)
+            i++;
+            while (i < n - 2 && nums[i] == nums[i - 1])
+                i++;
+        }
+
+        // Return the result
+        return result;
+    }
+
+    /**
+     * Same as solution1 except there is no function call to find the two sum
+     */
+    static std::vector<std::vector<int>> solution2(std::vector<int> &nums)
+    {
+        int n{static_cast<int>(nums.size())};
+        std::vector<std::vector<int>> result;
+        std::sort(nums.begin(), nums.end());
+
+        int i = 0;
+        while (i < n - 2)
+        {
+            // Find all the pairs of numbers that add up to -nums[i] so that the
+            // triplet adds up to 0
+            int lo = i + 1, hi = n - 1;
+            while (lo < hi)
+            {
+                if (nums[lo] + nums[hi] < -nums[i])
+                    lo++;
+                else if (nums[lo] + nums[hi] > -nums[i])
+                    hi--;
+                else
+                {
+                    // It means we found a pair of indices lo and hi such that nums[lo] + nums[hi] = -nums[i]
+                    // so we record the triplet
+                    result.push_back({nums[i], nums[lo], nums[hi]});
+
+                    // To find a different two sum that adds up to -nums[i]
+                    // nums[lo] should be a different value
+                    // so we move lo until it is a different number
+                    lo++;
+                    while (lo < hi && nums[lo] == nums[lo - 1])
+                        lo++;
+
+                    // We can move hi also to the left until it is a different number
+                    hi--;
+                    while (lo < hi && nums[hi] == nums[hi + 1])
+                        hi--;
+                }
+            }
+
+            // There shouldn't be any duplicate triplets
+            // So we can move i such that it points to a different number than the one
+            // we already found the triplets for as the first number
+            // Move i such that it is not the same as nums[i] because we already covered triplets
+            // as nums[i] as the first number
+            i++;
+            while (i < n - 2 && nums[i] == nums[i - 1])
                 i++;
         }
 
@@ -107,5 +162,5 @@ private:
     }
 
 public:
-    std::vector<std::vector<int>> threeSum(std::vector<int> &nums) { return solution1(nums); }
+    std::vector<std::vector<int>> threeSum(std::vector<int> &nums) { return solution2(nums); }
 };
