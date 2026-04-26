@@ -39,6 +39,8 @@ private:
     static int solution1(std::vector<int> &cost)
     {
         int n{static_cast<int>(cost.size())};
+        if (n <= 1)
+            return 0;
         int prev_cost_2{0}, prev_cost_1{0}, curr_cost;
         for (int i = 2; i <= n; i++)
         {
