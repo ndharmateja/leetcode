@@ -1,3 +1,5 @@
+#include <string>
+
 class Solution
 {
 private:
@@ -73,9 +75,68 @@ private:
     }
 
     /**
-     * TODO: Serialize both trees and do a substring search algorithm
+     * Recursively serializes the tree rooted at root according to preorder
+     * traversal. We use empty brackets for empty children as otherwise we
+     * wouldn't know if it is the left/right child when there is only one child
+     *
+     * See problem 297 for more details. There we didn't use paranthesis around the root value.
+     *
+     * Eg: If the tree is
+     *       A
+     *      / \
+     *     B   C
+     *    / \
+     *   D   E
+     * Then the serialized string would be: (A)((B)((D)()())((E)()()))((C)())
      */
-    static bool solution3(TreeNode *root, TreeNode *sub_root) { return false; }
+    static void serialize(TreeNode *root, std::string &result)
+    {
+        // If the root is nullptr, then nothing to add to the string
+        if (!root)
+            return;
+
+        // Since it is preorder, we first append the value of the root
+        // We also add the parenthesis around the root value
+        // to avoid issues with 12()() and 2()() even though 2()() isn't a subtree
+        // of 12()(), it is a substring
+        result.push_back('(');
+        result.append(std::to_string(root->val));
+        result.push_back(')');
+
+        // We append the serialized string (which is recursively computed)
+        // of the left subtree (could be potentially nullptr in which case empty string)
+        // between paranthesis
+        result.push_back('(');
+        serialize(root->left, result);
+        result.push_back(')');
+
+        // We do the same for the right subtree
+        result.push_back('(');
+        serialize(root->right, result);
+        result.push_back(')');
+    }
+
+    static std::string serialize(TreeNode *root)
+    {
+        std::string result;
+        serialize(root, result);
+        return result;
+    }
+
+    /**
+     * TODO: Use a linear substring search algo like KMP or Rabin-Karp or Boyer-Moore etc
+     */
+    static bool is_substring(std::string &s1, std::string &s2) { return s1.find(s2) != std::string::npos; }
+
+    /**
+     * Serialize both trees and do a substring search algorithm
+     */
+    static bool solution3(TreeNode *root, TreeNode *sub_root)
+    {
+        std::string tree_string = serialize(root);
+        std::string subtree_string = serialize(sub_root);
+        return is_substring(tree_string, subtree_string);
+    }
 
     /**
      * TODO: Merkle Hashing: Pre-calculate a hash for every node in the sub_root tree based on its value and its children's hashes
@@ -83,5 +144,5 @@ private:
     static bool solution4(TreeNode *root, TreeNode *sub_root) { return false; }
 
 public:
-    bool isSubtree(TreeNode *root, TreeNode *sub_root) { return solution2(root, sub_root); }
+    bool isSubtree(TreeNode *root, TreeNode *sub_root) { return solution3(root, sub_root); }
 };
