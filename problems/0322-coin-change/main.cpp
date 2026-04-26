@@ -7,6 +7,12 @@ class Solution
 
     /**
      * Bottom up DP
+     *
+     * Theta(nc) time and Theta(n) space
+     * where n = amount and c = #coins
+     * 
+     * which is pseudo polynomial as n is exponential in terms of the #bits (lg n)
+     * which is the length of the input
      */
     static int solution1(const std::vector<int> &coins, int amount)
     {
