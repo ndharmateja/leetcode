@@ -7,8 +7,11 @@ class Solution
 private:
     /**
      * Bottom up DP solution
+     *
+     * Theta(mn) time and Theta(mn) space solution
+     * where m = len(s1) and n = len(s2)
      */
-    static int solution1(std::string s1, std::string s2)
+    static int solution1(const std::string &s1, const std::string &s2)
     {
         // DP solution:
         // say m = len(s1), n = len(s2), LCS = longest common subsequence
@@ -51,9 +54,18 @@ private:
      * Space optimized bottom up DP. Using a 1xn array (exchange s1 and s2 to keep
      * n as the smaller if necessary). Use a temporary variable to keep of the top left
      * as that would be overwritten as we are using a 1xn array
+     *
+     * Theta(mn) time and Theta(min{m, n}) space solution
+     * where m = len(s1) and n = len(s2)
      */
-    static int solution2(std::string s1, std::string s2)
+    static int solution2(const std::string &text1, const std::string &text2)
     {
+        // Make sure that n < m to optimize space further
+        // so that s2 will always have the smaller string
+        // Create references s1 and s2 accordingly
+        const std::string &s1 = text1.size() <= text2.size() ? text2 : text1;
+        const std::string &s2 = text1.size() <= text2.size() ? text1 : text2;
+
         // Create a row filled with 0s
         int m{static_cast<int>(s1.size())}, n{static_cast<int>(s2.size())};
         std::vector<int> dp_row(n + 1);
@@ -82,5 +94,5 @@ private:
     }
 
 public:
-    int longestCommonSubsequence(std::string s1, std::string s2) { return solution2(s1, s2); }
+    int longestCommonSubsequence(const std::string &s1, const std::string &s2) { return solution2(s1, s2); }
 };
