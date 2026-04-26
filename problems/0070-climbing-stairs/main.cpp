@@ -58,6 +58,34 @@ private:
         return curr;
     }
 
+    /**
+     * Top down approach
+     */
+    static int solution3(int n, std::vector<int> &memo)
+    {
+        // If already contained in memo, we return the answer
+        if (memo[n] != -1)
+            return memo[n];
+
+        // Base cases
+        if (n == 0 || n == 1)
+            memo[n] = 1;
+
+        // General case
+        else
+            memo[n] = solution3(n - 2, memo) + solution3(n - 1, memo);
+
+        // Return the result
+        return memo[n];
+    }
+
+    static int solution3(int n)
+    {
+        // We use a default value of -1 in the memo
+        std::vector<int> memo(n + 1, -1);
+        return solution3(n, memo);
+    }
+
 public:
     int climbStairs(int n) { return solution1(n); }
 };
