@@ -52,8 +52,35 @@ private:
      * n as the smaller if necessary). Use a temporary variable to keep of the top left
      * as that would be overwritten as we are using a 1xn array
      */
-    static int solution1(std::string s1, std::string s2) {}
+    static int solution2(std::string s1, std::string s2)
+    {
+        // Create a row filled with 0s
+        int m{static_cast<int>(s1.size())}, n{static_cast<int>(s2.size())};
+        std::vector<int> dp_row(n + 1);
+
+        // Compute the DP values row by row but overwriting the same vector with the new values
+        for (int i = 1; i <= m; i++)
+        {
+            int previous_top_left = 0;
+            for (int j = 1; j <= n; j++)
+            {
+                // Store the value at j as the next iteration's top left
+                int temp = dp_row[j];
+
+                // DP update
+                dp_row[j] = s1[i - 1] == s2[j - 1]
+                                ? previous_top_left + 1
+                                : std::max(dp_row[j - 1], dp_row[j]);
+
+                // Update the top left value for the next iteration
+                previous_top_left = temp;
+            }
+        }
+
+        // Return the result
+        return dp_row[n];
+    }
 
 public:
-    int longestCommonSubsequence(std::string s1, std::string s2) { return solution1(s1, s2); }
+    int longestCommonSubsequence(std::string s1, std::string s2) { return solution2(s1, s2); }
 };
