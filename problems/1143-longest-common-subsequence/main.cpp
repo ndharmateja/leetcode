@@ -1,0 +1,59 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+class Solution
+{
+private:
+    /**
+     * Bottom up DP solution
+     */
+    static int solution1(std::string s1, std::string s2)
+    {
+        // DP solution:
+        // say m = len(s1), n = len(s2), LCS = longest common subsequence
+        // dp[i][j]: the length of the LCS between s1[:i] which is a prefix of s1 of length i
+        //           and s2[:j] which is a prefix of s2 of length j (python notation)
+        // Base cases: dp[0][.] = dp[.][0] = 0 as the LCS between an empty string and anything
+        //             is just the empty string
+        // Recurrence relation:
+        // dp[i][j] = dp[i-1][j-1] + 1             if s1[i-1] == s2[j-1]
+        //          = max{dp[i][j-1], dp[i-1][j]}  otherwise
+        // Order of filling the table:
+        // We fill row by row going from left to right as we need the top value, the left value
+        // and the top left values
+        // Final answer: dp[m][n]
+
+        // The DP array has to be of size m+1 x n+1
+        int m{static_cast<int>(s1.size())}, n{static_cast<int>(s2.size())};
+        std::vector<std::vector<int>> dp(m + 1, std::vector<int>(n + 1));
+
+        // Base cases
+        // Fill the first column with 0s
+        for (int i = 0; i <= m; i++)
+            dp[i][0] = 0;
+        // Fill the first row with 0s
+        for (int j = 1; j <= n; j++)
+            dp[0][j] = 0;
+
+        // Fill the DP table row by row from left to right
+        for (int i = 1; i <= m; i++)
+            for (int j = 1; j <= n; j++)
+                dp[i][j] = s1[i - 1] == s2[j - 1]
+                               ? dp[i - 1][j - 1] + 1
+                               : std::max(dp[i - 1][j], dp[i][j - 1]);
+
+        // Return the answer
+        return dp[m][n];
+    }
+
+    /**
+     * Space optimized bottom up DP. Using a 1xn array (exchange s1 and s2 to keep
+     * n as the smaller if necessary). Use a temporary variable to keep of the top left
+     * as that would be overwritten as we are using a 1xn array
+     */
+    static int solution1(std::string s1, std::string s2) {}
+
+public:
+    int longestCommonSubsequence(std::string s1, std::string s2) { return solution1(s1, s2); }
+};
