@@ -14,7 +14,6 @@ private:
     };
     Node *head_sentinel;
     Node *tail_sentinel;
-    int size;
     int capacity;
     std::unordered_map<int, Node *> key_to_node_map;
 
@@ -43,7 +42,7 @@ private:
         to_insert->next->prev = to_insert;
     }
 
-    void make_node_most_recently_used(Node *node)
+    void move_last(Node *node)
     {
         // If the node is already at the end, we don't need to do anything
         if (node->next == this->tail_sentinel)
@@ -63,7 +62,7 @@ public:
     // Invariant is still maintained as the relative ordering of the
     // remaining nodes is not changed
     // The unordered map maps the keys to the Nodes in the DLL for Theta(1) access
-    LRUCache(int capacity) : size{0}, capacity{capacity}, key_to_node_map{static_cast<size_t>(capacity)}
+    LRUCache(int capacity) : capacity{capacity}, key_to_node_map{static_cast<size_t>(capacity)}
     {
         this->head_sentinel = new Node();
         this->tail_sentinel = new Node();
@@ -90,7 +89,7 @@ public:
         if (this->key_to_node_map.count(key))
         {
             Node *node = this->key_to_node_map.at(key);
-            make_node_most_recently_used(node);
+            move_last(node);
             return node->val;
         }
         return -1;
@@ -104,7 +103,7 @@ public:
         {
             Node *node = this->key_to_node_map.at(key);
             node->val = value;
-            make_node_most_recently_used(node);
+            move_last(node);
             return;
         }
 
@@ -119,7 +118,7 @@ public:
         // we reserved the capacity of the unordered_map as the capacity itself
         // If we insert first and then delete, the #elements in the map
         // will be capacity + 1
-        if (size == capacity)
+        if (key_to_node_map.size() == capacity)
         {
             // Delete the least recently used node from the DLL
             Node *to_delete = this->head_sentinel->next;
@@ -131,7 +130,6 @@ public:
 
             // Delete the key from the map
             this->key_to_node_map.erase(key_to_delete);
-            this->size--;
         }
 
         // Create node and insert it into the DLL and add the map entry
@@ -139,13 +137,5 @@ public:
         Node *node = new Node{key, value};
         insert_before(this->tail_sentinel, node);
         this->key_to_node_map[key] = node;
-        this->size++;
     }
 };
-
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache* obj = new LRUCache(capacity);
- * int param_1 = obj->get(key);
- * obj->put(key,value);
- */
