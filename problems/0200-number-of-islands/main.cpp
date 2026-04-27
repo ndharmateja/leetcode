@@ -128,6 +128,13 @@ private:
     static int solution2(std::vector<std::vector<char>> &grid) { return solution(grid, dfs_iterative); }
     static int solution3(std::vector<std::vector<char>> &grid) { return solution(grid, bfs); }
 
+    /**
+     * Note: We can also use a disjoint sets solution with the initial number
+     * of connected components as the number of 1s
+     * and then we can keep unioning as we go through each edge
+     * See problem 323 for more details
+     */
+
 public:
     int numIslands(std::vector<std::vector<char>> &grid) { return solution2(grid); }
 };
