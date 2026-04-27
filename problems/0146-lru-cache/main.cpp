@@ -112,12 +112,14 @@ public:
         // and insert it at the end of the list as it is the most recently used
 
         // If the cache is full, we remove the least recently used node
-        // which is the first node from the DLL
-        // and also from the map and decrement size
+        // which is the first node from the DLL and also from the map
         // We are removing first before inserting the new node because
         // we reserved the capacity of the unordered_map as the capacity itself
         // If we insert first and then delete, the #elements in the map
         // will be capacity + 1
+        // We can use map's size as the number of elements in our cache
+        // (which is the number of nodes in the DLL) as we are only storing the
+        // active keys in the hash map
         if (key_to_node_map.size() == capacity)
         {
             // Delete the least recently used node from the DLL
