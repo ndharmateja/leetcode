@@ -1,6 +1,7 @@
 #include <vector>
 #include <utility>
 #include <stack>
+#include <queue>
 #include <functional>
 
 class Solution
@@ -37,7 +38,7 @@ private:
         stack.push({start_r, start_c});
         grid[start_r][start_c] = '-';
 
-        // As long as the stack is empty
+        // As long as the stack is not empty
         while (!stack.empty())
         {
             // pop a cell and mark it as visited and add its unvisited neighbours
@@ -52,6 +53,42 @@ private:
                 if ((0 <= new_r && new_r < num_rows) && (0 <= new_c && new_c < num_cols) && grid[new_r][new_c] == '1')
                 {
                     stack.push({new_r, new_c});
+
+                    // We will push it and mark it as visited immediately so that we don't add
+                    // duplicate cells to the stack
+                    grid[new_r][new_c] = '-';
+                }
+            }
+        }
+    }
+
+    /**
+     * BFS function that explores all cells reachable from a given cell
+     */
+    static void bfs(std::vector<std::vector<char>> &grid, int start_r, int start_c, int num_rows, int num_cols)
+    {
+        // Use a queue for bfs
+        std::queue<std::pair<int, int>> queue;
+
+        // Add the start cell to the queue and mark it as visited
+        queue.push({start_r, start_c});
+        grid[start_r][start_c] = '-';
+
+        // As long as the queue is not empty
+        while (!queue.empty())
+        {
+            // pop a cell and mark it as visited and add its unvisited neighbours
+            // to the queue
+            auto [r, c] = queue.front();
+            queue.pop();
+
+            // Visit all unvisited neighbours that are 1s
+            for (const auto &[dr, dc] : directions)
+            {
+                int new_r{r + dr}, new_c{c + dc};
+                if ((0 <= new_r && new_r < num_rows) && (0 <= new_c && new_c < num_cols) && grid[new_r][new_c] == '1')
+                {
+                    queue.push({new_r, new_c});
 
                     // We will push it and mark it as visited immediately so that we don't add
                     // duplicate cells to the stack
@@ -89,6 +126,7 @@ private:
 
     static int solution1(std::vector<std::vector<char>> &grid) { return solution(grid, dfs_recursive); }
     static int solution2(std::vector<std::vector<char>> &grid) { return solution(grid, dfs_iterative); }
+    static int solution3(std::vector<std::vector<char>> &grid) { return solution(grid, bfs); }
 
 public:
     int numIslands(std::vector<std::vector<char>> &grid) { return solution2(grid); }
