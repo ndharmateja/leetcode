@@ -1,17 +1,19 @@
 #include <unordered_map>
 
+struct Node
+{
+    int key;
+    int val;
+    Node *prev;
+    Node *next;
+    Node() : key{0}, val{0}, prev{nullptr}, next{nullptr} {}
+    Node(int key, int val) : key{key}, val{val}, prev(nullptr), next(nullptr) {}
+};
+
 class LRUCache
 {
 private:
-    struct Node
-    {
-        int key;
-        int val;
-        Node *prev;
-        Node *next;
-        Node() : key{0}, val{0}, prev{nullptr}, next{nullptr} {}
-        Node(int key, int val) : key{key}, val{val}, prev(nullptr), next(nullptr) {}
-    };
+    // Instance variables
     Node *head_sentinel;
     Node *tail_sentinel;
     int capacity;
