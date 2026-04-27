@@ -122,7 +122,7 @@ private:
     {
         // Start at char at i and expand outwards to see if it is a palindrome
         // and if it is a palindrome
-        // update the start and end positions of the largest palindrome
+        // update the start and max_length of the largest palindrome
         int n{static_cast<int>(s.size())};
         int start{0}, max_length{0};
         for (int i = 0; i < n; i++)
@@ -132,11 +132,11 @@ private:
             // as 1 lengthed palindrome is already recorded
             // by initializing start = 0, max_length = 1 => first char is the initial
             // longest palindrome
-            run_expanding_around_center(s, i - 1, i + 1, start, max_length);
+            run_expanding_around_center(s, n, i - 1, i + 1, start, max_length);
 
             // even lengthed palindromes
             // We can start with palindromes of length 2
-            run_expanding_around_center(s, i, i + 1, start, max_length);
+            run_expanding_around_center(s, n, i, i + 1, start, max_length);
         }
 
         // Get the substring starting at start and ending at end (inclusive)
@@ -144,9 +144,8 @@ private:
         return s.substr(start, max_length);
     }
 
-    static void run_expanding_around_center(const std::string &s, int l, int r, int &start, int &max_length)
+    static void run_expanding_around_center(const std::string &s, int n, int l, int r, int &start, int &max_length)
     {
-        int n{static_cast<int>(s.size())};
         while (l >= 0 && r < n && s[l] == s[r])
         {
             // if length of current pallindrome (from l to r inclusive)
