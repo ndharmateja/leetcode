@@ -154,7 +154,7 @@ private:
             if (r - l + 1 > max_length)
             {
                 start = l;
-                max_length = r;
+                max_length = r - l + 1;
             }
             l--;
             r++;
