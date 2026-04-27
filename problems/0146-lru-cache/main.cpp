@@ -62,6 +62,7 @@ public:
     // Invariant is still maintained as the relative ordering of the
     // remaining nodes is not changed
     // The unordered map maps the keys to the Nodes in the DLL for Theta(1) access
+    // We are also reserving the map with capacity to prevent rehashes
     LRUCache(int capacity) : capacity{capacity}, key_to_node_map{static_cast<size_t>(capacity)}
     {
         this->head_sentinel = new Node();
