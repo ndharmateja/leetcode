@@ -124,7 +124,7 @@ private:
         // and if it is a palindrome
         // update the start and max_length of the largest palindrome
         int n{static_cast<int>(s.size())};
-        int start{0}, max_length{0};
+        int start{0}, max_length{1};
         for (int i = 0; i < n; i++)
         {
             // odd lengthed palindromes
@@ -168,5 +168,5 @@ private:
     static std::string solution3(const std::string &s) { return ""; }
 
 public:
-    std::string longestPalindrome(std::string s) { return solution1(s); }
+    std::string longestPalindrome(std::string s) { return solution2(s); }
 };
