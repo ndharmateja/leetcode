@@ -32,7 +32,10 @@ private:
     {
         // Use a stack for dfs
         std::stack<std::pair<int, int>> stack;
+
+        // Add the start cell to the stack and mark it as visited
         stack.push({start_r, start_c});
+        grid[start_r][start_c] = '-';
 
         // As long as the stack is empty
         while (!stack.empty())
