@@ -77,6 +77,8 @@ private:
         DisjointSets ds(n);
 
         // For each edge do a union of vertices connected by the edge
+        // We could have had a num_components variable here too, decrementing each time
+        // there is a successful union between two connected components
         for (const auto &edge : edges)
             ds.connect(edge[0], edge[1]);
 
