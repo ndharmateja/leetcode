@@ -89,10 +89,8 @@ private:
      */
     static int solution3(std::vector<int> &nums)
     {
-        // Take only the unique elements and sort it
-        std::sort(nums.begin(), nums.end());
-
         // Return the max sequence length from a sorted vector of unique numbers
+        std::sort(nums.begin(), nums.end());
         return find_longest_consecutive_seq_len_in_sorted(nums);
     }
 
