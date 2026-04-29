@@ -65,6 +65,26 @@ private:
          * we don't need the bottom left values below the diagonal computed.
          * So if i - j > m - n, then we don't need those values.
          *
+         * * Example table
+         *          j
+         *       0 1 2 3
+         *       . B A G
+         *   0 . 1 0 0 0
+         *        ↘↓
+         *   1 B 1 1 0 0
+         *         ↓↘↓
+         *   2 A 1 1 1 0
+         *        ↘↓ ↓ ↓
+         *   3 B 1 2 1 0
+         *         ↓ ↓↘↓
+         * i 4 G 1 2 1 1
+         *        ↘↓ ↓ ↓
+         *   5 B - 3 1 1
+         *          ↘↓ ↓
+         *   6 A - - 4 1
+         *            ↘↓
+         *   7 G - - - 5
+         *
          * * Order of filling the table:
          * We can fill row by row going from left to right as we only need the
          * value on the top left and value on the top
