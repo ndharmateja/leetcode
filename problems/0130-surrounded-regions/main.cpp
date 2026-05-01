@@ -64,6 +64,7 @@ private:
             // Add each unvisited neighbour (only a neighbour if cell has 'O')
             // And it is visited if cell has '-'
             // so we only need to check if cell has 'O' to check if it is an unvisited neighbour
+            // !Mark a cell visited as soon as we discover it to avoid adding same cells multiple times to the queue
             for (auto [dr, dc] : directions)
             {
                 int new_r = r + dr;
