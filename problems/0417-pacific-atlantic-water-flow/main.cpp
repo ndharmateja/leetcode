@@ -47,6 +47,7 @@ private:
             // The way we check if there is an edge from (r, c) -> (new_r, new_c)
             // in the *reverse graph* is if the heights[r][c] <= heights[new_r][new_c]
             // as in the original graph there is an edge from (r, c) -> (r', c') if h[r][c] >= h[r'][c']
+            // !Mark a cell visited as soon as we discover it to avoid adding same cells multiple times to the queue
             for (auto [dr, dc] : directions)
             {
                 int new_r = r + dr;
