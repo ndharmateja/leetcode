@@ -70,9 +70,10 @@ namespace Solution1
             // !Self loops are possible
             // So if there is an edge from a node to itself, it means that course is a prerequisite
             // to itself => cycle => we can return false
-            if (edge.front() == edge.back())
+            int from{edge.back()}, to{edge.front()};
+            if (from == to)
                 return false;
-            adj[edge.back()].push_back(edge.front());
+            adj[from].push_back(to);
         }
 
         // Run DFS starting from each unvisited vertex and explore all the nodes
@@ -151,9 +152,10 @@ namespace Solution2
             // !Self loops are possible
             // So if there is an edge from a node to itself, it means that course is a prerequisite
             // to itself => cycle => we can return false
-            if (edge.front() == edge.back())
+            int from{edge.back()}, to{edge.front()};
+            if (from == to)
                 return false;
-            adj[edge.back()].push_back(edge.front());
+            adj[from].push_back(to);
         }
 
         // Run DFS starting from each unvisited vertex and explore all the nodes
