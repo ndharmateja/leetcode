@@ -12,7 +12,7 @@
  */
 namespace Solution1
 {
-    static bool has_cycle(const std::vector<std::vector<int>> &adj_list,
+    static bool has_cycle(const std::vector<std::vector<int>> &adj,
                           int u, std::vector<bool> &visited,
                           std::vector<int> &pre,
                           std::vector<int> &post,
@@ -26,7 +26,7 @@ namespace Solution1
         pre[u] = ++clock;
 
         // Run DFS each of its unvisited neighbours
-        for (int v : adj_list[u])
+        for (int v : adj[u])
         {
             // If u-v is a back edge, we can directly return true
             // u-v is a back edge if v is already visited but not done
@@ -43,7 +43,7 @@ namespace Solution1
             // If DFS on a neighbour returns true, it means that there
             // is a cycle and we don't need to continue running DFS and
             // we can immediately return true without visiting other neighbours
-            if (has_cycle(adj_list, v, visited, pre, post, clock))
+            if (has_cycle(adj, v, visited, pre, post, clock))
                 return true;
         }
 
@@ -64,7 +64,7 @@ namespace Solution1
         // You are given an array prerequisites where prerequisites[i] = [ai, bi]
         // indicates that you must take course bi first if you want to take course ai.
         // So we add an edge from bi to ai indicating that bi has to be done before ai
-        std::vector<std::vector<int>> adj_list(n);
+        std::vector<std::vector<int>> adj(n);
         for (const auto &edge : edges)
         {
             // !Self loops are possible
@@ -72,7 +72,7 @@ namespace Solution1
             // to itself => cycle => we can return false
             if (edge.front() == edge.back())
                 return false;
-            adj_list[edge.back()].push_back(edge.front());
+            adj[edge.back()].push_back(edge.front());
         }
 
         // Run DFS starting from each unvisited vertex and explore all the nodes
@@ -81,7 +81,7 @@ namespace Solution1
         std::vector<bool> visited(n, false);
         std::vector<int> pre(n, -1), post(n, -1);
         for (int i = 0; i < n; i++)
-            if (!visited[i] && has_cycle(adj_list, i, visited, pre, post, clock))
+            if (!visited[i] && has_cycle(adj, i, visited, pre, post, clock))
                 return false;
 
         // If we reached here it means that we don't have a cycle
@@ -107,14 +107,14 @@ namespace Solution2
         VISITED
     };
 
-    static bool has_cycle(const std::vector<std::vector<int>> &adj_list,
+    static bool has_cycle(const std::vector<std::vector<int>> &adj,
                           int u, std::vector<State> &state)
     {
         // Mark node as visited
         state[u] = State::VISITING;
 
         // Run DFS each of its unvisited neighbours
-        for (int v : adj_list[u])
+        for (int v : adj[u])
         {
             // If u-v is a back edge, we can directly return true
             // u-v is a back edge if v is in visiting state
@@ -124,7 +124,7 @@ namespace Solution2
             // If DFS on a neighbour returns true, it means that there
             // is a cycle and we don't need to continue running DFS and
             // we can immediately return true without visiting other neighbours
-            if (state[v] == State::UNVISITED && has_cycle(adj_list, v, state))
+            if (state[v] == State::UNVISITED && has_cycle(adj, v, state))
                 return true;
         }
 
@@ -145,7 +145,7 @@ namespace Solution2
         // You are given an array prerequisites where prerequisites[i] = [ai, bi]
         // indicates that you must take course bi first if you want to take course ai.
         // So we add an edge from bi to ai indicating that bi has to be done before ai
-        std::vector<std::vector<int>> adj_list(n);
+        std::vector<std::vector<int>> adj(n);
         for (const auto &edge : edges)
         {
             // !Self loops are possible
@@ -153,14 +153,14 @@ namespace Solution2
             // to itself => cycle => we can return false
             if (edge.front() == edge.back())
                 return false;
-            adj_list[edge.back()].push_back(edge.front());
+            adj[edge.back()].push_back(edge.front());
         }
 
         // Run DFS starting from each unvisited vertex and explore all the nodes
         // that it can reach and also see if there is a cycle
         std::vector<State> state(n, State::UNVISITED);
         for (int i = 0; i < n; i++)
-            if (state[i] == State::UNVISITED && has_cycle(adj_list, i, state))
+            if (state[i] == State::UNVISITED && has_cycle(adj, i, state))
                 return false;
 
         // If we reached here it means that we don't have a cycle
