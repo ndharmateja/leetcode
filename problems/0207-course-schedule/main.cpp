@@ -1,5 +1,6 @@
 #include <vector>
 #include <stack>
+#include <queue>
 
 /**
  * Finding if they can be topologically sorted is equivalent to finding
@@ -168,6 +169,77 @@ namespace Solution2
         // If we reached here it means that we don't have a cycle
         // as we'd have already returned false if there was a cycle
         return true;
+    }
+}
+
+/**
+ * Kahn's algorithm. Can be parallelized.
+ * A DAG will always have a source. So we can keep adding the sources (and removing
+ * them from the graph) to form the topological sort.
+ */
+namespace Solution3
+{
+    /**
+     * Kahn's algorithm. Try linearizing it directly using a queue of sources.
+     * At the end if the number of elements in the result are less than n, then
+     * it means there was a cycle and we couldn't linearize.
+     */
+    static bool canFinish(int n, const std::vector<std::vector<int>> &edges)
+    {
+        // Queue for storing the sources and the vector for the indegree
+        std::vector<int> in_degree(n, 0);
+        std::queue<int> src_vertices;
+        int num_vertices_linearized{0};
+
+        // Construct the adjacency list
+        // You are given an array prerequisites where prerequisites[i] = [ai, bi]
+        // indicates that you must take course bi first if you want to take course ai.
+        // So we add an edge from bi to ai indicating that bi has to be done before ai
+        std::vector<std::vector<int>> adj(n);
+        for (const auto &edge : edges)
+        {
+            // !Self loops are possible
+            // So if there is an edge from a node to itself, it means that course is a prerequisite
+            // to itself => cycle => we can return false
+            int from{edge.back()}, to{edge.front()};
+            if (from == to)
+                return false;
+
+            // Add the edge to the adj list and update the indegree
+            adj[from].push_back(to);
+            in_degree[to]++;
+        }
+
+        // Add all the indegree 0 vertices to the queue (sources)
+        for (int u = 0; u < n; u++)
+            if (!in_degree[u])
+                src_vertices.push(u);
+
+        // As long as the queue is not empty, we can remove a source
+        // and decrement the in-degree of all the vertices it points to
+        while (!src_vertices.empty())
+        {
+            // Pop an element and decrement the indegree of all its neighbours
+            // As we are removing a source from the graph, we increment the number of linearized vertices
+            int u = src_vertices.front();
+            src_vertices.pop();
+            num_vertices_linearized++;
+
+            // For each edge u->v decrement the indegree of v
+            // and if v beomes a source, we add it to the queue
+            for (int v : adj[u])
+            {
+                in_degree[v]--;
+                if (!in_degree[v])
+                    src_vertices.push(v);
+            }
+        }
+
+        // At this point if the number of elements in the topological sort is same as n
+        // then there wasn't a cycle
+        // Otherwise if there are lesser elements, then there was a cycle and we stopped
+        // finding more sources
+        return num_vertices_linearized == n;
     }
 }
 
