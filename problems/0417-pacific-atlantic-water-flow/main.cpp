@@ -22,6 +22,7 @@ private:
     inline static const std::vector<std::pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     /**
+     * Multi source BFS solution
      * Runs BFS using the elements in the @param queue as the source nodes
      * and populates the @param visited with all the nodes that are reachable from
      * the source nodes in the reverse graph

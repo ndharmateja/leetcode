@@ -8,8 +8,10 @@ private:
     inline static const std::vector<std::pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     /**
+     * Multi source BFS solution
      * Theta(mn) time and O(V) space
      * where m = #rows, n = #cols, V = #verices
+     *
      * See problem 417 for more details. Using a very similar idea.
      */
     static int solution1(std::vector<std::vector<int>> &board)
