@@ -6,6 +6,10 @@
 class Solution
 {
 private:
+    /**
+     * BFS based solution that finds the neighbours dynamically for each word
+     * by mutating each character to a-z
+     */
     static int solution1(const std::string &begin_word, const std::string &end_word, const std::vector<std::string> &word_list)
     {
         // Create a unordered set of the word list
@@ -62,6 +66,9 @@ private:
         return 0;
     }
 
+    /**
+     * BFS based solution that builds the adjacency list of patterns
+     */
     static int solution2(const std::string &begin_word, const std::string &end_word, const std::vector<std::string> &word_list)
     {
         /**
@@ -83,8 +90,6 @@ private:
          *    "co*": ["cog"]
          * }
          */
-        // TODO: think about the memory of vector values in the unordered_map (string values, reference wrappers etc)
-        // TODO: think about the memory of strings in the queue and visited (string values, reference wrappers etc)
         int m{static_cast<int>(begin_word.size())};
         std::string buffer(m, '\0');
         std::unordered_map<std::string, std::vector<std::string>> pattern_adj_list;
@@ -237,12 +242,15 @@ private:
             return 0;
 
         // Create the queue and visited for BFS
-        // The visited vector is of size n+1 to account for the begin word which
-        // might not potentially occur in the word list in which case takes an index of n
-        std::vector<bool> visited(n + 1, false);
+        // The visited vector need not be of size n+1 even though the begin word if
+        // not present in the word list has an index of n+1 as, if the begin word is not
+        // in the word list, it would not appear in any of the adjacency list keys
+        // So we need not keep track of the begin word in the visited vector
+        // If the begin word occurred in the word list, then it will be kept track of
+        // by its index
+        std::vector<bool> visited(n, false);
         std::queue<int> queue;
         queue.push(begin_word_index);
-        visited[begin_word_index] = true;
 
         // BFS main loop
         // layer by layer to keep track of distance
@@ -307,13 +315,3 @@ private:
 public:
     int ladderLength(const std::string &begin_word, const std::string &end_word, const std::vector<std::string> &word_list) { return solution3(begin_word, end_word, word_list); }
 };
-
-#include <iostream>
-int main()
-{
-    //["hot","dot","dog","lot","log","cog"]
-    // hit to cog
-    Solution solution;
-    std::cout << solution.ladderLength("hit", "cog", {"hot", "dot", "dog", "lot", "log", "cog"}) << std::endl;
-    return 0;
-}
