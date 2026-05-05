@@ -312,6 +312,14 @@ private:
         return 0;
     }
 
+    /**
+     * TODO: Bidirectional BFS
+     */
+    static int solution4(const std::string &begin_word, const std::string &end_word, const std::vector<std::string> &word_list)
+    {
+        return -1;
+    }
+
 public:
     int ladderLength(const std::string &begin_word, const std::string &end_word, const std::vector<std::string> &word_list) { return solution3(begin_word, end_word, word_list); }
 };
