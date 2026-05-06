@@ -50,6 +50,16 @@ private:
         }
     }
 
+    static void solution2(std::vector<std::vector<int>> &matrix)
+    {
+        std::reverse(matrix.begin(), matrix.end());
+        int n{static_cast<int>(matrix.size())};
+        int r, c;
+        for (r = 0; r < n - 1; r++)
+            for (c = r + 1; c < n; c++)
+                std::swap(matrix[r][c], matrix[c][r]);
+    }
+
 public:
-    void rotate(std::vector<std::vector<int>> &matrix) { solution1(matrix); }
+    void rotate(std::vector<std::vector<int>> &matrix) { solution2(matrix); }
 };
