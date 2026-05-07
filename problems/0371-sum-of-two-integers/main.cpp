@@ -67,6 +67,28 @@ private:
         return result;
     }
 
+    /**
+     * TODO: Write the explanation and logical argument
+     */
+    static int solution3(int a, int b)
+    {
+        while (b != 0)
+        {
+            // 1. Calculate the sum bits where no carry occurs
+            int sum = a ^ b;
+
+            // 2. Calculate the carry bits and shift them to the next position
+            // We cast to unsigned to avoid undefined behavior with
+            // shifting negative numbers in some C++ standards
+            unsigned int carry = (unsigned int)(a & b) << 1;
+
+            // 3. Update a and b for the next iteration
+            a = sum;
+            b = carry;
+        }
+        return a;
+    }
+
 public:
     int getSum(int a, int b) { return solution2(a, b); }
 };
