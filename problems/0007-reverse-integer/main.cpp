@@ -8,6 +8,11 @@ private:
     static inline const int int_min_val = std::numeric_limits<int>::min();
     static inline const int int_max_val_by_10 = std::numeric_limits<int>::max() / 10;
 
+    /**
+     * Iterative solution
+     * Theta(log x) [= Theta(1) as log x <= 10] time
+     * Theta(1) space
+     */
     static int solution1(int x)
     {
         // If x is int_min_val itself, it has no absolute value
