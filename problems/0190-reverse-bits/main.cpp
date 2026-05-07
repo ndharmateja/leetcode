@@ -71,12 +71,11 @@ private:
      * Similar to solution1 except we directly place the bits of n one by one
      * in the correct position of the result
      */
-    static int solution2(int n)
+    static uint32_t solution2(uint32_t n)
     {
-        int result{0};
+        uint32_t result{0};
         for (int i = 0; i < 31; i++)
         {
-            int bit = n & 1;
             result |= (n & 1) << (31 - i);
             n >>= 1;
         }
