@@ -73,6 +73,8 @@ private:
      */
     static uint32_t solution2(uint32_t n)
     {
+        // Only 31 iterations are needed as the first and last bits are guaranteed to be 0
+        // according to the leetcode constraints
         uint32_t result{0};
         for (int i = 0; i < 31; i++)
         {
@@ -82,6 +84,57 @@ private:
         return result;
     }
 
+    /**
+     * "Divide and Conquer"-istic approach
+     * 5 "iterations" instead of 31/32 for the above solutions
+     */
+    static uint32_t solution3(uint32_t n)
+    {
+        /**
+         * Explanation:
+         * Swap adjacent bit groups of sizes 1, 2, 4, 8, 16
+         *
+         * Eg: abcdefgh
+         * After swapping adjacent bit groups of size 1, we have badcfehg
+         * After swapping adjacent bit groups of size 2, we have dcbahgfe
+         * After swapping adjacent bit groups of size 4, we have hgfedcba
+         */
+
+        // Modifying the input 'n' itself to store the result
+        // Swap adjacent bit groups of size 1
+        // Eg: abcdefgh, 10101010 = 0xAA
+        // ((abcdefgh & 10101010) >> 1) | ((abcdefgh << 1) & 10101010)
+        // = (a0c0e0g0 >> 1) | (bcdefgh0 & 10101010)
+        // = 0a0c0e0g | b0d0f0h0
+        // = badcfehg
+        n = ((n & 0xAAAAAAAA) >> 1) | ((n << 1) & 0xAAAAAAAA);
+
+        // Swap adjacent bit groups of size 2
+        // Eg: abcdefgh, 11001100 = 0xCC
+        // ((abcdefgh & 11001100) >> 2) | ((abcdefgh << 2) & 11001100)
+        // = (ab00ef00 >> 2) | (cdefgh00 & 11001100)
+        // = 00ab00ef | cd00gh00
+        // = cdabghef
+        n = ((n & 0xCCCCCCCC) >> 2) | ((n << 2) & 0xCCCCCCCC);
+
+        // Swap adjacent bit groups of size 4
+        // Eg: abcdefgh, 11110000 = 0xF0
+        // ((abcdefgh & 11110000) >> 4) | ((abcdefgh << 4) & 11110000)
+        // = (abcd0000 >> 4) | (efgh0000 & 11110000)
+        // = 0000abcd | efgh0000
+        // = efghabcd
+        n = ((n & 0xF0F0F0F0) >> 4) | ((n << 4) & 0xF0F0F0F0);
+
+        // Swap adjacent bit groups of size 8
+        n = ((n & 0xFF00FF00) >> 8) | ((n << 8) & 0xFF00FF00);
+
+        // Swap adjacent bit groups of size 16
+        n = ((n & 0xFFFF0000) >> 16) | ((n << 16) & 0xFFFF0000);
+
+        // Return the result
+        return n;
+    }
+
 public:
-    uint32_t reverseBits(uint32_t n) { return solution1(n); }
+    uint32_t reverseBits(uint32_t n) { return solution3(n); }
 };
