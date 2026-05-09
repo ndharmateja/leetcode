@@ -67,28 +67,76 @@ private:
         return result;
     }
 
-    /**
-     * TODO: Write the explanation and logical argument
-     */
-    static int solution3(int a, int b)
+    static int solution3(unsigned a, unsigned b)
     {
-        while (b != 0)
+        /**
+         * Explanation:
+         * Add the two bits at a time in each place to get the sum bits.
+         * Similarly figure out the carry bits in each place.
+         * The carry bits would have to be shifted left by one place, and then
+         * we can add the numbers formed by the sum bits and the carry bits
+         * to get the results (think recursion).
+         *
+         * We can model this as a state machine.
+         * State: Pair of numbers (x, y)
+         * Initial state: (a, b)
+         * Transition: (x, y) -> (number formed by sum bits, number formed by carry bits << 1)
+         * Invariant: For any state (x, y), x + y = a + b
+         * Termination:
+         * Derived variable: #1s in the number formed by carry bits
+         * After the first transition, the carry bits could all be 1s
+         * but we left shift by one place, so the #bits could be 31 max after the first transition
+         * so now the carry number has a 0 in the last place so the new carry won't have a 1 in the last place
+         * so when that new carry is shifted by one place to the left after the second transition
+         * it would have two 0s at the end => atmost 30 0s
+         * We could prove by induction that this is a decreasing natural valued derived variable.
+         * so it terminates.
+         *
+         * Table for sum and carry
+         *  d1  d2 | sum  carry
+         *  0   0  |  0     0
+         *  0   1  |  1     0
+         *  1   0  |  1     0
+         *  1   1  |  0     1
+         *
+         * sum   = d1 ^ d2
+         * carry = d1 & d2
+         *
+         * Eg:
+         *     a =  0111
+         *     b =  1011
+         * a + b = 10010 = 0010 as we discard the last carry bit
+         *
+         * (x=0111,
+         *  y=1011)
+         * sum = 1100, carry = 0011 << 1 = 0110
+         *
+         * (x=1100,
+         *  y=0110)
+         * sum = 1010, carry = 0100 << 1 = 1000
+         *
+         * (x=1010
+         *  y=1000)
+         * sum = 0010, carry = 1000 << 1 = 0000
+         *
+         * (x=0010,
+         *  y=0000)
+         * Answer is x=0010 as y=0000
+         *
+         * We are doing all the computations as unsigned ints so that
+         * we don't have any undefined issues with shifting etc
+         * and then cast the result to int at the end
+         */
+        unsigned carry;
+        while (b)
         {
-            // 1. Calculate the sum bits where no carry occurs
-            int sum = a ^ b;
-
-            // 2. Calculate the carry bits and shift them to the next position
-            // We cast to unsigned to avoid undefined behavior with
-            // shifting negative numbers in some C++ standards
-            unsigned int carry = (unsigned int)(a & b) << 1;
-
-            // 3. Update a and b for the next iteration
-            a = sum;
-            b = carry;
+            carry = a & b;
+            a = a ^ b;
+            b = carry << 1;
         }
-        return a;
+        return static_cast<int>(a);
     }
 
 public:
-    int getSum(int a, int b) { return solution2(a, b); }
+    int getSum(int a, int b) { return solution3(a, b); }
 };
