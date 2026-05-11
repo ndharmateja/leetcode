@@ -50,6 +50,16 @@ private:
         return sol1(s, 0, n, memo);
     }
 
+    /**
+     * TODO: Bottom up DP approach
+     */
+    static int sol2(const std::string &s) {}
+
+    /**
+     * TODO: Space optimized bottom up DP approach
+     */
+    static int sol3(const std::string &s) {}
+
 public:
     int numDecodings(const std::string &s) { return sol1(s); }
 };
