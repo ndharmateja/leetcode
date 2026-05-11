@@ -51,7 +51,7 @@ private:
         // We need to add both cases as sum and nums.front() can both be 0
         // in which case the #ways would be 2
         int n{static_cast<int>(nums.size())};
-        if (n == 0)
+        if (n == 1)
             return (sum == nums.front() ? 1 : 0) + (sum == -nums.front() ? 1 : 0);
 
         // General case
