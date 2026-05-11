@@ -14,13 +14,13 @@ private:
          * * DP Solution
          * dp_min[i]: the min product of a contiguous subarray ending at index i
          * dp_max[i]: the max product of a contiguous subarray ending at index i
+         * We need to store both the min and max as a negative value min product so far
+         * can multiply with a current negative value in the nums array to produce a
+         * value that is positive
          * * Base case
          * dp_min[0] = nums[0]
          * dp_max[0] = nums[0]
          * * Recurrence relation
-         * We need to store both the min and max as a negative value min product so far
-         * can multiply with a current negative value in the nums array to produce a
-         * value that is positive
          * If the current number is smaller than the dp_min[i] * nums[i] or dp_max[i] * nums[i]
          * then it is better to start a new sequence whose product is smallest including
          * just the current number
