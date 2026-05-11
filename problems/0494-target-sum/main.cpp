@@ -7,14 +7,15 @@ class Solution
 {
 private:
     static int sol1(const std::vector<int> &nums,
-                       int i, int sum,
-                       std::unordered_map<uint64_t, int> &memo)
+                    int i, int sum,
+                    std::unordered_map<uint64_t, int> &memo)
     {
         // Base case
         // ! We are not storing the base cases in the memo to store space as there
         // ! could be multiple base cases
-        // We can do that by returning a sum of  boolean values as a true evaluates to 1
-        // and a false evaluates to 0
+        // We can do that by returning a sum of values
+        // We need to add both cases as sum and nums.front() can both be 0
+        // in which case the #ways would be 2
         if (i == 0)
             return (sum == nums.front() ? 1 : 0) + (sum == -nums.front() ? 1 : 0);
 
@@ -46,6 +47,9 @@ private:
          * * Final answer: dp[n-1, target]
          */
         // Base case
+        // We can do that by returning a sum of values
+        // We need to add both cases as sum and nums.front() can both be 0
+        // in which case the #ways would be 2
         int n{static_cast<int>(nums.size())};
         if (n == 0)
             return (sum == nums.front() ? 1 : 0) + (sum == -nums.front() ? 1 : 0);
