@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <cstdint>
 
 struct TrieNode
 {
@@ -57,13 +58,13 @@ class Solution
 private:
     static bool sol1(const std::string &s,
                      int i, int n,
-                     std::vector<int> &memo,
+                     std::vector<int8_t> &memo,
                      const TrieNode *root)
     {
         if (i == n)
             return true;
 
-        int &answer = memo[i];
+        int8_t &answer = memo[i];
         if (answer != -1)
             return answer;
 
@@ -95,7 +96,7 @@ private:
             trie.insert(word);
 
         int n{static_cast<int>(s.size())};
-        std::vector<int> memo(n, -1);
+        std::vector<int8_t> memo(n, -1);
         return sol1(s, 0, n, memo, trie.root);
     }
 
