@@ -1,6 +1,6 @@
 #include <string>
 #include <unordered_map>
-#include <vector>
+#include <array>
 
 /**
  * This solution uses unordered map for storing the children of trie nodes
@@ -35,7 +35,6 @@ namespace Solution1
         {
             // Traverse along the trie following each character
             // and insert new nodes along the path if there aren't any
-            int n{static_cast<int>(word.size())};
             TrieNode *curr{root};
             for (unsigned char c : word)
             {
@@ -61,7 +60,6 @@ namespace Solution1
         bool search(const std::string &word)
         {
             // Traverse along the trie following the characters
-            int n{static_cast<int>(word.size())};
             TrieNode *curr{root};
             for (unsigned char c : word)
             {
@@ -88,7 +86,6 @@ namespace Solution1
             // This is very similar to search but the final result need not be a full word
             // So if there is a path to the given prefix we can return true
             // Traverse along the trie following the characters
-            int n{static_cast<int>(prefix.size())};
             TrieNode *curr{root};
             for (unsigned char c : prefix)
             {
@@ -150,7 +147,7 @@ namespace Solution2
         {
             // Traverse along the trie following each character
             // and insert new nodes along the path if there aren't any
-            int n{static_cast<int>(word.size())}, idx;
+            int idx;
             TrieNode *curr{root};
             for (unsigned char c : word)
             {
@@ -174,7 +171,7 @@ namespace Solution2
         bool search(const std::string &word)
         {
             // Traverse along the trie following the characters
-            int n{static_cast<int>(word.size())}, idx;
+            int idx;
             TrieNode *curr{root};
             for (unsigned char c : word)
             {
@@ -198,7 +195,7 @@ namespace Solution2
         bool startsWith(const std::string &prefix)
         {
             // Traverse along the trie following the characters
-            int n{static_cast<int>(prefix.size())}, idx;
+            int idx;
             TrieNode *curr{root};
             for (unsigned char c : prefix)
             {
