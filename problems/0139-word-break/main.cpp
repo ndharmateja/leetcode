@@ -53,34 +53,44 @@ public:
     }
 };
 
+/**
+ * This enum takes only 1 byte of space as we are using int8_t
+ * 0 evaluates to bool value false
+ * 1 evaluates to bool value true
+ */
+enum MemoResult : int8_t
+{
+    UNCOMPUTED = -1,
+    FALSE = 0,
+    TRUE = 1
+};
+
 class Solution
 {
 private:
     static bool sol1(const std::string &s,
                      int i, int n,
-                     std::vector<int8_t> &memo,
+                     std::vector<MemoResult> &memo,
                      const TrieNode *root)
     {
         if (i == n)
             return true;
 
-        int8_t &answer = memo[i];
-        if (answer != -1)
+        MemoResult &answer = memo[i];
+        if (answer != MemoResult::UNCOMPUTED)
             return answer;
 
         const TrieNode *curr = root;
-        answer = 0;
+        answer = MemoResult::FALSE;
         for (int j = i; j < n; j++)
         {
             curr = curr->children[s[j] - 'a'];
             if (!curr)
-            {
-                answer = 0;
                 break;
-            }
+
             if (curr->is_word && sol1(s, j + 1, n, memo, root))
             {
-                answer = 1;
+                answer = MemoResult::TRUE;
                 break;
             }
         }
@@ -96,8 +106,8 @@ private:
             trie.insert(word);
 
         int n{static_cast<int>(s.size())};
-        std::vector<int8_t> memo(n, -1);
-        return sol1(s, 0, n, memo, trie.root);
+        std::vector<MemoResult> memo(n, MemoResult::UNCOMPUTED);
+        return sol1(s, 0, n, memo, trie.get_root());
     }
 
 public:
