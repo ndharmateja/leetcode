@@ -10,7 +10,7 @@ private:
      * whose difference is @param difference
      * @param total_sum is the sum of values in the sublist nums[i:]
      *
-     * We can keep the @param difference positive to reduce the different (i, difference) pairs
+     * We can keep the @param difference positive to reduce the #unique (i, difference) pairs
      */
     static bool sol1(const std::vector<int> &nums,
                      const int i, const int n, const int difference, const int total_sum,
