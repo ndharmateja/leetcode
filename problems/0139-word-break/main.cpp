@@ -180,8 +180,9 @@ private:
     /**
      * Bottom up DP solution
      *
+     * O(nL) time and Theta(nL) space
      * This solution is better in space as the each element of the memo
-     * in solution1 takes 1 byte
+     * in solution1 takes 1 byte and also we take up stack space for recursion
      * Here in the dp array which is vector<bool> takes only 1 bit per index
      */
     static bool sol2(const std::string &s, const std::vector<std::string> &words)
@@ -206,7 +207,7 @@ private:
          * that doesn't exist. So in the worst case work per subproblem is O(L) where
          * L is the length of the string.
          * Postprocessing: Theta(1)
-         * O(nL) running time and Theta(n) space
+         * Running time would be O(nL)
          * where n=length of the whole string and L=length of the longest word
          */
 
