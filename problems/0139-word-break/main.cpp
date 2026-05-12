@@ -98,13 +98,13 @@ private:
      * !    to figure that out using an unordered_map.
      */
     static bool sol1(const std::string &s,
-                     int i, int n,
+                     int i, int s_length,
                      std::vector<MemoResult> &memo,
                      const TrieNode *root)
     {
         // If the i pointer reaches the end of the string
         // this can be trivially segmented. So we return true
-        if (i == n)
+        if (i == s_length)
             return true;
 
         // If memo already contains the result, we can return it
@@ -133,7 +133,7 @@ private:
 
         // For each j, we see if s[i:j+1] is a valid word and if s[j+1:] can be broken down
         // properly recursively
-        for (int j = i; j < n; j++)
+        for (int j = i; j < s_length; j++)
         {
             // We update the curr node so that curr represents the string s[i:j+1]
             curr = curr->children[s[j] - 'a'];
@@ -148,7 +148,7 @@ private:
             // If s[i:j+1] is a valid word and if s[j+1:] can be broken down properly
             // we can return true
             // We don't need to check further j values
-            if (curr->is_word && sol1(s, j + 1, n, memo, root))
+            if (curr->is_word && sol1(s, j + 1, s_length, memo, root))
             {
                 answer = MemoResult::TRUE;
                 break;
@@ -171,9 +171,10 @@ private:
         for (const auto &word : words)
             trie.insert(word);
 
-        int n{static_cast<int>(s.size())};
-        std::vector<MemoResult> memo(n, MemoResult::UNCOMPUTED);
-        return sol1(s, 0, n, memo, trie.get_root());
+        // Call the recursive function to check if s[0:] can be broken down properly
+        int s_length{static_cast<int>(s.size())};
+        std::vector<MemoResult> memo(s_length, MemoResult::UNCOMPUTED);
+        return sol1(s, 0, s_length, memo, trie.get_root());
     }
 
 public:
