@@ -177,6 +177,81 @@ private:
         return sol1(s, 0, s_length, memo, trie.get_root());
     }
 
+    /**
+     * Bottom up DP solution
+     *
+     * This solution is better in space as the each element of the memo
+     * in solution1 takes 1 byte
+     * Here in the dp array which is vector<bool> takes only 1 bit per index
+     */
+    static bool sol2(const std::string &s, const std::vector<std::string> &words)
+    {
+        /**
+         * * DP Solution
+         * dp[i]:= true  if s[i:] can be broken down properly
+         *      := false otherwise
+         * * Base case
+         * dp[n] = true as s[n:] is an empty string and it is trivially true
+         * * Recurrence relation
+         * dp[i] = any{ is_valid_word(s[i:j+1]) && dp[j+1] for j in [i, n-1]}
+         * * Order of filling
+         * From right to left as we need the right values
+         * * Final answer
+         * dp[0]
+         * * Running time
+         * #subproblems = n
+         * Work per subproblem:
+         * Techinically O(n) as we need to start j at i and go until n
+         * Since we are using tries, we don't go further once we reach a prefix
+         * that doesn't exist. So in the worst case work per subproblem is O(L) where
+         * L is the length of the string.
+         * Postprocessing: Theta(1)
+         * O(nL) running time and Theta(n) space
+         * where n=length of the whole string and L=length of the longest word
+         */
+
+        // Create a trie from all the given words
+        Trie trie;
+        for (const auto &word : words)
+            trie.insert(word);
+
+        // Create the DP array and set the base case
+        int n{static_cast<int>(s.size())};
+        std::vector<bool> dp(n + 1, false);
+        dp[n] = true;
+
+        // Fill the table from right to left
+        for (int i = n - 1; i >= 0; i--)
+        {
+            // We start at the root to keep growing the word s[i:j+1]
+            // using the trie node to quickly be able to tell if it is a
+            // valid prefix and if it is a valid word
+            TrieNode *curr = trie.get_root();
+            for (int j = i; j < n; j++)
+            {
+                // Get the trie node corresponding to the string s[i:j+1]
+                curr = curr->children[s[j] - 'a'];
+
+                // If the trie node is null, it means that s[i:j+1] is not a valid
+                // prefix in the trie, so we don't need to check any further
+                // and the dp array is initialized with false. So we don't have to set it.
+                if (!curr)
+                    break;
+
+                // If s[i:j+1] is a valid word and s[j+1:] can be broken down properly
+                // we can set dp[i] to be true and immediately go to the next i
+                if (curr->is_word && dp[j + 1])
+                {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        // Return the answer
+        return dp.front();
+    }
+
 public:
-    bool wordBreak(const std::string &s, const std::vector<std::string> &words) { return sol1(s, words); }
+    bool wordBreak(const std::string &s, const std::vector<std::string> &words) { return sol2(s, words); }
 };
