@@ -17,9 +17,8 @@ private:
          * * Base case
          * dp[n] = 1 as there is trivially one way to decode empty string
          * * Recurrence relation
-         * dp[i] = 0                                  if s[i] == '0'
-         *       = dp[i+1] +                          otherwise
-         *        (dp[i+2] if 10 <= s[i:i+2] <= 26)
+         * dp[i] = 0                                                 if s[i] == '0'
+         *       = dp[i+1] + (10 <= s[i:i+2] <= 26 ? dp[i+2] : 0)    otherwise
          * There are 0 ways to decode a string starting with 0.
          * If s[i] is not a 0, then we can decode s[i:] atleast in as many as ways
          * as s[i+i:] by prepending s[i] to each of the ways we can decode s[i+1:].
