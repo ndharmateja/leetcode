@@ -141,6 +141,79 @@ private:
         // as we have an exit condition check when i = 0
         return false;
     }
+
+    /**
+     * Space optimized version of solution2
+     * Read that solution in detail first.
+     */
+    static bool sol3(const std::vector<int> &nums)
+    {
+        /**
+         * Explanation:
+         * We only need the (i+1)th row for
+         */
+
+        // Compute the total sum and exit if it is odd
+        int n{static_cast<int>(nums.size())};
+        long long total_sum{0};
+        for (auto num : nums)
+            total_sum += num;
+        if (total_sum & 1)
+            return false;
+
+        // The target is half of the total sum
+        int target = total_sum >> 1;
+        std::vector<bool> dp(target + 1, false);
+
+        // Base case
+        dp[0] = true;
+
+        // Fill the table from the last row to the first
+        for (int i = n - 1; i >= 0; i--)
+        {
+            // ! Extra optimization: If a number is greater than the target
+            // ! we can immediately return false as the remaining numbers can't sum
+            // ! up to target as every number is positive
+            int num = nums[i];
+            if (target < num)
+                return false;
+
+            // Compute dp[i][target] first (by going right to left) first
+            // so that we can immediately exit if target can be formed from a subset
+            // in nums[i:]
+            dp[target] = dp[target - num];
+            if (dp[target])
+                return true;
+
+            // If i=0 and we reach here we hadn't found any i for which dp[i][target]
+            // is true. So we don't need to compute the remaning values in the 0th row.
+            if (i == 0)
+                return false;
+
+            // ! We would have to fill this table from right to left
+            // ! since we are using values from the 'i+1'th row with index 'k-num'
+            // ! So we should not update dp[k-num] first because the 'i+1'th row's
+            // ! value would be overwritten
+
+            // ! for (int k = target - 1; k >= 1; k--)
+            // !     dp[k] = dp[k] ||
+            // !             (k < num ? false : dp[k - num]);
+            // ! What this above loop is doing is that
+            // ! when k >= num, we are doing dp[k] = dp[k] || dp[k-num]
+            // ! when k < num,  we are doing dp[k] = dp[k] which is not changing dp[k]'s val
+            // ! So we can change the condition from k >= 1 to k >= num
+            // ! and the code to 'dp[k] = dp[k] || dp[k - num]'
+            // ! which means that we are updating dp[k] to true if dp[k-num] is true
+            // ! otherwise the value in dp[k] is not changed, this is the same as code below
+            for (int k = target - 1; k >= num; k--)
+                if (dp[k - num])
+                    dp[k] = true;
+        }
+
+        // We would never reach here
+        // as we have an exit condition check when i = 0
+        return false;
+    }
 public:
     bool canPartition(const std::vector<int> &nums) { return sol1(nums); }
 };
