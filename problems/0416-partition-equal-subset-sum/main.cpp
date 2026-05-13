@@ -2,6 +2,18 @@
 #include <unordered_map>
 #include <algorithm>
 
+/**
+ * This enum takes only 1 byte of space as we are using int8_t
+ * 0 evaluates to bool value false
+ * 1 evaluates to bool value true
+ */
+enum MemoResult : int8_t
+{
+    UNCOMPUTED = -1,
+    FALSE = 0,
+    TRUE = 1
+};
+
 class Solution
 {
 private:
@@ -213,6 +225,41 @@ private:
         // We would never reach here
         // as we have an exit condition check when i = 0
         return false;
+    }
+
+    static bool sol4(const std::vector<int> &nums,
+                     const int i, const int n, const int target,
+                     std::vector<std::vector<MemoResult>> &memo)
+    {
+        if (i == n)
+            return target == 0;
+        if (target < 0)
+            return false;
+        MemoResult &answer = memo[i][target];
+        if (answer != MemoResult::UNCOMPUTED)
+            return answer;
+        answer = (sol4(nums, i + 1, n, target, memo) ||
+                  sol4(nums, i + 1, n, target - nums[i], memo))
+                     ? MemoResult::TRUE
+                     : MemoResult::FALSE;
+        return answer;
+    }
+
+    /**
+     * Top down DP version of solution 2
+     * Read that first in detail.
+     */
+    static bool sol4(const std::vector<int> &nums)
+    {
+        int n{static_cast<int>(nums.size())};
+        long long total_sum{0};
+        for (auto num : nums)
+            total_sum += num;
+        if (total_sum & 1)
+            return false;
+        int target = total_sum >> 1;
+        std::vector<std::vector<MemoResult>> memo(n + 1, std::vector<MemoResult>(target + 1, MemoResult::UNCOMPUTED));
+        return sol4(nums, 0, n, target, memo);
     }
 public:
     bool canPartition(const std::vector<int> &nums) { return sol1(nums); }
