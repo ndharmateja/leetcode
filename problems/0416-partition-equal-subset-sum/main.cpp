@@ -261,6 +261,12 @@ private:
         std::vector<std::vector<MemoResult>> memo(n + 1, std::vector<MemoResult>(target + 1, MemoResult::UNCOMPUTED));
         return sol4(nums, 0, n, target, memo);
     }
+
+    /**
+     * TODO: Bottom up DP solution in increasing order of i
+     */
+    static bool sol5(const std::vector<int> &nums) { return false; }
+
 public:
-    bool canPartition(const std::vector<int> &nums) { return sol1(nums); }
+    bool canPartition(const std::vector<int> &nums) { return sol3(nums); }
 };
