@@ -72,9 +72,45 @@ private:
     }
 
     /**
-     * TODO: Space optimized bottom up DP approach
+     * Space optimized bottom up DP approach
+     *
+     * Theta(n) time and Theta(1) space solution
      */
-    static int sol2(const std::string &s) { return -1; }
+    static int sol2(const std::string &s)
+    {
+        int n{static_cast<int>(s.size())};
+        int dp1{s[n - 1] != '0'}, dp2{1};
+
+        for (int i = n - 2; i >= 0; i--)
+        {
+            // If s[i] is a 0 then dp[i] = 0 as we can decode s[i:] in 0 ways
+            unsigned char curr = s[i];
+            if (curr == '0')
+            {
+                dp2 = dp1;
+                dp1 = 0;
+                continue;
+            }
+
+            // If we reach here then we have a non-zero digit in s[i]
+            // So we can atleast decode s[i:] in as many ways as s[i+1:]
+            int dp0{dp1};
+
+            // If s[i:i+2] forms a number in the range [10, 26] we can add
+            // dp[i+2] as well to dp[i]
+            unsigned char next = s[i + 1];
+            if ((curr == '1') ||
+                (curr == '2' && '0' <= next && next <= '6'))
+                dp0 += dp2;
+
+            // Update the dp values for the next iteration
+            dp2 = dp1;
+            dp1 = dp0;
+        }
+
+        // Return the answer
+        return dp1;
+    }
 
     /**
      * Recursive function (memoized) that computes the #ways we can decode s[i:]
