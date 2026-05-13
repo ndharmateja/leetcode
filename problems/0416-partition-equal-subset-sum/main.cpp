@@ -51,6 +51,96 @@ private:
         return sol1(nums, 0, nums.size(), 0, total_sum, memo);
     }
 
+    /**
+     * Bottom up DP solution
+     */
+    static bool sol2(const std::vector<int> &nums)
+    {
+        /**
+         * * Explanation
+         * target is the sum(nums)/2. If the total sum is odd then we can't partition the list.
+         * If it is even then if we can find out if there is a subset that sums to target
+         * then the remaining numbers also sum to target.
+         * * DP solution
+         * dp[i][k]: true    if nums[i:] has a subset of elements that sum to k
+         *         : false   otherwise
+         * dp array's dimensions will be (n+1)x(target+1)
+         * where n is the #elements in the list
+         * * Base case
+         * dp[i][0] = true
+         * as we can only form 0 from an any set of numbers
+         * * Recurrence relation
+         * Similar to 0/1 Knapsack
+         * nums[i] is either part of the subset that sums to k or not
+         * if it is not part of the subset, then nums[i+1:] should have a subset summing k
+         * if it is part of the subset, then nums[i+1:] should have a subset summing k-nums[i]
+         * dp[i][k] = dp[i+1][k] || dp[i+1][k-nums[i]]  (if k - nums[i] >= 0)
+         * * Order of filling
+         * For each i going from n-1 to 0, we can fill each row in any order
+         * as we only need values from 'i+1'th row
+         * But it is better to fill from the right to left to immediately know
+         * if target can be formed so that we can immediatly exit
+         * * Final answer
+         * any{dp[i][target] for i in [0, n-1]}
+         */
+
+        // Compute the total sum and exit if it is odd
+        int n{static_cast<int>(nums.size())};
+        long long total_sum{0};
+        for (auto num : nums)
+            total_sum += num;
+        if (total_sum & 1)
+            return false;
+
+        // The target is half of the total sum
+        int target = total_sum >> 1;
+        std::vector<std::vector<bool>> dp(n + 1, std::vector<bool>(target + 1, false));
+
+        // Base case
+        for (int i = 0; i <= n; i++)
+            dp[i][0] = true;
+
+        // Fill the table from the last row to the first
+        for (int i = n - 1; i >= 0; i--)
+        {
+            // ! Extra optimization: If a number is greater than the target
+            // ! we can immediately return false as the remaining numbers can't sum
+            // ! up to target as every number is positive
+            int num = nums[i];
+            if (target < num)
+                return false;
+
+            // Compute dp[i][target] first (by going right to left) first
+            // so that we can immediately exit if target can be formed from a subset
+            // in nums[i:]
+            // ! dp[i][target] = dp[i + 1][target] ||
+            // !                 (target < num
+            // !                     ? false
+            // !                     : dp[i + 1][target - num]);
+            // ! Instead of above code, we can use the below code
+            // ! we don't need to see if dp[i+1][target] is true as we'd already return
+            // ! if that were true
+            // ! We also don't need to check the target < num as we have an if condition above
+            // ! checking if (target < num)
+            dp[i][target] = dp[i + 1][target - num];
+            if (dp[i][target])
+                return true;
+
+            // If i=0 and we reach here we hadn't found any i for which dp[i][target]
+            // is true. So we don't need to compute the remaning values in the 0th row.
+            if (i == 0)
+                return false;
+
+            // Fill the row from right to left
+            for (int k = target - 1; k >= 1; k--)
+                dp[i][k] = dp[i + 1][k] ||
+                           (k < num ? false : dp[i + 1][k - num]);
+        }
+
+        // We would never reach here
+        // as we have an exit condition check when i = 0
+        return false;
+    }
 public:
     bool canPartition(const std::vector<int> &nums) { return sol1(nums); }
 };
