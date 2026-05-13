@@ -42,9 +42,11 @@ private:
      */
     static bool sol1(const std::vector<int> &nums)
     {
-        int n{static_cast<int>(nums.size())}, total_sum{0};
+        long long total_sum{0};
         for (auto num : nums)
             total_sum += num;
+        if (total_sum & 1)
+            return false;
         std::unordered_map<uint64_t, bool> memo;
         return sol1(nums, 0, nums.size(), 0, total_sum, memo);
     }
