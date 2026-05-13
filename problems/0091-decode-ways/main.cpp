@@ -73,6 +73,7 @@ private:
 
     /**
      * Space optimized bottom up DP approach
+     * Read solution 1 first properly.
      *
      * Theta(n) time and Theta(1) space solution
      */
