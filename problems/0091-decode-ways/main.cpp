@@ -51,6 +51,7 @@ private:
         for (int i = n - 2; i >= 0; i--)
         {
             // If s[i] is a 0 then dp[i] = 0 as we can decode s[i:] in 0 ways
+            // and we continue as dp array was prefilled with 0s
             unsigned char curr = s[i];
             if (curr == '0')
                 continue;
