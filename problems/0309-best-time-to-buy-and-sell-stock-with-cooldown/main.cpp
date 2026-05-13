@@ -81,6 +81,8 @@ private:
 
     /**
      * Space optimized version of solution 1
+     *
+     * Theta(n) time and Theta(1) space
      */
     static int sol2(const std::vector<int> &prices)
     {
