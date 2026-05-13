@@ -65,6 +65,10 @@ private:
 
     /**
      * Bottom up DP solution
+     *
+     * O(n*target) time and Theta(n*target) space
+     * where n = number of elements in the list
+     * and target = sum(nums)/2
      */
     static bool sol2(const std::vector<int> &nums)
     {
@@ -94,6 +98,11 @@ private:
          * if target can be formed so that we can immediatly exit
          * * Final answer
          * any{dp[i][target] for i in [0, n-1]}
+         * * Running time
+         * #subproblems = (n+1)*(target+1)
+         * work per subproblem = Theta(1)
+         * postprocessing = Theta(1)
+         * total time = Theta(n*target)
          */
 
         // Compute the total sum and exit if it is odd
@@ -157,6 +166,10 @@ private:
     /**
      * Space optimized version of solution2
      * Read that solution in detail first.
+     *
+     * O(n*target) time and Theta(target) space
+     * where n = number of elements in the list
+     * and target = sum(nums)/2
      */
     static bool sol3(const std::vector<int> &nums)
     {
