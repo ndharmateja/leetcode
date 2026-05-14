@@ -10,9 +10,8 @@ namespace Solution1
 {
     struct TrieNode
     {
-        bool is_word;
+        bool is_word{false};
         std::unordered_map<unsigned char, TrieNode *> children;
-        TrieNode() : is_word{false} {}
 
         // Recursive destructor that deletes each of its children
         ~TrieNode()
@@ -119,13 +118,8 @@ namespace Solution2
 {
     struct TrieNode
     {
-        bool is_word;
-        std::array<TrieNode *, 26> children;
-        TrieNode() : is_word{false}
-        {
-            for (int i = 0; i < 26; i++)
-                children[i] = nullptr;
-        }
+        bool is_word{false};
+        std::array<TrieNode *, 26> children{};
 
         ~TrieNode()
         {
