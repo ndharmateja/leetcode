@@ -84,7 +84,8 @@ private:
          * transposing and flipping horizontally will rotate the matrix clockwise
          *
          * But flipping the vector<vector<int>> vertically is Theta(n) operation as we just need to
-         * swap the pointerss in the vector of vectors
+         * swap the pointerss in the vector of vectors as opposed to flipping the matrix horizontally
+         * which is Theta(n^2)
          * So to rotate the matrix clockwise we flip the matrix vertically and then transpose it
          * and to rotate the matrix counterclockwise we transpose the matrix and then flip it vertically
          */
