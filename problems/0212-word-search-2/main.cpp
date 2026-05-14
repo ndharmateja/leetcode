@@ -6,8 +6,10 @@
 struct TrieNode
 {
     bool is_word;
+    int n;
     std::array<TrieNode *, 26> children;
-    TrieNode() : is_word{false}
+
+    TrieNode() : is_word{false}, n{0}
     {
         for (int i = 0; i < 26; i++)
             children[i] = nullptr;
@@ -23,92 +25,150 @@ struct TrieNode
 class Trie
 {
 private:
-    TrieNode *remove(TrieNode *node, const std::string &word, int d)
-    {
-        if (!node)
-            return nullptr;
-        if (d == static_cast<int>(word.size()))
-            node->is_word = false;
-        else
-        {
-            unsigned char c = word[d];
-            node->children[c - 'a'] = remove(node->children[c - 'a'], word, d + 1);
-        }
+    TrieNode *root;
 
-        if (node->is_word)
-            return node;
-        for (int i = 0; i < 26; i++)
-            if (node->children[i])
+    /**
+     * Recursively helper method to insert
+     * Invariant is that node (if exists) would correspond to the word[:d] prefix
+     * and if the node doesn't exist, it would be created.
+     *
+     * ! The given node need not be null unlike the invariants of the remove
+     * ! collect_keys_that_match methods
+     */
+    TrieNode *insert(TrieNode *node, const std::string &word, int d)
+    {
+        // The invariant is that node (if exists) corresponds to the word[:d] prefix
+        // of the word
+        // If the node doesn't exist then we create it (with a count 0)
+        if (!node)
+            node = new TrieNode();
+
+        // If d == word's length, it means that this is the node that corresponds to
+        // word[:d] = word[:word_len] which is the full word
+        // which means if this wasn't already a word, then we make it a word
+        // and exit (after incrementing the count)
+        if (d == static_cast<int>(word.size()))
+        {
+            // If it is already a word, then this word already exists
+            // and we don't need to do anything at all
+            if (node->is_word)
                 return node;
 
-        delete node;
-        return nullptr;
+            // At this point the node is not a valid word, so we make it a valid word
+            // and increment its count and exit the function as there is nothing else to do
+            node->is_word = true;
+            node->n++;
+            return node;
+        }
+
+        // If d < word's length, we need to continue the insertion
+        int child_idx = word[d] - 'a';
+
+        // ! Note that child_node is a reference to the element at the
+        // ! child_idx in the children vector
+        TrieNode *&child_node = node->children[child_idx];
+
+        // We are storing the old count where we need to insert to figure out if we need to
+        // increment the count of the current node
+        int old_count = child_node ? child_node->n : 0;
+        child_node = insert(child_node, word, d + 1);
+
+        // If the child's count changed after the insertion, it means that a new key was
+        // successfully added to the trie (as a descendant of the current node)
+        // so we increment the count of the current node and return it
+        if (child_node->n != old_count)
+            node->n++;
+        return node;
+    }
+
+    /**
+     * Recursive helper method to remove
+     * Invariant is that we assume that node is going to be not null
+     * (to prevent an extra function call for the null check)
+     * and word[:d] is the string corresponding to the given node
+     *
+     * ! We don't need the remove function to return the pointer of the
+     * ! new root of the subtrie as we are not deleting nodes. We are only
+     * ! decrementing the counts
+     */
+    void remove(TrieNode *node, const std::string &word, int d)
+    {
+        // If d equals to the word's length
+        // then it means that word[:d] = word[:word_len] (according to the invariant)
+        // is the word corresponding to the given node which is the full word
+        // So if this node corresponds to a full word, we can mark it not a valid word
+        // and decrement the count of this node
+        if (d == static_cast<int>(word.size()) && node->is_word)
+        {
+            node->is_word = false;
+            node->n--;
+            return;
+        }
+
+        // If d < word's length, it means that we still haven't reached the end of the word
+        // So we check if the appropriate child link is present and call delete on that
+        // recursively
+        else
+        {
+            // ! Note that child_node is a reference to the child_idx index in the
+            // ! children vector so that we can avoid further lookups while accessing/updating
+            int child_idx = word[d] - 'a';
+            TrieNode *&child_node = node->children[child_idx];
+            if (child_node)
+            {
+                // Store the old count to check if the current node's count
+                // should be updated
+                int old_child_n = child_node->n;
+                remove(child_node, word, d + 1);
+
+                // Get the new child's count and update curr node's count accordingly
+                // There is a possibility that the child's count won't change
+                // if nothing was deleted, in which case we don't have
+                // There is also the possibility that the remove method returns nullptr
+                // if the child node was removed from the trie
+                // We update the count of the curr node
+                // The only possibility of change is that the child's size decreases by 1
+                // or if the child gets deleted
+                // Either way we need to just decrement the curr node's size by 1
+
+                // ! int new_child_n = child_node ? child_node->n : 0
+                // ! if (new_child_n < old_child_n)
+                // !    node->n--;
+                // ! This should be the actual code but what it essentially boils down to
+                // ! is that if the child node becomes null (it wasn't null earlier as we only
+                // ! try to delete the child node if it is not null) or if the size of the child
+                // ! node after delete is not the same as the old count, we can decrement
+                // ! the curr node's count.
+                if (child_node->n != old_child_n)
+                    node->n--;
+            }
+        }
     }
 
 public:
-    TrieNode *root;
-
-    Trie() : root{nullptr} {}
+    Trie() : root{new TrieNode()} {}
     ~Trie() { delete root; }
 
-    void insert(const std::string &word)
-    {
-        // If root is null (could get null after deletions)
-        // we create it
-        if (!root)
-            root = new TrieNode();
+    TrieNode *get_root() { return root; }
 
-        // Traverse along the trie following each character
-        // and insert new nodes along the path if there aren't any
-        int idx;
-        TrieNode *curr{root};
-        for (unsigned char c : word)
-        {
-            // We use the reference to the child as we can get away only with one array access
-            // instead of potentially three array accesses
-            idx = c - 'a';
-            TrieNode *&child = curr->children[idx];
-            if (!child)
-                child = new TrieNode();
+    /**
+     * ! Root is never null. So we can directly return root's size.
+     */
+    int size() { return root->n; }
+    bool empty() { return root->n == 0; }
 
-            // Update the curr pointer
-            curr = child;
-        }
+    /**
+     * Inserts the given word into the trie as a key
+     */
+    void insert(const std::string &word) { root = insert(root, word, 0); }
 
-        // At this point the trie node corresponds the given word
-        // Whether or not it was already there, at this point this node
-        // represents a full word, so we mark the is_word to be true
-        curr->is_word = true;
-    }
-
-    bool startsWith(const std::string &prefix)
-    {
-        // If root is null then we can return false
-        if (!root)
-            return false;
-
-        // Traverse along the trie following the characters
-        int idx;
-        TrieNode *curr{root};
-        for (unsigned char c : prefix)
-        {
-            // Check if the ith char in the string exists as a key in the
-            // children of the curr node
-            // If it doesn't exist, we can immediately return false
-            // We keep continuing until we reach the last char
-            idx = c - 'a';
-            curr = curr->children[idx];
-            if (!curr)
-                return false;
-        }
-
-        // At this point we know the trie node corresponding to the prefix exists
-        // as we'd have returned false otherwise
-        // We can directly return true
-        return true;
-    }
-
-    void remove(const std::string &word) { root = remove(root, word, 0); }
+    /**
+     * Removes the given word from the trie if it exists
+     * and does nothing otherwise
+     *
+     * ! Root is never going to be null, so we wouldn't need to update it
+     */
+    void remove(const std::string &word) { remove(root, word, 0); }
 };
 
 class Solution
@@ -117,9 +177,11 @@ private:
     static inline const std::vector<std::pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     /**
-     * Assumes that node is not null. So we have to check before calling.
+     * Invariant is that curr_node is not null and has a non-zero count.
+     * buffer is the string corresponding to curr_node in the trie.
+     * And the last character of the buffer is board[r][c].
      */
-    static void dfs(const std::vector<std::vector<char>> &board, std::string &curr_word,
+    static void dfs(const std::vector<std::vector<char>> &board, std::string &buffer,
                     int r, int c, int m, int n,
                     Trie &trie,
                     TrieNode *curr_node, std::vector<std::vector<bool>> &visited,
@@ -131,13 +193,24 @@ private:
         // space on the board
         if (curr_node->is_word)
         {
-            result.push_back(curr_word);
-            curr_node->is_word = false;
+            result.push_back(buffer);
+            trie.remove(buffer);
+
+            // Pruning:
+            // After removing the word, if the count of curr_node becomes 0
+            // it means that there are no more explorations needed with this prefix
+            // and we can exit the dfs on the prefix of buffer
+            // This saves us a lot of time as we don't need to explore any other paths
+            // with this prefix
+            if (!curr_node->n)
+                return;
         }
 
-        // Mark this cell as visited so that we don't use this as part of further words
-        // Visit all the unvisited neighbours that are part of the trie path
+        // Mark this cell as visited so that we don't use this cell as part of further words
+        // in the recursive dfs calls
         visited[r][c] = true;
+
+        // Visit all the unvisited neighbours of the current cell that are part of the trie path
         for (const auto &[dr, dc] : directions)
         {
             int new_r = r + dr;
@@ -147,18 +220,21 @@ private:
             if (new_c < 0 || n <= new_c)
                 continue;
 
+            // ! We not only want the child node to be not null but we also need its count to be non-zero
             unsigned char child_char = board[new_r][new_c];
             TrieNode *child_node = curr_node->children[child_char - 'a'];
             if (!visited[new_r][new_c] &&
-                child_node)
+                child_node &&
+                child_node->n)
             {
-                curr_word.push_back(child_char);
-                dfs(board, curr_word, new_r, new_c, m, n, trie, child_node, visited, result);
-                curr_word.pop_back();
+                buffer.push_back(child_char);
+                dfs(board, buffer, new_r, new_c, m, n, trie, child_node, visited, result);
+                buffer.pop_back();
             }
         }
 
-        // Unmark this cell as visited
+        // Unmark this cell as visited because we are backtracking and we are done with the dfs call
+        // on the current cell
         visited[r][c] = false;
     }
 
@@ -182,21 +258,38 @@ private:
         // From each cell on the board, do a dfs looking for words
         // with the first letter of the word as that cell
         int m{static_cast<int>(board.size())}, n{static_cast<int>(board[0].size())};
-        std::string curr_word;
-        curr_word.reserve(max_word_length);
+
+        // The buffer is the string that keeps track of the corresponding strings
+        // along the path as we run the DFS
+        // We know it can't be longer than the max word length that is in the trie
+        // So we reserve it to prevent multiple resizes
+        std::string buffer;
+        buffer.reserve(max_word_length);
+
+        // The result is the list of words found in the grid and the visited set
+        // to keep track of which cells are already visited in the DFS
         std::vector<std::string> result;
         std::vector<std::vector<bool>> visited(m, std::vector<bool>(n, false));
-        for (int r = 0; r < m && trie.root; r++)
-            for (int c = 0; c < n && trie.root; c++)
+
+        // Run DFS starting from each of the cells to find the words using backtracking
+        // We only need to keep traversing the cells as long as the trie has words in it
+        // We are deleting the words in the trie as soon as we find them
+        // So if we run out of words in the trie, then there is no point in continuing
+        // the DFS from the remaning cells
+        TrieNode *root = trie.get_root();
+        for (int r = 0; r < m && !trie.empty(); r++)
+            for (int c = 0; c < n && !trie.empty(); c++)
             {
                 unsigned char ch = board[r][c];
-                TrieNode *curr_node = trie.root;
+                TrieNode *curr_node = root;
                 curr_node = curr_node->children[ch - 'a'];
-                if (curr_node)
+
+                // ! We not only want the curr_node to be not null but we also need its count to be non-zero
+                if (curr_node && curr_node->n)
                 {
-                    curr_word.push_back(ch);
-                    dfs(board, curr_word, r, c, m, n, trie, curr_node, visited, result);
-                    curr_word.pop_back();
+                    buffer.push_back(ch);
+                    dfs(board, buffer, r, c, m, n, trie, curr_node, visited, result);
+                    buffer.pop_back();
                 }
             }
 
