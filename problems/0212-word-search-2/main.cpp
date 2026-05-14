@@ -167,6 +167,10 @@ public:
      * and does nothing otherwise
      *
      * ! Root is never going to be null, so we wouldn't need to update it
+     * ! So we don't have to do the regular pattern of
+     * ! root = remove(root, word, 0)
+     * ! We don't even have to make the helper remove method return a TrieNode *
+     * ! as we aren't deleting node objects
      */
     void remove(const std::string &word) { remove(root, word, 0); }
 };
