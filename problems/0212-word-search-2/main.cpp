@@ -174,7 +174,8 @@ public:
 class Solution
 {
 private:
-    static inline const std::vector<std::pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    static constexpr int drs[] = {-1, 1, 0, 0};
+    static constexpr int dcs[] = {0, 0, -1, 1};
 
     /**
      * Invariant is that curr_node is not null and has a non-zero count.
@@ -210,10 +211,13 @@ private:
         board[r][c] = '#';
 
         // Visit all the unvisited neighbours of the current cell that are part of the trie path
-        for (const auto &[dr, dc] : directions)
+        for (int i = 0; i < 4; i++)
         {
-            int new_r = r + dr;
-            int new_c = c + dc;
+            // Get the coordinates of the new cell
+            int new_r = r + drs[i];
+            int new_c = c + dcs[i];
+
+            // If the new cell is out of bounds, we can skip it
             if (new_r < 0 || m <= new_r)
                 continue;
             if (new_c < 0 || n <= new_c)
@@ -250,11 +254,19 @@ private:
          *
          * Improvements:
          * 1. Added the delete functionality (without deleting the actual nodes from memory
-         * as we need hold of the pointers in the parent calls of dfs. so we only decrement
-         * the node counts.) in the trie to prune paths as we don't need to go along paths
-         * whose prefixes don't exist anymore in the trie.
-         * 2. Mutating the cells of the board itself to say '#' to indicate that they have been
-         * visited instead of a separate vector<vector<bool>>.
+         *    as we need hold of the pointers in the parent calls of dfs but only by marking is_word false).
+         *    Time limit exceeded to ~43% improvement on leetcode.
+         * 2. Added the node counts to the nodes so that we don't traverse along the trie whose
+         *    node counts are 0 (same as a null node but we need the node pointers). ~43% to ~93.5% improvement.
+         * 3. Mutating the cells of the board itself to say '#' to indicate that they have been
+         *    visited instead of a separate vector<vector<bool>>. ~93.5% to ~95% improvement.
+         * 4. Change the following code
+         *    From:
+         *    static inline const std::vector<std::pair<int, int>> directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+         *    To:
+         *    static constexpr int drs[] = {-1, 1, 0, 0};
+         *    static constexpr int dcs[] = {0, 0, -1, 1};
+         *    Leetcode ~95% to ~96.2% improvement.
          */
 
         // Create a trie of words for easily checking validity of words
