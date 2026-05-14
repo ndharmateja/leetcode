@@ -5,11 +5,14 @@ class Solution
 private:
     static int sum_of_squares(int n)
     {
+        // Instead of having to compute the squares of digits we can have a lookup table
+        static constexpr int squares[] = {0, 1, 4, 9, 16, 25, 36, 49, 64, 81};
+
         int result{0};
         while (n)
         {
             int digit = n % 10;
-            result += (digit * digit);
+            result += squares[digit];
             n /= 10;
         }
         return result;
