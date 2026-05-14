@@ -181,11 +181,9 @@ private:
      * buffer is the string corresponding to curr_node in the trie.
      * And the last character of the buffer is board[r][c].
      */
-    static void dfs(const std::vector<std::vector<char>> &board, std::string &buffer,
-                    int r, int c, int m, int n,
-                    Trie &trie,
-                    TrieNode *curr_node, std::vector<std::vector<bool>> &visited,
-                    std::vector<std::string> &result)
+    static void dfs(std::vector<std::vector<char>> &board, std::string &buffer,
+                    int r, int c, int m, int n, Trie &trie,
+                    TrieNode *curr_node, std::vector<std::string> &result)
     {
         // If this node is a full word, then we have found a word on the board
         // We can remove this word from the trie as we don't want to find
@@ -208,7 +206,8 @@ private:
 
         // Mark this cell as visited so that we don't use this cell as part of further words
         // in the recursive dfs calls
-        visited[r][c] = true;
+        unsigned char char_rc = board[r][c];
+        board[r][c] = '#';
 
         // Visit all the unvisited neighbours of the current cell that are part of the trie path
         for (const auto &[dr, dc] : directions)
@@ -220,28 +219,44 @@ private:
             if (new_c < 0 || n <= new_c)
                 continue;
 
-            // ! We not only want the child node to be not null but we also need its count to be non-zero
+            // If child character is already visited then we don't have to visit it
             unsigned char child_char = board[new_r][new_c];
+            if (child_char == '#')
+                continue;
+
+            // ! We not only want the child node to be not null but we also need its count to be non-zero
             TrieNode *child_node = curr_node->children[child_char - 'a'];
-            if (!visited[new_r][new_c] &&
-                child_node &&
-                child_node->n)
+            if (child_node && child_node->n)
             {
                 buffer.push_back(child_char);
-                dfs(board, buffer, new_r, new_c, m, n, trie, child_node, visited, result);
+                dfs(board, buffer, new_r, new_c, m, n, trie, child_node, result);
                 buffer.pop_back();
             }
         }
 
         // Unmark this cell as visited because we are backtracking and we are done with the dfs call
         // on the current cell
-        visited[r][c] = false;
+        board[r][c] = char_rc;
     }
 
     static std::vector<std::string> sol1(
-        const std::vector<std::vector<char>> &board,
+        std::vector<std::vector<char>> &board,
         const std::vector<std::string> &words)
     {
+        /**
+         * Explanation:
+         * 1. For the full implementation and explanation of the trie, see the following reference:
+         * https://github.com/ndharmateja/data-structures-cpp/tree/master/data-structures/tries
+         *
+         * Improvements:
+         * 1. Added the delete functionality (without deleting the actual nodes from memory
+         * as we need hold of the pointers in the parent calls of dfs. so we only decrement
+         * the node counts.) in the trie to prune paths as we don't need to go along paths
+         * whose prefixes don't exist anymore in the trie.
+         * 2. Mutating the cells of the board itself to say '#' to indicate that they have been
+         * visited instead of a separate vector<vector<bool>>.
+         */
+
         // Create a trie of words for easily checking validity of words
         // and also record the max word length to reserve the string length of the buffer
         Trie trie;
@@ -266,10 +281,8 @@ private:
         std::string buffer;
         buffer.reserve(max_word_length);
 
-        // The result is the list of words found in the grid and the visited set
-        // to keep track of which cells are already visited in the DFS
+        // The result is the list of words found in the grid
         std::vector<std::string> result;
-        std::vector<std::vector<bool>> visited(m, std::vector<bool>(n, false));
 
         // Run DFS starting from each of the cells to find the words using backtracking
         // We only need to keep traversing the cells as long as the trie has words in it
@@ -288,7 +301,7 @@ private:
                 if (curr_node && curr_node->n)
                 {
                     buffer.push_back(ch);
-                    dfs(board, buffer, r, c, m, n, trie, curr_node, visited, result);
+                    dfs(board, buffer, r, c, m, n, trie, curr_node, result);
                     buffer.pop_back();
                 }
             }
