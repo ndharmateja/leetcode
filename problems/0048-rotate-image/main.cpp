@@ -7,7 +7,7 @@ private:
     {
         /**
          * Consider a 6x6 matrix. The order of rotations happen as:
-         * r = 0; end = 5; length = 6
+         * r_start = 0; r_end = 5; length = 6
          * k = 0               k = 1               k = 2               k = 3               k = 4
          * #  .  .  .  .  #    .  #  .  .  .  .    .  .  #  .  .  .    .  .  .  #  .  .    .  .  .  .  #  .
          * .  .  .  .  .  .    .  .  .  .  .  #    .  .  .  .  .  .    .  .  .  .  .  .    #  .  .  .  .  .
@@ -16,7 +16,7 @@ private:
          * .  .  .  .  .  .    #  .  .  .  .  .    .  .  .  .  .  .    .  .  .  .  .  .    .  .  .  .  .  #
          * #  .  .  .  .  #    .  .  .  .  #  .    .  .  .  #  .  .    .  .  #  .  .  .    .  #  .  .  .  .
          *
-         * r = 1; end = 4; length = 4
+         * r_start = 1; r_end = 4; length = 4
          * k = 0               k = 1               k = 2
          * .  .  .  .  .  .    .  .  .  .  .  .    .  .  .  .  .  .
          * .  #  .  .  #  .    .  .  #  .  .  .    .  .  .  #  .  .
@@ -25,7 +25,7 @@ private:
          * .  #  .  .  #  .    .  .  .  #  .  .    .  .  #  .  .  .
          * .  .  .  .  .  .    .  .  .  .  .  .    .  .  .  .  .  .
          *
-         * r = 2; end = 3; length = 2
+         * r_start = 2; r_end = 3; length = 2
          * k = 0
          * .  .  .  .  .  .
          * .  .  .  .  .  .
@@ -36,19 +36,19 @@ private:
          */
         int n{static_cast<int>(matrix.size())};
         int half_n{n / 2};
-        int r, k;
-        int start, end, length;
-        for (r = 0; r < half_n; r++)
+        int k;
+        int r_start, r_end, length;
+        for (r_start = 0; r_start < half_n; r_start++)
         {
-            end = n - r - 1;
-            length = n - 2 * r;
+            r_end = n - r_start - 1;
+            length = r_end - r_start + 1;
             for (k = 0; k < length - 1; k++)
             {
-                int temp = matrix[r][r + k];
-                matrix[r][r + k] = matrix[end - k][r];
-                matrix[end - k][r] = matrix[end][end - k];
-                matrix[end][end - k] = matrix[r + k][end];
-                matrix[r + k][end] = temp;
+                int temp = matrix[r_start][r_start + k];
+                matrix[r_start][r_start + k] = matrix[r_end - k][r_start];
+                matrix[r_end - k][r_start] = matrix[r_end][r_end - k];
+                matrix[r_end][r_end - k] = matrix[r_start + k][r_end];
+                matrix[r_start + k][r_end] = temp;
             }
         }
     }
