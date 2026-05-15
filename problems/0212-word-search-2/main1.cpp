@@ -254,6 +254,8 @@ private:
          * 1. Added the delete functionality (without deleting the actual nodes from memory
          *    as we need hold of the pointers in the parent calls of dfs but only by marking is_word false).
          *    Time limit exceeded to ~43% improvement on leetcode.
+         * ! When we actually don't delete the nodes from memory, we just not lose the pointers in the
+         * ! parent dfs calls, we are also saving time from deallocating on heap.
          * 2. Added the node counts to the nodes so that we don't traverse along the trie whose
          *    node counts are 0 (same as a null node but we need the node pointers). ~43% to ~93.5% improvement.
          * 3. Mutating the cells of the board itself to say '#' to indicate that they have been
