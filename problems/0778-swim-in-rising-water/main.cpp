@@ -110,6 +110,13 @@ public:
     // Ideas:
     // 1. Disjoint sets solution
     // 2. BFS/DFS from the source and the destination
+    // 3. BFS/DFS with paths maintaining a maxsofar (continue exploring even if
+    //   smaller numbers are found - they won't be valid paths to those smaller number)
+    //   But we continue exploring with a max so far to find paths to further numbers.
+    //   A valid path to a cell (say has value x) is a path with every node along
+    //   the path having a value <= x
+    //   if we are able to find valid paths from the src and destination then we can easily
+    //   the smallest node to which there are valid paths from both the src and destination
     int swimInWater(const std::vector<std::vector<int>> &grid) { return sol1(grid); }
 };
 
