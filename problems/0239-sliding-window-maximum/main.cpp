@@ -189,7 +189,9 @@ private:
     /**
      * Index Max PQ solution
      *
-     * Theta(n log n) time and Theta(n) space
+     * Theta(n log k) time and Theta(n) space
+     * as at any point (after adding the first k elements) there are
+     * exactly k elements in the index max pq
      */
     static std::vector<int> sol1(const std::vector<int> &nums, int k)
     {
