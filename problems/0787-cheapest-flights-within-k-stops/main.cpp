@@ -75,8 +75,14 @@ private:
          * and length of the shortest path from src to any other vertex with atmost 0 edges
          * is infinity as we can't reach any other node from source with atmost 0 edges
          * * Recurrence relation:
-         * dp[i][v] = min{ dp[i-1][v],
-         *                 dp[i-1][u] + l(u, v) for all u->v }
+         * Consider the shortest path P from src to v with atmost i-1 edges,
+         * then P is either:
+         * a. The shortest path from src to v with atmost i-1 edges (or)
+         * b. For some u->v, the shortest path from src to u with atmost i-1 edges + the edge u->v
+         * dp[i][v] = min{
+         *                 dp[i-1][v],
+         *                 min{ dp[i-1][u] + l(u, v) for all u->v }
+         *               }
          * * Order of filling:
          * Fill each row in any order as dp values in a row depend only upon the
          * values of the previous row
