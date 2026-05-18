@@ -149,8 +149,12 @@ private:
             // And we keep alternating
 
             // We use references to the original rows in the 2d dp array as prev_col and curr_col
-            std::vector<int> &prev_col = dp[i % 2 == 1 ? 0 : 1];
-            std::vector<int> &curr_col = dp[i % 2 == 1 ? 1 : 0];
+            // ! std::vector<int> &prev_col = dp[i % 2 == 1 ? 0 : 1];
+            // ! std::vector<int> &curr_col = dp[i % 2 == 1 ? 1 : 0];
+            // ! `i % 2 == 1 ? 0 : 1` can be simplified to 1 - (i & 1)
+            // ! `i % 2 == 1 ? 1 : 0` can be simplified to (i & 1)
+            std::vector<int> &prev_col = dp[1 - (i & 1)];
+            std::vector<int> &curr_col = dp[i & 1];
             for (int v = 0; v < n; v++)
             {
                 if (v == src)
@@ -166,7 +170,7 @@ private:
         // and dp[1] will be the prev col if k is even
         // Optimization: Entire kth col need not be computed, just the dst's index
         // value need to be computed.
-        std::vector<int> &prev_col = dp[k % 2 == 1 ? 0 : 1];
+        std::vector<int> &prev_col = dp[1 - (k & 1)];
         int min_value = prev_col[dst];
         for (const auto &[u, cost] : reverse_adj_list[dst])
             min_value = std::min(min_value, sum(prev_col[u], cost));
