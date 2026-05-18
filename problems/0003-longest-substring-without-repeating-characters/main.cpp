@@ -4,6 +4,10 @@
 class Solution
 {
 private:
+    /**
+     * Theta(n) time and Theta(1) space
+     * end goes from 1 to n-1 and start goes from 0 to atmost n-1
+     */
     static int sol1(const std::string &s)
     {
         /**
@@ -19,7 +23,7 @@ private:
         int start{0}, end{1};
         int max_window_len{1}, curr_window_len{1};
 
-        std::bitset<256> sliding_window_contains;
+        std::bitset<128> sliding_window_contains;
         sliding_window_contains[s[0]] = true;
 
         unsigned char curr_char;
@@ -70,12 +74,3 @@ private:
 public:
     int lengthOfLongestSubstring(const std::string &s) { return sol1(s); }
 };
-
-#include <iostream>
-
-int main()
-{
-    int result = Solution().lengthOfLongestSubstring("abcabcbb");
-    std::cout << result << std::endl;
-    return 0;
-}
