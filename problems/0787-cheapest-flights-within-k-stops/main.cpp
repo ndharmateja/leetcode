@@ -10,6 +10,10 @@ private:
 
     /**
      * Finds the sum of x and y
+     * This function is to prevent overflows when one of the operands is POS_INF
+     *
+     * Eg:
+     * sum(2      , 3      ) = 5
      * sum(POS_INF, x      ) = POS_INF
      * sum(x      , POS_INF) = POS_INF
      * sum(POS_INF, POS_INF) = POS_INF
@@ -21,6 +25,19 @@ private:
         return x + y;
     }
 
+    /**
+     * Builds the reverse adj list where each vertex stores the list
+     * of vertices (and weights) from which there is an edge
+     * instead of the vertices to which there is an edge
+     *
+     * Eg: If the edges are (weights omitted for illustration):
+     * 0->1, 1->2, 2->0, 1->3, 2->3
+     * The reverse adj list will look like:
+     * 0: [2],
+     * 1: [0],
+     * 2: [1],
+     * 3: [1, 2]
+     */
     static void build_reverse_adj_list(const std::vector<std::vector<int>> &flights,
                                        std::vector<std::vector<std::pair<int, int>>> &reverse_adj_list)
     {
