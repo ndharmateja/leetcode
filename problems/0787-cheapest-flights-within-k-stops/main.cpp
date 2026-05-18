@@ -8,6 +8,12 @@ class Solution
 private:
     static inline const int POS_INF = std::numeric_limits<int>::max();
 
+    /**
+     * Finds the sum of x and y
+     * sum(POS_INF, x      ) = POS_INF
+     * sum(x      , POS_INF) = POS_INF
+     * sum(POS_INF, POS_INF) = POS_INF
+     */
     static int sum(int x, int y)
     {
         if (x == POS_INF || y == POS_INF)
@@ -36,22 +42,53 @@ private:
     static int sol1(int n, const std::vector<std::vector<int>> &flights,
                     int src, int dst, int k)
     {
+        /**
+         * * DP solution:
+         * dp[v][i]: The length of the shortest path from the src to v
+         *           with *atmost* k edges
+         * * Base case:
+         * dp[src][i] = 0        for all i in [0, k]
+         * dp[v][0]   = pos_inf  for all v != src
+         * As length of the shortest path from src to itself with atmost k edges (for any k)
+         * and length of the shortest path from src to any other vertex with atmost 0 edges
+         * is infinity as we can't reach any other node from source with atmost 0 edges
+         * * Recurrence relation:
+         * dp[v][i] = min{ dp[v][i-1],
+         *                 dp[u][i-1] + l(u, v) for all u->v }
+         * * Order of filling:
+         * Fill each column in any order as dp values in a column depend only upon the
+         * values of the previous column
+         * * Final answer:
+         * dp[dst][k]
+         * * Running time:
+         * #subproblems:        n(k + 1)
+         * work per subproblem: Theta(indegree)
+         * postprocessing:      Theta(1)
+         * sum of indegree in the graph = #edges (handshake lemma)
+         * total running time = Theta((k + 1) * #edges) = Theta(k * #edges)
+         */
+
+        // k represents the #intermediate stops along the path
+        // In our formulation we need k to be the length of the path
+        // So we increment k
+        // Length of the path = #intermediate stops + 1
         k++;
 
+        // Build a reverse adjacency list (different from an adjacency list for the reverse graph)
+        // so that we can keep track of the incoming edges to a vertex instead of the outgoing
+        // edges which we do in a normal adjacency list
+        // If there is an edge from u->v, u (and the edge's cost) appears in v's adjacency list
         std::vector<std::vector<std::pair<int, int>>> reverse_adj_list(n);
-        for (const std::vector<int> &flight : flights)
-        {
-            int from = flight[0];
-            int to = flight[1];
-            int cost = flight[2];
-            reverse_adj_list[to].push_back({from, cost});
-        }
+        build_reverse_adj_list(flights, reverse_adj_list);
 
+        // Init the dp table with 0s and fill the base cases
         std::vector<std::vector<int>> dp(n, std::vector<int>(k + 1));
         for (int v = 0; v < n; v++)
             dp[v][0] = POS_INF;
         dp[src][0] = 0;
 
+        // Fill the table column by column from left to right
+        // except for the last column
         for (int i = 1; i < k; i++)
             for (int v = 0; v < n; v++)
             {
@@ -63,11 +100,16 @@ private:
                 dp[v][i] = min_value;
             }
 
+        // Optimization: we don't need to fill the entire last column
+        // as we only need the dp[dst][k] from the last column
         int min_value = dp[dst][k - 1];
         for (const auto &[u, cost] : reverse_adj_list[dst])
             min_value = std::min(min_value, sum(dp[u][k - 1], cost));
 
-        return min_value == POS_INF ? -1 : min_value;
+        // Return the answer
+        return min_value == POS_INF
+                   ? -1
+                   : min_value;
     }
 
     /**
@@ -151,12 +193,37 @@ private:
         return answer;
     }
 
-    // static int sol2(int n, const std::vector<std::vector<int>> &flights,
-    //                 int src, int dst, int k)
-    // {
-    // }
+    /**
+     * Top down DP version of solution 1
+     *
+     * This is potentially better as we don't have to compute the
+     * dp[v][i] values for all vertices 'v' for a certain 'i'
+     * Top down approach only computes the values that are required
+     */
+    static int sol3(int n, const std::vector<std::vector<int>> &flights,
+                    int src, int dst, int k)
+    {
+        // Increment k and build the reverse adj list
+        k++;
+        std::vector<std::vector<std::pair<int, int>>> reverse_adj_list(n);
+        build_reverse_adj_list(flights, reverse_adj_list);
+
+        // Store the base case values in the memo so that we don't need to have
+        // a separate condition for the base case in the recursive function
+        std::vector<std::vector<int>> memo(n, std::vector<int>(k + 1, -1));
+        for (int v = 0; v < n; v++)
+            memo[v][0] = POS_INF;
+        for (int i = 0; i <= k; i++)
+            memo[src][i] = 0;
+
+        // Recursively compute dp[dst][k] and return the answer
+        int result = compute(reverse_adj_list, dst, k, memo);
+        return result == POS_INF
+                   ? -1
+                   : result;
+    }
 
 public:
     int findCheapestPrice(int n, const std::vector<std::vector<int>> &flights,
-                          int src, int dst, int k) { return sol1(n, flights, src, dst, k); }
+                          int src, int dst, int k) { return sol2(n, flights, src, dst, k); }
 };
