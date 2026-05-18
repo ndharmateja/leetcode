@@ -34,8 +34,7 @@ private:
             dp[v][0] = POS_INF;
         dp[src][0] = 0;
 
-        for (int i = 1; i <= k; i++)
-        {
+        for (int i = 1; i < k; i++)
             for (int v = 0; v < n; v++)
             {
                 if (v == src)
@@ -45,9 +44,12 @@ private:
                     min_value = std::min(min_value, sum(dp[u][i - 1], cost));
                 dp[v][i] = min_value;
             }
-        }
 
-        return dp[dst][k] == POS_INF ? -1 : dp[dst][k];
+        int min_value = dp[dst][k - 1];
+        for (const auto &[u, cost] : reverse_adj_list[dst])
+            min_value = std::min(min_value, sum(dp[u][k - 1], cost));
+
+        return min_value == POS_INF ? -1 : min_value;
     }
 
     // static int sol2(std::vector<std::vector<std::pair<int, int>>> reverse_adj_list,
