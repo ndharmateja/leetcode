@@ -15,6 +15,24 @@ private:
         return x + y;
     }
 
+    static void build_reverse_adj_list(const std::vector<std::vector<int>> &flights,
+                                       std::vector<std::vector<std::pair<int, int>>> &reverse_adj_list)
+    {
+        int from, to, cost;
+        for (const std::vector<int> &flight : flights)
+        {
+            from = flight[0];
+            to = flight[1];
+            cost = flight[2];
+            reverse_adj_list[to].push_back({from, cost});
+        }
+    }
+
+    /**
+     * Bottom up DP solution
+     *
+     * Theta(k(E + V)) time and Theta(kV) space
+     */
     static int sol1(int n, const std::vector<std::vector<int>> &flights,
                     int src, int dst, int k)
     {
