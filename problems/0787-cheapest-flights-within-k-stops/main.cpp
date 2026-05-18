@@ -94,10 +94,10 @@ private:
             {
                 if (v == src)
                     continue;
-                int min_value = dp[v][i - 1];
+                int &min_value = dp[v][i];
+                min_value = dp[v][i - 1];
                 for (const auto &[u, cost] : reverse_adj_list[v])
                     min_value = std::min(min_value, sum(dp[u][i - 1], cost));
-                dp[v][i] = min_value;
             }
 
         // Optimization: we don't need to fill the entire last column
@@ -159,10 +159,10 @@ private:
             {
                 if (v == src)
                     continue;
-                int min_value = prev_col[v];
+                int &min_value = curr_col[v];
+                min_value = prev_col[v];
                 for (const auto &[u, cost] : reverse_adj_list[v])
                     min_value = std::min(min_value, sum(prev_col[u], cost));
-                curr_col[v] = min_value;
             }
         }
 
