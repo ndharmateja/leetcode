@@ -114,6 +114,8 @@ private:
 
     /**
      * Space optimized version of solution 1
+     *
+     * Theta(k(E + V)) time and Theta(V) space
      */
     static int sol2(int n, const std::vector<std::vector<int>> &flights,
                     int src, int dst, int k)
