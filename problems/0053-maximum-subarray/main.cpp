@@ -10,22 +10,24 @@ class Solution
      */
     static int solution1(const std::vector<int> &nums)
     {
-        // * DP solution:
-        // dp[i]: max subarray sum ending at index[i]
-        // * Base case:
-        // dp[0] = nums[0]
-        // * Recurrence relation
-        // If the max sum upto index i-1 is negative, then we should only
-        // consider the number nums[i] without adding anything from before
-        // otherwise we add the sum of dp[i-1] to extend it with nums[i]
-        // dp[i] = nums[i]            if dp[i-1] < 0
-        //       = dp[i-1] + nums[i]  otherwise
-        // * Order of filling
-        // We will it from left to right as we only need the left value at
-        // each point
-        // * Final answer
-        // max{dp[i] for 0 <= i <= n-1} as the max contiguous subarray
-        // can end anywhere in the array
+        /**
+         * * DP solution:
+         * dp[i]: max subarray sum ending at index[i]
+         * * Base case:
+         * dp[0] = nums[0]
+         * * Recurrence relation
+         * If the max sum upto index i-1 is negative, then we should only
+         * consider the number nums[i] without adding anything from before
+         * otherwise we add the sum of dp[i-1] to extend it with nums[i]
+         * dp[i] = nums[i]            if dp[i-1] < 0
+         *       = dp[i-1] + nums[i]  otherwise
+         * * Order of filling
+         * We will it from left to right as we only need the left value at
+         * each point
+         * * Final answer
+         * max{dp[i] for 0 <= i <= n-1} as the max contiguous subarray
+         * can end anywhere in the array
+         */
         int n{static_cast<int>(nums.size())};
         std::vector<int> dp(n);
 
