@@ -215,6 +215,35 @@ private:
         return result;
     }
 
+    /**
+     * Index Max PQ solution
+     *
+     * Theta(n log k) time and Theta(k) space
+     * as at any point (after adding the first k elements) there are
+     * exactly k elements in the index max pq
+     */
+    static std::vector<int> sol2(const std::vector<int> &nums, int k)
+    {
+        int n{static_cast<int>(nums.size())};
+        std::vector<int> result;
+        result.reserve(n - k + 1);
+
+        IndexMaxPQ<int> max_heap(k);
+        for (int i = 0; i < k; i++)
+            max_heap.insert(i, nums[i]);
+        result.push_back(max_heap.max());
+
+        int start{0};
+        for (int end = k; end < n; end++)
+        {
+            max_heap.remove(start++ % k);
+            max_heap.insert(end % k, nums[end]);
+            result.push_back(max_heap.max());
+        }
+
+        return result;
+    }
+
 public:
-    std::vector<int> maxSlidingWindow(const std::vector<int> &nums, int k) { return sol1(nums, k); }
+    std::vector<int> maxSlidingWindow(const std::vector<int> &nums, int k) { return sol2(nums, k); }
 };
