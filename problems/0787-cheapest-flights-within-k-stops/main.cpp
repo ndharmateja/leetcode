@@ -18,7 +18,7 @@ private:
      * sum(x      , POS_INF) = POS_INF
      * sum(POS_INF, POS_INF) = POS_INF
      */
-    static int sum(int x, int y)
+    static inline int sum(int x, int y) { return (x == POS_INF || y == POS_INF) ? POS_INF : x + y; }
 
     /**
      * Formats the result for leetcode submission as it needs -1 for unreachable nodes
