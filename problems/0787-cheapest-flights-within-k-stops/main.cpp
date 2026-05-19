@@ -86,6 +86,11 @@ private:
          * * Order of filling:
          * Fill each row in any order as dp values in a row depend only upon the
          * values of the previous row
+         * * Convergence (early stopping):
+         * If for any layer 'i', dp[i][v] = dp[i-1][v] for all vertices 'v', we'd converged
+         * and all the further rows are going to be the same.
+         * We can stop as we found the shortest distances (all vertices' true shortest distances
+         * require less than k edges, so we'd be returning true shortest distances).
          * * Final answer:
          * dp[k][dst]
          * * Running time:
@@ -118,18 +123,38 @@ private:
         // Fill the table row by row from left to right
         // except for the last row
         for (int i = 1; i < k; i++)
+        {
+            // At the end of the 'v' for loop, it holds true if for all vertices 'v'
+            // dp[i][v] = dp[i-1][v]
+            // which means we'd converged
+            bool is_row_unchanged{true};
+
             for (int v = 0; v < n; v++)
             {
                 if (v == src)
                     continue;
+
                 int &min_value = dp[i][v];
                 min_value = dp[i - 1][v];
                 for (const auto &[u, cost] : reverse_adj_list[v])
                     min_value = std::min(min_value, sum(dp[i - 1][u], cost));
+
+                // Check dp[i][v] is the same as dp[i-1][v] for this vertex 'v'
+                is_row_unchanged &= (min_value == dp[i - 1][v]);
             }
 
-        // Optimization: we don't need to fill the entire last row
-        // as we only need the dp[dst][k] from the last row
+            // ! Optimization: If none of the values have changed from atmost i-1 edges
+            // ! to atmost i edges then they are not further going to change and we can stop
+            // ! as we found the shortest distance (all vertices' true shortest distances
+            // ! require less than k edges, so we'd be returning true shortest distances)
+            if (is_row_unchanged)
+                return dp[i][dst] == POS_INF
+                           ? -1
+                           : dp[i][dst];
+        }
+
+        // ! Optimization: we don't need to fill the entire last row
+        // ! as we only need the dp[dst][k] from the last row
         int min_value = dp[k - 1][dst];
         for (const auto &[u, cost] : reverse_adj_list[dst])
             min_value = std::min(min_value, sum(dp[k - 1][u], cost));
@@ -182,6 +207,9 @@ private:
             // ! `i % 2 == 1 ? 1 : 0` can be simplified to (i & 1)
             std::vector<int> &prev_row = dp[1 - (i & 1)];
             std::vector<int> &curr_row = dp[i & 1];
+
+            bool is_row_unchanged{true};
+
             for (int v = 0; v < n; v++)
             {
                 if (v == src)
@@ -190,7 +218,15 @@ private:
                 min_value = prev_row[v];
                 for (const auto &[u, cost] : reverse_adj_list[v])
                     min_value = std::min(min_value, sum(prev_row[u], cost));
+
+                is_row_unchanged &= (min_value == prev_row[v]);
             }
+
+            // Read solution1's explanation for this optimization of convergence
+            if (is_row_unchanged)
+                return curr_row[dst] == POS_INF
+                           ? -1
+                           : curr_row[dst];
         }
 
         // If k is odd, according to the invariant dp[0] will be the prev row
