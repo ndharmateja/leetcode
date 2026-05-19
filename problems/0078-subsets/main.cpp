@@ -63,14 +63,15 @@ private:
         std::vector<std::vector<int>> result;
         result.reserve(1 << n);
         result.push_back({});
+        int result_size{1};
         for (const int num : nums)
         {
-            int result_size{static_cast<int>(result.size())};
             for (int i = 0; i < result_size; i++)
             {
                 result.push_back(result[i]);
                 result.back().push_back(num);
             }
+            result_size <<= 1;
         }
         return result;
     };
