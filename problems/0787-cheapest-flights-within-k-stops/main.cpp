@@ -19,11 +19,11 @@ private:
      * sum(POS_INF, POS_INF) = POS_INF
      */
     static int sum(int x, int y)
-    {
-        if (x == POS_INF || y == POS_INF)
-            return POS_INF;
-        return x + y;
-    }
+
+    /**
+     * Formats the result for leetcode submission as it needs -1 for unreachable nodes
+     */
+    static inline int format_result(int result) { return result == POS_INF ? -1 : result; }
 
     /**
      * Builds the reverse adj list where each vertex stores the list
@@ -148,9 +148,7 @@ private:
             // ! as we found the shortest distance (all vertices' true shortest distances
             // ! require less than k edges, so we'd be returning true shortest distances)
             if (is_row_unchanged)
-                return dp[i][dst] == POS_INF
-                           ? -1
-                           : dp[i][dst];
+                return format_result(dp[i][dst]);
         }
 
         // ! Optimization: we don't need to fill the entire last row
@@ -160,9 +158,7 @@ private:
             min_value = std::min(min_value, sum(dp[k - 1][u], cost));
 
         // Return the answer
-        return min_value == POS_INF
-                   ? -1
-                   : min_value;
+        return format_result(min_value);
     }
 
     /**
@@ -224,9 +220,7 @@ private:
 
             // Read solution1's explanation for this optimization of convergence
             if (is_row_unchanged)
-                return curr_row[dst] == POS_INF
-                           ? -1
-                           : curr_row[dst];
+                return format_result(curr_row[dst]);
         }
 
         // If k is odd, according to the invariant dp[0] will be the prev row
@@ -239,9 +233,7 @@ private:
             min_value = std::min(min_value, sum(prev_row[u], cost));
 
         // Return the answer
-        return min_value == POS_INF
-                   ? -1
-                   : min_value;
+        return format_result(min_value);
     }
 
     /**
@@ -287,9 +279,7 @@ private:
 
         // Recursively compute dp[dst][k] and return the answer
         int result = compute(reverse_adj_list, dst, k, memo);
-        return result == POS_INF
-                   ? -1
-                   : result;
+        return format_result(result);
     }
 
 public:
