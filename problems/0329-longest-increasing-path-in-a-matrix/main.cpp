@@ -1,4 +1,6 @@
 #include <vector>
+#include <queue>
+#include <utility>
 
 class Solution
 {
@@ -167,6 +169,94 @@ private:
         return max_path_len;
     }
 
+    /**
+     * BFS Version (Kahn's algorithm)
+     */
+    static int sol3(const std::vector<std::vector<int>> &matrix)
+    {
+        // m = #rows and n = #columns in the grid
+        // Create the memo
+        int m{static_cast<int>(matrix.size())}, n{static_cast<int>(matrix[0].size())};
+
+        // Create the queue and the 2d vector for indegrees
+        std::queue<std::pair<int, int>> src_vertices;
+        std::vector<std::vector<int>> in_degrees(m, std::vector<int>(n, 0));
+
+        // Compute the indegrees of all the cells
+        for (int r = 0; r < m; r++)
+            for (int c = 0; c < n; c++)
+            {
+                int &in_degree = in_degrees[r][c];
+                for (int i = 0; i < 4; ++i)
+                {
+                    // If neighbour is out of bounds we can skip it
+                    int new_r = r + drs[i];
+                    int new_c = c + dcs[i];
+                    if (new_r < 0 || new_r >= m || new_c < 0 || new_c >= n)
+                        continue;
+
+                    // If the neighbour's value < curr cell's value
+                    // it means that there is an edge from the neighbour to the current cell
+                    // so we can increment the indegree
+                    if (matrix[new_r][new_c] < matrix[r][c])
+                        in_degree++;
+                }
+
+                // If the indegree of the current cell is 0 then we add it to the queue
+                if (!in_degree)
+                    src_vertices.push({r, c});
+            }
+
+        // Run the BFS (Kahn's algorithm) as long as the queue is non-empty
+        // In each iteration of the outer loop the invariant is that the
+        // frontier solely consists of the source nodes (with 0 indegree) as we
+        // remove a source node and decrement the indegrees of all its neighbours
+        // and add the neighbour to the queue if its indegree becomes 0
+        // We keep track of the distance layer by layer
+        // We increment the number of bfs layers as we finish processing the nodes of each layer
+        int num_bfs_layers{0};
+        int num_src_vertices;
+        while ((num_src_vertices = static_cast<int>(src_vertices.size())))
+        {
+            // Process each node (with indegree 0) of the frontier
+            // 1. Remove it from the queue
+            // 2. Decrement the indegree of all its neighbours
+            // 3. If the neighbour's indegree becomes 0, we add it to the queue
+            //   and it gets processed in the next iteration of the frontier
+            for (int v = 0; v < num_src_vertices; v++)
+            {
+                // Remove a source node from the queue
+                auto [r, c] = src_vertices.front();
+                src_vertices.pop();
+
+                // Decrement the indegree of all its neighbours
+                for (int i = 0; i < 4; ++i)
+                {
+                    // Skip neighbours that are out of bounds
+                    int new_r = r + drs[i];
+                    int new_c = c + dcs[i];
+                    if (new_r < 0 || new_r >= m || new_c < 0 || new_c >= n)
+                        continue;
+
+                    // Decrement the indegree of the neighbour and add it to the queue
+                    // if its indegree becomes 0
+                    if (matrix[new_r][new_c] > matrix[r][c])
+                    {
+                        in_degrees[new_r][new_c]--;
+                        if (!in_degrees[new_r][new_c])
+                            src_vertices.push({new_r, new_c});
+                    }
+                }
+            }
+
+            // Increment the number of layers as the layer is finished processing
+            num_bfs_layers++;
+        }
+
+        // The number of layers at the end is the length of the longest path
+        return num_bfs_layers;
+    }
+
 public:
-    int longestIncreasingPath(std::vector<std::vector<int>> &matrix) { return sol2(matrix); }
+    int longestIncreasingPath(std::vector<std::vector<int>> &matrix) { return sol3(matrix); }
 };
