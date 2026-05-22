@@ -15,13 +15,15 @@ private:
      * Assumes that
      * All values in the vector have unique timestamps in ascending order
      * timestamp > values.front().first
-     * timestamp < values.back().first
+     * timestamp < values.back().first (=> the last value can't be the answer)
      * So we can infer that there are atleast 3 elements in the values vector
      */
     static int binary_search(const std::vector<std::pair<int, std::string>> &values, int timestamp)
     {
         // 0 is a valid answer, so we can start with it and try to improve it using binary search
-        int n{static_cast<int>(values.size())}, lo{0}, hi{n - 1}, mid;
+        // Even though index 0 can be a potential answer, we can start with index 1
+        // as we are initing the result variable with 0 as the first potential solution
+        int n{static_cast<int>(values.size())}, lo{1}, hi{n - 2}, mid;
         int result{0};
 
         // As long as the range is valid, we run binary search
@@ -55,7 +57,7 @@ private:
     }
 
 public:
-    void set(const std::string &key, std::string value, int timestamp) { map[key].push_back({timestamp, value}); }
+    void set(const std::string &key, const std::string &value, int timestamp) { map[key].push_back({timestamp, value}); }
 
     std::string get(const std::string &key, int timestamp)
     {
@@ -69,7 +71,7 @@ public:
         const std::vector<std::pair<int, std::string>> &values = it->second;
 
         // Get the timestamp and the values for the first element
-        auto [front_timestamp, front_value] = values.front();
+        const auto &[front_timestamp, front_value] = values.front();
 
         // If the timestamp is lower than the lowest timestamp (the values are ordered by
         // ascending order of timestamps) then we don't have a timestamp that is <= the
