@@ -7,7 +7,6 @@ private:
     {
         // Prices are in the range [0, 10000] according to leetcode constraints
         // so we can init min_so_far with 10000
-        int n{static_cast<int>(prices.size())};
         int min_so_far{10000}, max_profit{0};
 
         // For every price in the list, we first see if that value is the
