@@ -121,30 +121,30 @@ private:
          *   subsequence has length dp.size()
          * 3. The numbers in the dp array are unique and sorted in ascending order
          *
-         * Eg: nums: [2, 3, 1, 4, 10, 6, 2, 8]
+         * Eg: nums: [2, 3, 1, 4, 9, 6, 2, 8]
          * In the DP array we are storing the bottom most values of the illustration
          * which are the active elements of the piles
          *
-         * After inserting 2 : 2          => DP array: [2]
-         * After inserting 3 : 2 3        => DP array: [2, 3]
-         * After inserting 1 : 2 3        => DP array: [1, 3]
-         *                     ↓
-         *                     1
-         * After inserting 4 : 2 3 4      => DP array: [1, 3, 4]
-         *                     ↓
-         *                     1
-         * After inserting 10: 2 3 4 10   => DP array: [1, 3, 4, 10]
-         *                     ↓
-         *                     1
-         * After inserting 6 : 2 3 4 10   => DP array: [1, 3, 4, 6]
-         *                     ↓     ↓
-         *                     1     6
-         * After inserting 2 : 2 3 4 10   => DP array: [1, 2, 4, 6]
-         *                     ↓ ↓   ↓
-         *                     1 2   6
-         * After inserting 8 : 2 3 4 10 8 => DP array: [1, 2, 4, 6, 8]
-         *                     ↓ ↓   ↓
-         *                     1 2   6
+         * After inserting 2: 2         => DP array: [2]
+         * After inserting 3: 2 3       => DP array: [2, 3]
+         * After inserting 1: 2 3       => DP array: [1, 3]
+         *                    ↓
+         *                    1
+         * After inserting 4: 2 3 4     => DP array: [1, 3, 4]
+         *                    ↓
+         *                    1
+         * After inserting 9: 2 3 4 9   => DP array: [1, 3, 4, 9]
+         *                    ↓
+         *                    1
+         * After inserting 6: 2 3 4 9   => DP array: [1, 3, 4, 6]
+         *                    ↓     ↓
+         *                    1     6
+         * After inserting 2: 2 3 4 9   => DP array: [1, 2, 4, 6]
+         *                    ↓ ↓   ↓
+         *                    1 2   6
+         * After inserting 8: 2 3 4 9 8 => DP array: [1, 2, 4, 6, 8]
+         *                    ↓ ↓   ↓
+         *                    1 2   6
          *
          * The length of the longest increasing subsequence is 5
          */
