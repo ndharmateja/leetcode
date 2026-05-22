@@ -90,7 +90,7 @@ public:
             return front_value;
 
         // Get the timestamp and the values for the last element
-        auto [back_timestamp, back_value] = values.back();
+        const auto &[back_timestamp, back_value] = values.back();
 
         // If the given timestamp either matches the last element's timestamp
         // or if it is greater then the last element is the element with
