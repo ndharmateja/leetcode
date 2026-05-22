@@ -190,8 +190,3 @@ private:
 public:
     int lengthOfLIS(const std::vector<int> &nums) { return sol2(nums); }
 };
-
-int main()
-{
-    Solution().lengthOfLIS({0, 1, 0, 3, 2, 3});
-}
