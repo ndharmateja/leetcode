@@ -20,17 +20,6 @@ private:
     }
 
     /**
-     * Returns true if counts1 and counts are the same, false otherwise
-     */
-    static inline bool are_char_counts_same(std::array<uint16_t, ALPHABET_SIZE> &counts1, std::array<uint16_t, ALPHABET_SIZE> &counts2)
-    {
-        for (int i = 0; i < ALPHABET_SIZE; i++)
-            if (counts1[i] != counts2[i])
-                return false;
-        return true;
-    }
-
-    /**
      * Sliding window solution with character counts
      *
      * O(ALPHABET_SIZE * n2) time and Theta(ALPHABET_SIZE) space
@@ -55,7 +44,7 @@ private:
 
         // If the sliding window and s1 are permutations of each other
         // then their char counts should be the same
-        if (are_char_counts_same(s1_char_counts, window_char_counts))
+        if (s1_char_counts == window_char_counts)
             return true;
 
         // Keep moving the sliding window one step to the right each iteration
@@ -69,7 +58,7 @@ private:
             window_char_counts[s2[end++] - 'a']++;
 
             // If they are permutations of each other then we can return true
-            if (are_char_counts_same(s1_char_counts, window_char_counts))
+            if (s1_char_counts == window_char_counts)
                 return true;
         }
 
