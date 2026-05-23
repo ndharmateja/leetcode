@@ -10,13 +10,13 @@ private:
      * Performs ceiling division of pile / speed
      * Works when speed=1 as well
      *
-     * Eg: pile = 7, speed = 2 => (7 + 2 - 1) / 1 = 4 hours
-     * Eg: pile = 8, speed = 2 => (8 + 2 - 1) / 1 = 4 hours
-     * Eg: pile = 7, speed = 4 => (7 + 4 - 1) / 1 = 2 hours
-     * Eg: pile = 8, speed = 4 => (8 + 4 - 1) / 1 = 2 hours
+     * Eg: pile = 7, speed = 2 => (7 + 2 - 1) / 2 = 4 hours
+     * Eg: pile = 8, speed = 2 => (8 + 2 - 1) / 2 = 4 hours
+     * Eg: pile = 7, speed = 4 => (7 + 4 - 1) / 4 = 2 hours
+     * Eg: pile = 8, speed = 4 => (8 + 4 - 1) / 4 = 2 hours
      * Eg: pile = 7, speed = 1 => (7 + 1 - 1) / 1 = 7 hours
      */
-    static inline int64_t ceil_division(int pile, int speed) { return (static_cast<int64_t>(pile) + speed - 1) / speed; }
+    static inline int ceil_division(int pile, int speed) { return (pile + speed - 1) / speed; }
 
     /**
      * Precondition: speed >= 1
