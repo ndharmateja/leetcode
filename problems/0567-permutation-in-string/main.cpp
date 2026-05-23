@@ -94,9 +94,9 @@ private:
             return false;
 
         // Get the initial character counts to count the number of matches
-        // Eg: if s1 is AAACB and the first 4 characters of s2 are ADABD, then the number of matches
+        // Eg: if s1 is AAACB and the first 5 characters of s2 are ADABD, then the number of matches
         // is equal to 23 (B, E, F, G, H, ..., X, Y, Z all have the same counts)
-        // So if the number of matches equals n1 (#chars in s1), then they are permutations of each other
+        // So if the number of matches equals 26 (the alphabet size), then they are permutations of each other
         // Unlike solution 1, where we we were comparing the whole char counts arrays of s1 and
         // the sliding window, we can just count the #matches in constant time as we add and remove
         // characters from the sliding window
