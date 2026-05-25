@@ -10,35 +10,43 @@ class Solution
      *
      * Theta(nc) time and Theta(n) space
      * where n = amount and c = #coins
-     * 
+     *
      * which is pseudo polynomial as n is exponential in terms of the #bits (lg n)
      * which is the length of the input
      */
-    static int solution1(const std::vector<int> &coins, int amount)
+    static int solution1(const std::vector<int> &coins, int n)
     {
         // Edge case
-        if (amount == 0)
+        if (n == 0)
             return 0;
 
-        // DP solution:
-        // dp[i]: the min number of coins required to make up amount i or -1 if it can't be formed
-        // Base case:
-        // dp[0] = 0
-        // Recurrence:
-        // dp[i] = min{dp[i - d] for each denomination d <= i} + 1
-        // Order of filling:
-        // From left to right
-        // Final answer: dp[amount]
+        /**
+         * * DP solution:
+         * dp[i]: the min number of coins required to make up amount i or -1 if it can't be formed
+         * * Base case:
+         * dp[0] = 0
+         * * Recurrence:
+         * dp[i] = min{dp[i - d] for each denomination d <= i} + 1
+         * * Order of filling:
+         * From left to right
+         * * Final answer:
+         * dp[n]
+         * * Running time
+         * #subproblems        = n + 1
+         * work per subproblem = Theta(c) where c is the number of denominations
+         * postprocessing      = Theta(1)
+         * total running time  = Theta(nc)
+         */
 
         // Create the dp array and fill it with -1 so that we don't have to
         // update it if we don't find a solution
-        std::vector<int> dp(amount + 1, -1);
+        std::vector<int> dp(n + 1, -1);
 
         // Base case
         dp[0] = 0;
 
         // Fill the table
-        for (int i = 1; i <= amount; i++)
+        for (int i = 1; i <= n; i++)
         {
             // Find the min coins required to make up i - coin for each of the coins
             int min_coins = pos_inf;
@@ -68,9 +76,9 @@ class Solution
         }
 
         // Return the result
-        return dp[amount];
+        return dp[n];
     }
 
 public:
-    int coinChange(const std::vector<int> &coins, int amount) { return solution1(coins, amount); }
+    int coinChange(const std::vector<int> &coins, int n) { return solution1(coins, n); }
 };
