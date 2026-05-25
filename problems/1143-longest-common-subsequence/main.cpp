@@ -41,12 +41,7 @@ private:
         std::vector<std::vector<int>> dp(m + 1, std::vector<int>(n + 1));
 
         // Base cases
-        // Fill the first column with 0s
-        for (int i = 0; i <= m; i++)
-            dp[i][0] = 0;
-        // Fill the first row with 0s
-        for (int j = 1; j <= n; j++)
-            dp[0][j] = 0;
+        // The first row and the first column are already 0s as the vector is initialized with 0s
 
         // Fill the DP table row by row from left to right
         for (int i = 1; i <= m; i++)
