@@ -11,16 +11,22 @@ private:
      */
     int sol1(const std::vector<int> &nums)
     {
-        // DP sol:
-        // dp[i]: length of the longest strictly increasing subsequence *ending* at index i
-        // Base case:
-        // dp[0] = 1
-        // Recurrence relation:
-        // dp[i] = max{dp[j] s.t. j < i and nums[j] < nums[i]} + 1
-        // Order of filling the table:
-        // from left to right as we only need the left side values
-        // Final answer:
-        // max{dp[i] s.t. 0 <= i <= n-1}
+        /**
+         * * DP solution:
+         * dp[i]: length of the longest strictly increasing subsequence *ending* at index i
+         * * Base case:
+         * dp[0] = 1
+         * * Recurrence relation:
+         * dp[i] = max{dp[j] s.t. j < i and nums[j] < nums[i]} + 1
+         * * Order of filling the table:
+         * from left to right as we only need the left side values
+         * * Final answer:
+         * max{dp[i] s.t. 0 <= i <= n-1}
+         * * Running time:
+         * work for all subproblems = 1 + 2 + 3 + ... + n-1 = Theta(n^2)
+         * postprocessing           = Theta(n)
+         * total running time       = Theta(n^2)
+         */
         int n{static_cast<int>(nums.size())};
         std::vector<int> dp(n);
 
