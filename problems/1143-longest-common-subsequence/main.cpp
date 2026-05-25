@@ -13,19 +13,28 @@ private:
      */
     static int solution1(const std::string &s1, const std::string &s2)
     {
-        // DP solution:
-        // say m = len(s1), n = len(s2), LCS = longest common subsequence
-        // dp[i][j]: the length of the LCS between s1[:i] which is a prefix of s1 of length i
-        //           and s2[:j] which is a prefix of s2 of length j (python notation)
-        // Base cases: dp[0][.] = dp[.][0] = 0 as the LCS between an empty string and anything
-        //             is just the empty string
-        // Recurrence relation:
-        // dp[i][j] = dp[i-1][j-1] + 1             if s1[i-1] == s2[j-1]
-        //          = max{dp[i][j-1], dp[i-1][j]}  otherwise
-        // Order of filling the table:
-        // We fill row by row going from left to right as we need the top value, the left value
-        // and the top left values
-        // Final answer: dp[m][n]
+        /**
+         * * DP solution:
+         * say m = len(s1), n = len(s2), LCS = longest common subsequence
+         * dp[i][j]: the length of the LCS between s1[:i] which is a prefix of s1 of length i
+         *           and s2[:j] which is a prefix of s2 of length j (python notation)
+         * * Base cases:
+         * dp[0][.] = dp[.][0] = 0 as the LCS between an empty string and anything
+         * is just the empty string
+         * * Recurrence relation:
+         * dp[i][j] = dp[i-1][j-1] + 1             if s1[i-1] == s2[j-1]
+         *          = max{dp[i][j-1], dp[i-1][j]}  otherwise
+         * * Order of filling the table:
+         * We fill row by row going from left to right as we need the top value, the left value
+         * and the top left values (we choose this among the multiple options for cache locality)
+         * * Final answer:
+         * dp[m][n]
+         * * Running time:
+         * #subproblems = (m+1)(n+1)
+         * work per subproblem = Theta(1)
+         * postprocessing = Theta(1)
+         * total running time = Theta(mn)
+         */
 
         // The DP array has to be of size m+1 x n+1
         int m{static_cast<int>(s1.size())}, n{static_cast<int>(s2.size())};
