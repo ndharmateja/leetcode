@@ -30,10 +30,10 @@ private:
          * * Final answer:
          * dp[m][n]
          * * Running time:
-         * #subproblems = (m+1)(n+1)
+         * #subproblems        = (m+1)(n+1)
          * work per subproblem = Theta(1)
-         * postprocessing = Theta(1)
-         * total running time = Theta(mn)
+         * postprocessing      = Theta(1)
+         * total running time  = Theta(mn)
          */
 
         // The DP array has to be of size m+1 x n+1
