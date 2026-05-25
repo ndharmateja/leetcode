@@ -65,8 +65,10 @@ private:
         // Init the pointers and the result
         // n-1 is a potential candidate as num < dp.back() but we use binary search
         // to find a better candidate
-        int lo{1}, hi{static_cast<int>(dp.size()) - 1}, mid;
-        int result{hi};
+        // We can start at n-2 as we already recorded n-1
+        int n{static_cast<int>(dp.size())};
+        int lo{1}, hi{n - 2}, mid;
+        int result{n - 1};
 
         // Run binary search as long as the binary search range is valid
         while (lo <= hi)
