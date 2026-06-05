@@ -23,14 +23,14 @@ private:
     TrieNode *root;
 
     /**
-     * Recursive function that looks for word[idx:] starting at the trie node curr
+     * Recursive function that looks for pattern[idx:] starting at the trie node curr
      * Assumes that curr is not nullptr (we only call it if curr is not null)
      *
      * Invariants:
      * 1. curr is not null
-     * 2. curr node corresponds the word[:idx] prefix
+     * 2. curr node corresponds the pattern[:idx] prefix
      */
-    static bool search(TrieNode *curr, const std::string &word, int idx, int word_length)
+    static bool search(TrieNode *curr, const std::string &pattern, int idx, int pattern_length)
     {
         // Base cases
         // ! We can skip this base case to prevent an extra function call when curr is nullptr
@@ -40,26 +40,26 @@ private:
         // if (!curr)
         //     return false;
 
-        // If we have reached the end of the word, then idx will be equal to word_length
-        // (and not word_length-1) as the root node is the first node checked when idx=0
+        // If we have reached the end of the pattern, then idx will be equal to pattern_length
+        // (and not pattern_length-1) as the root node is the first node checked when idx=0
         // Once we reach a trie node with k chars, then idx would be k
-        // Once we reach the trie node that represents the given word
-        // we can return true if this node represents a full word
-        if (idx == word_length)
+        // Once we reach the trie node that represents the given pattern
+        // we can return true if this node represents a full pattern
+        if (idx == pattern_length)
             return curr->is_word;
 
-        // If idx hasn't reached word_length yet, we are in the middle of the word search
-        // so we search for the word in all its children
+        // If idx hasn't reached pattern_length yet, we are in the middle of the pattern search
+        // so we search for the pattern in all its children
         // If the current char is "." we search this char as a wild card
         // and search among all its children
-        unsigned char c = word[idx];
+        unsigned char c = pattern[idx];
         if (c == '.')
         {
             // Along any branch if search returns true, we can immediately return
             // true for an early exit
             for (auto child_ptr : curr->children)
                 if (child_ptr)
-                    if (search(child_ptr, word, idx + 1, word_length))
+                    if (search(child_ptr, pattern, idx + 1, pattern_length))
                         return true;
 
             // If we reach here, then search is fruitless along this path
@@ -69,7 +69,7 @@ private:
         // If the char is not a '.' we can search along that specific child
         auto child_ptr = curr->children[c - 'a'];
         return child_ptr
-                   ? search(child_ptr, word, idx + 1, word_length)
+                   ? search(child_ptr, pattern, idx + 1, pattern_length)
                    : false;
     }
 
@@ -102,5 +102,5 @@ public:
         curr->is_word = true;
     }
 
-    bool search(const std::string &word) { return search(root, word, 0, static_cast<int>(word.size())); }
+    bool search(const std::string &pattern) { return search(root, pattern, 0, static_cast<int>(pattern.size())); }
 };
