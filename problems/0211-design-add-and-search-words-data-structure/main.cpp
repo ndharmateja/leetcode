@@ -25,6 +25,10 @@ private:
     /**
      * Recursive function that looks for word[idx:] starting at the trie node curr
      * Assumes that curr is not nullptr (we only call it if curr is not null)
+     *
+     * Invariants:
+     * 1. curr is not null
+     * 2. curr node corresponds the word[:idx] prefix
      */
     static bool search(TrieNode *curr, const std::string &word, int idx, int word_length)
     {
