@@ -61,6 +61,10 @@ public:
     int get_num_sets() { return num_sets; }
 };
 
+/**
+ * Solving a similar problem on Neetcode as the original problem is a premium one.
+ * Reference: https://neetcode.io/problems/count-connected-components/question
+ */
 class Solution
 {
 private:
