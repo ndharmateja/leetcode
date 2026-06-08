@@ -13,7 +13,7 @@ class Solution
 private:
     /**
      * Runs DFS and adds the elements to the result vector in the order of completion
-     * of vertices and returns if there is a cycle.
+     * of vertices and returns true if there is a cycle and false otherwise.
      */
     static bool dfs(const std::vector<std::vector<int>> &adj,
                     int u, std::vector<State> &state,
