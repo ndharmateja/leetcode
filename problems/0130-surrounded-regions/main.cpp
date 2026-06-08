@@ -86,7 +86,6 @@ private:
         // So we can mark them accordingly for the result
         for (int r = 0; r < num_rows; r++)
             for (int c = 0; c < num_cols; c++)
-            {
                 // If cell is part of surrounded region, make it X
                 // If cell is part of non-surrounded region, make it O
                 // if (board[r][c] == 'O')
@@ -96,7 +95,6 @@ private:
                 board[r][c] = board[r][c] == 'O'
                                   ? 'X'
                                   : (board[r][c] == '-' ? 'O' : board[r][c]);
-            }
     }
 
 public:
