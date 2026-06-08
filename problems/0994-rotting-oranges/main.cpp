@@ -10,7 +10,7 @@ private:
     /**
      * Multi source BFS solution
      * Theta(mn) time and O(V) space
-     * where m = #rows, n = #cols, V = #verices
+     * where m = #rows, n = #cols, V = #vertices
      *
      * See problem 417 for more details. Using a very similar idea.
      */
