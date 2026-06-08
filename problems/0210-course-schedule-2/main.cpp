@@ -33,6 +33,8 @@ private:
             // If DFS on a neighbour returns true, it means that there
             // is a cycle and we don't need to continue running DFS and
             // we can immediately return true without visiting other neighbours
+            // If DFS on the neighbour returns false, it would have simply run
+            // DFS and added the appropriate vertices to the result
             if (state[v] == State::UNVISITED && dfs(adj, v, state, result))
                 return true;
         }
