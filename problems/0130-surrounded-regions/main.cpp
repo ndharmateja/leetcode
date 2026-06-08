@@ -30,9 +30,15 @@ private:
         for (int r = 0; r < num_rows; r++)
         {
             if (board[r][0] == 'O')
+            {
                 queue.push({r, 0});
+                board[r][0] = '-';
+            }
             if (board[r][num_cols - 1] == 'O')
+            {
                 queue.push({r, num_cols - 1});
+                board[r][num_cols - 1] = '-';
+            }
         }
 
         // Add the first and last rows (except cells in the first and last cols
@@ -40,26 +46,32 @@ private:
         for (int c = 1; c < num_cols - 1; c++)
         {
             if (board[0][c] == 'O')
+            {
                 queue.push({0, c});
+                board[0][c] = '-';
+            }
             if (board[num_rows - 1][c] == 'O')
+            {
                 queue.push({num_rows - 1, c});
+                board[num_rows - 1][c] = '-';
+            }
         }
 
         // Run BFS from all the source nodes to mark all the non-surrounded regions with '-'
-        // Invariant:
-        // The nodes in the queue are not marked with '-' and they would be marked with '-'
-        // as they are dequeued from the queue
+        // ! Invariant:
+        // ! The nodes in the queue are marked with '-' in accordance with marking the cell visited
+        // ! as soon as it is discovered to avoid adding same cells multiple times to the queue
         while (!queue.empty())
         {
             // Pop the next element, mark it with '-' and add its neighbours
             auto [r, c] = queue.front();
             queue.pop();
-            board[r][c] = '-';
 
             // Add each unvisited neighbour (only a neighbour if cell has 'O')
             // And it is visited if cell has '-'
             // so we only need to check if cell has 'O' to check if it is an unvisited neighbour
-            // !Mark a cell visited as soon as we discover it to avoid adding same cells multiple times to the queue
+            // ! Mark a cell visited as soon as we discover it to avoid adding same cells
+            // ! multiple times to the queue
             for (auto [dr, dc] : directions)
             {
                 int new_r = r + dr;
@@ -67,7 +79,10 @@ private:
                 if ((0 <= new_r && new_r < num_rows) &&
                     (0 <= new_c && new_c < num_cols) &&
                     board[new_r][new_c] == 'O')
+                {
                     queue.push({new_r, new_c});
+                    board[new_r][new_c] = '-';
+                }
             }
         }
 
