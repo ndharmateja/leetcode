@@ -26,24 +26,9 @@ private:
         std::queue<std::pair<int, int>> queue;
 
         // Add all the graph nodes on the edges to the queue as the source nodes
-        // Add the first and last cols
-        for (int r = 0; r < num_rows; r++)
-        {
-            if (board[r][0] == 'O')
-            {
-                queue.push({r, 0});
-                board[r][0] = '-';
-            }
-            if (board[r][num_cols - 1] == 'O')
-            {
-                queue.push({r, num_cols - 1});
-                board[r][num_cols - 1] = '-';
-            }
-        }
-
-        // Add the first and last rows (except cells in the first and last cols
-        // as we already added them above)
-        for (int c = 1; c < num_cols - 1; c++)
+        // Adding first and last rows first and then the first and last cols for cache locality
+        // Add the first and last rows
+        for (int c = 0; c < num_cols; c++)
         {
             if (board[0][c] == 'O')
             {
@@ -54,6 +39,22 @@ private:
             {
                 queue.push({num_rows - 1, c});
                 board[num_rows - 1][c] = '-';
+            }
+        }
+
+        // Add the first and last cols (except cells in the first and last rows
+        // as we already added them above)
+        for (int r = 1; r < num_rows - 1; r++)
+        {
+            if (board[r][0] == 'O')
+            {
+                queue.push({r, 0});
+                board[r][0] = '-';
+            }
+            if (board[r][num_cols - 1] == 'O')
+            {
+                queue.push({r, num_cols - 1});
+                board[r][num_cols - 1] = '-';
             }
         }
 
