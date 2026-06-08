@@ -75,12 +75,7 @@ private:
         std::vector<std::vector<int>> adj(n);
         for (const auto &edge : edges)
         {
-            // !Self loops are possible
-            // So if there is an edge from a node to itself, it means that course is a prerequisite
-            // to itself => cycle => we can return empty vector as no ordering is possible
             int from{edge.front()}, to{edge.back()};
-            if (from == to)
-                return std::vector<int>();
             adj[from].push_back(to);
         }
 
