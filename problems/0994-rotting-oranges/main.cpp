@@ -94,14 +94,18 @@ private:
         if (num_fresh_oranges > 0)
             return -1;
 
-        // If we reach this point, it means that all oranges were rotten
-        // If num_minutes is 0 at this point, it means that there were no rotten oranges initially
-        // and also no fresh oranges at the end => there were no oranges at all => return 0
-        // If num_minutes is greater than 0, it means that we were able to rot all the oranges
+        // If we reach this point, it means that there was atleast one fresh orange
+        // and the rotten oranges were able to rot all the fresh oranges
+        // The case where there were no rotten oranges would have been handled above
+        // in the num_fresh_oranges > 0 check (as the number of fresh oranges would be greater than 0
+        // if there were no rotten oranges to begin with)
+        // So we conclude that there was atleast fresh orange and the rotten oranges were able to rot
+        // all of the fresh oranges
+        // So num_minutes is not going to be 0 at this point
         // The num_minutes at this point will be the number of "layers" of rotten oranges
         // and since we need to return the number of minutes, we need to subtract 1
         // as we don't need to account for rotting the first layer
-        return num_minutes == 0 ? 0 : num_minutes - 1;
+        return num_minutes - 1;
     }
 
 public:
