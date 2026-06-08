@@ -59,7 +59,8 @@ private:
                 // Add each unvisited neighbour (only a neighbour if it is a fresh orange (1))
                 // And it is visited if cell has 2 (rotten orange)
                 // so we only need to check if cell has 1 to check if it is an unvisited neighbour
-                // !Mark a cell visited as soon as we discover it to avoid adding same cells multiple times to the queue
+                // ! Mark a cell visited as soon as we discover it to avoid adding same cells
+                // ! multiple times to the queue
                 for (auto [dr, dc] : directions)
                 {
                     int new_r = r + dr;
