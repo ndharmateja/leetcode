@@ -72,9 +72,8 @@ private:
         // For the set of edges to be a tree, the graph has to be minimally connected
         // or maximally acyclic
         // We can use Disjoint sets to keep track of the connected components
-        // and if at any point it forms a cycle => not acyclic => not a tree
-        // and at the end if the number of components is not 1 => not connected => not a tree
-        // otherwise it is a tree
+        // and if at any point an edge forms a cycle => that would be the last edge
+        // (among the given edges) that is a redundant edge
         int n{static_cast<int>(edges.size())};
         DisjointSets ds{n};
 
