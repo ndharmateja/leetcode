@@ -26,15 +26,11 @@ private:
         // again, we don't have to explicitly make the cells as 2
         int num_fresh_oranges{0};
         for (int r = 0; r < num_rows; r++)
-        {
             for (int c = 0; c < num_cols; c++)
-            {
                 if (board[r][c] == 2)
                     queue.push({r, c});
                 else if (board[r][c] == 1)
                     num_fresh_oranges++;
-            }
-        }
 
         // Optimization: If number of fresh oranges is 0, then the answer is 0
         // as no fresh oranges for us to rot
