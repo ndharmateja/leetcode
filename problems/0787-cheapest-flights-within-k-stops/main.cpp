@@ -283,6 +283,18 @@ private:
         return format_result(result);
     }
 
+    /**
+     * TODO: Directly iterate over edges instead of building and using adj list
+     */
+    static int sol4(int n, const std::vector<std::vector<int>> &flights,
+                    int src, int dst, int k) { return -1; }
+
+    /**
+     * TODO: Dijkstra's variant
+     */
+    static int sol5(int n, const std::vector<std::vector<int>> &flights,
+                    int src, int dst, int k) { return -1; }
+
 public:
     int findCheapestPrice(int n, const std::vector<std::vector<int>> &flights,
                           int src, int dst, int k) { return sol3(n, flights, src, dst, k); }
