@@ -83,15 +83,13 @@ private:
 
         // Create the queue with the source nodes as the pacific ocean border nodes
         // which are all then nodes on the left and top sides
-        int num_rows{static_cast<int>(heights.size())}, num_cols{static_cast<int>(heights[0].size())};
-
-        // We are using a queue so that we can iterate over its elements inside
+        // We are using a deque so that we can iterate over its elements inside
         // the BFS function
+        int num_rows{static_cast<int>(heights.size())}, num_cols{static_cast<int>(heights[0].size())};
         std::deque<std::pair<int, int>> queue;
 
         // Add all the cells of the first row and the first col
-        queue.push_back({0, 0});
-        for (int c = 1; c < num_cols; c++)
+        for (int c = 0; c < num_cols; c++)
             queue.push_back({0, c});
         for (int r = 1; r < num_rows; r++)
             queue.push_back({r, 0});
@@ -104,8 +102,7 @@ private:
         // Do the same for atlantic ocean
         // Queue is empty at this point as we run BFS until the queue is empty
         // Add all the cells of the last row and the last col
-        queue.push_back({num_rows - 1, num_cols - 1});
-        for (int c = 0; c < num_cols - 1; c++)
+        for (int c = 0; c < num_cols; c++)
             queue.push_back({num_rows - 1, c});
         for (int r = 0; r < num_rows - 1; r++)
             queue.push_back({r, num_cols - 1});
@@ -117,6 +114,9 @@ private:
 
         // At this point we need the common nodes between the set of nodes that
         // can reach pacific and also atlantic
+        // ! Optimization: Instead of computing the row major index using r * num_cols + c
+        // ! every single iteration, we can maintain a row major index variable that we
+        // ! increment every single iteration as we are iterating in the row major order
         std::vector<std::vector<int>> result;
         int row_major_index{0};
         for (int r = 0; r < num_rows; r++)
