@@ -47,10 +47,11 @@ private:
             return;
 
         // Base cases
+        // ! Redundant: Since our for loop ends at nums_len-1
         // 1. If min_index itself becomes the size of nums, then nums[min_index:] is
         //    an empty array, so we can exit
-        if (min_index == nums_len)
-            return;
+        // if (min_index == nums_len)
+        // return;
 
         // 2. If target is 0, we can form 0 using an empty list using nums[min_index:]
         //    and since all numbers are positive we don't need to explore this branch
