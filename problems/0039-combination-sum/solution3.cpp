@@ -1,52 +1,42 @@
 #include <vector>
 
+/**
+ * Mixture of solutions 1 and 2
+ */
 class Solution
 {
 private:
-    static void backtrack(const std::vector<int> &nums, int target, int i, int buffer_sum,
-                          std::vector<int> &buffer, std::vector<std::vector<int>> &result)
+    static void backtrack(const std::vector<int> &nums, const int target,
+                          const size_t min_index, const size_t nums_len,
+                          std::vector<std::vector<int>> &result, std::vector<int> &buf)
     {
-        // If the buffer_sum crosses the target, then there is no point continuing
-        // as all the numbers are positive
-        if (buffer_sum > target)
-            return;
-
-        // If targer sum is found, we can add this sequence to our result and exit
-        if (buffer_sum == target)
+        if (!target)
         {
-            result.push_back(buffer);
+            result.push_back(buf);
             return;
         }
 
-        // If we reach the end, we don't need to do anything
-        // so we can simply return
-        if (i == nums.size())
+        if (target < 0)
             return;
 
-        // Two options pick the current one or don't pick the current one
-        // 1. If we pick the current one, we add that to the current sum
-        // and the current list to track the sequence and then
-        // we call the backtrack starting from *the same element* again
-        // as each element can be picked multiple times
-        // That is why we call backtrack again from 'i' instead of 'i+1'
-        buffer.push_back(nums[i]);
-        backtrack(nums, target, i, buffer_sum + nums[i], buffer, result);
-        buffer.pop_back();
-
-        // 2. If we don't pick the current element, we call backtrack starting from the
-        // next element
-        backtrack(nums, target, i + 1, buffer_sum, buffer, result);
+        for (size_t i = min_index; i < nums_len; i++)
+        {
+            int candidate = nums[i];
+            buf.push_back(candidate);
+            backtrack(nums, target - candidate, i, nums_len, result, buf);
+            buf.pop_back();
+        }
     }
 
     static std::vector<std::vector<int>> sol(const std::vector<int> &nums, int target)
     {
         std::vector<std::vector<int>> result;
-        std::vector<int> buffer;
-        backtrack(nums, target, 0, 0, buffer, result);
+        std::vector<int> buf;
+        backtrack(nums, target, 0, nums.size(), result, buf);
         return result;
     }
 
 public:
     std::vector<std::vector<int>>
-    combinationSum(const std::vector<int> &candidates, int target) { return sol(candidates, target); }
+    combinationSum(const std::vector<int> &nums, int target) { return sol(nums, target); }
 };
