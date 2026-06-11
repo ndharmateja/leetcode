@@ -75,7 +75,7 @@ private:
          * and length of the shortest path from src to any other vertex with atmost 0 edges
          * is infinity as we can't reach any other node from source with atmost 0 edges
          * * Recurrence relation:
-         * Consider the shortest path P from src to v with atmost i-1 edges,
+         * Consider the shortest path P from src to v with atmost i edges,
          * then P is either:
          * a. The shortest path from src to v with atmost i-1 edges (or)
          * b. For some u->v, the shortest path from src to u with atmost i-1 edges + the edge u->v
