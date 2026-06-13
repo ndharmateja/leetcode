@@ -116,7 +116,8 @@ private:
         std::vector<std::pair<int, int>> reverse_lookup(n_square);
         int start{grid[0][0]}, end{grid[n - 1][n - 1]};
 
-        // ! Buggy
+        // ! Buggy:
+        // ! If start = 15 and end = 14, it returns 14 as the answer
         // ! if (end == n_square - 1 || end == n_square - 2)
         // !     return end;
         // ! if (start == n_square - 1 || start == n_square - 2)
