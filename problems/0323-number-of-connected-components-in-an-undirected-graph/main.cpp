@@ -3,7 +3,6 @@
 class DisjointSets
 {
 private:
-    int num_sets;
     std::vector<int> parent;
     std::vector<int> size;
 
@@ -17,7 +16,7 @@ private:
 
 public:
     // Initially all elements in size will just be 1
-    DisjointSets(int n) : num_sets{n}, size(n, 1)
+    DisjointSets(int n) : size(n, 1)
     {
         // Initialize the n components as initially all disconnected
         // Each element will have itself as its own parent
@@ -29,8 +28,11 @@ public:
             parent.push_back(i);
     }
 
-    // Weighted quick union
-    void connect(int p, int q)
+    /**
+     * Weighted quick union
+     * @return true if the two elements were not already connected, false otherwise
+     */
+    bool connect(int p, int q)
     {
         // Get the roots of each of the trees
         int p_root = root(p);
@@ -38,10 +40,7 @@ public:
 
         // If both of them belong to the same tree, they are already connected
         if (p_root == q_root)
-            return;
-
-        // Decrement the number of sets by 1 as we are merging two sets
-        num_sets--;
+            return false;
 
         // Attach the smaller size tree to the root of the larger size tree
         // and update the sizes
@@ -55,10 +54,8 @@ public:
             parent[q_root] = p_root;
             size[p_root] += size[q_root];
         }
+        return true;
     }
-
-    bool are_connected(int p, int q) { return root(p) == root(q); }
-    int get_num_sets() { return num_sets; }
 };
 
 /**
@@ -74,6 +71,8 @@ private:
      *
      * For DFS/BFS based solutions, see problem 200
      * We can build an adjacency list in Theta(V + E) from the edge list and use that too
+     *
+     * Theta(V + Elog*(V)) amortized running time and Theta(V) space
      */
     static int solution1(int n, const std::vector<std::vector<int>> &edges)
     {
@@ -81,13 +80,15 @@ private:
         DisjointSets ds(n);
 
         // For each edge do a union of vertices connected by the edge
-        // We could have had a num_components variable here too, decrementing each time
-        // there is a successful union between two connected components
+        // We maintain the number of connected components in 'n' itself
+        // Each time there is a union of two different components, we decrement 'n'
+        // connect() will return true if the two elements were not already connected
         for (const auto &edge : edges)
-            ds.connect(edge[0], edge[1]);
+            if (ds.connect(edge[0], edge[1]))
+                n--;
 
         // Return the number of disjoint sets (connected components)
-        return ds.get_num_sets();
+        return n;
     }
 
 public:
