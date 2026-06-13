@@ -105,6 +105,49 @@ private:
         return min_so_far;
     }
 
+    inline static const std::vector<std::pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    static int sol2(const std::vector<std::vector<int>> &grid)
+    {
+        int n{static_cast<int>(grid.size())};
+        if (n == 1)
+            return 0;
+        int n_square{n * n};
+        std::vector<std::pair<int, int>> reverse_lookup(n_square);
+        int start{grid[0][0]}, end{grid[n - 1][n - 1]};
+
+        // ! Buggy
+        // ! if (end == n_square - 1 || end == n_square - 2)
+        // !     return end;
+        // ! if (start == n_square - 1 || start == n_square - 2)
+        // !     return start;
+        int max_start_end = std::max(start, end);
+        if (max_start_end >= n_square - 2)
+            return max_start_end;
+
+        for (int r{0}; r < n; r++)
+            for (int c{0}; c < n; c++)
+                reverse_lookup[grid[r][c]] = {r, c};
+
+        DisjointSets ds{n_square};
+        for (int t{1}; t < n_square; t++)
+        {
+            auto [r, c] = reverse_lookup[t];
+            for (auto [dr, dc] : directions)
+            {
+                int new_r{r + dr}, new_c{c + dc};
+                if (0 <= new_r && new_r < n &&
+                    0 <= new_c && new_c < n &&
+                    grid[new_r][new_c] < t)
+                    ds.connect(t, grid[new_r][new_c]);
+            }
+            if (ds.are_connected(start, end))
+                return t;
+        }
+
+        return -1;
+    }
+
 public:
     // Ideas:
     // 1. Disjoint sets solution
