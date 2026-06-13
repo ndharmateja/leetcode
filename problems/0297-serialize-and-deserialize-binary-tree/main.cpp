@@ -118,6 +118,8 @@ namespace Solution2
         {
             // If the char at 'i' is ')' it means that there is the empty paranthesis of the empty node
             // so we can return nullptr
+            // And according to the recursive function contract, that is exactly where 'i' needs to be
+            // so we don't need to increment 'i'
             unsigned char c = data[i];
             if (c == ')')
                 return nullptr;
