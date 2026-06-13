@@ -29,8 +29,11 @@ public:
             parent.push_back(i);
     }
 
-    // Weighted quick union
-    void connect(int p, int q)
+    /**
+     * Weighted quick union
+     * @return true if the two elements were not already connected, false otherwise
+     */
+    bool connect(int p, int q)
     {
         // Get the roots of each of the trees
         int p_root = root(p);
@@ -38,7 +41,7 @@ public:
 
         // If both of them belong to the same tree, they are already connected
         if (p_root == q_root)
-            return;
+            return false;
 
         // Decrement the number of sets by 1 as we are merging two sets
         num_sets--;
@@ -55,6 +58,7 @@ public:
             parent[q_root] = p_root;
             size[p_root] += size[q_root];
         }
+        return true;
     }
 
     bool are_connected(int p, int q) { return root(p) == root(q); }
@@ -89,14 +93,12 @@ private:
         // Process each edge
         for (const auto &edge : edges)
         {
-            // Check if cycle
+            // If adding the edge (from, to) forms a cycle, return false
+            // connect(from, to) will return false if from and to are already connected <=> a cycle
             int from = edge.front();
             int to = edge.back();
-            if (ds.are_connected(from, to))
+            if (!ds.connect(from, to))
                 return false;
-
-            // Otherwise connect the components
-            ds.connect(from, to);
         }
 
         // At this point we can return true as there were n-1 edges exactly
