@@ -11,8 +11,9 @@ private:
     static int sol1(const std::string &s)
     {
         /**
-         * Invariant:
-         * The sliding window at any point only contains unique characters
+         * Invariants:
+         * 1. The sliding window at any point only contains unique characters
+         * 2. curr_window_len = end - start
          */
         int n{static_cast<int>(s.size())};
         if (n == 0 || n == 1)
