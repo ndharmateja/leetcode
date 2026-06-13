@@ -162,15 +162,8 @@ public:
     //   the path having a value <= x
     //   if we are able to find valid paths from the src and destination then we can easily
     //   the smallest node to which there are valid paths from both the src and destination
-    int swimInWater(const std::vector<std::vector<int>> &grid) { return sol1(grid); }
+    // 4. Binary search + DFS/BFS to see if cells are connected using threshold on the
+    //   cell value
+    // 5. Dijkstra's modified
+    int swimInWater(const std::vector<std::vector<int>> &grid) { return sol2(grid); }
 };
-
-int main()
-{
-    Solution s;
-    s.swimInWater({{7, 23, 21, 9, 5},
-                   {3, 20, 8, 18, 15},
-                   {14, 13, 1, 0, 22},
-                   {2, 10, 24, 17, 12},
-                   {6, 16, 19, 4, 11}});
-}
