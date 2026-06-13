@@ -4,7 +4,6 @@
 class DisjointSets
 {
 private:
-    int num_sets;
     std::vector<int> parent;
     std::vector<int> size;
 
@@ -18,7 +17,7 @@ private:
 
 public:
     // Initially all elements in size will just be 1
-    DisjointSets(int n) : num_sets{n}, size(n, 1)
+    DisjointSets(int n) : size(n, 1)
     {
         // Initialize the n components as initially all disconnected
         // Each element will have itself as its own parent
@@ -30,8 +29,11 @@ public:
             parent.push_back(i);
     }
 
-    // Weighted quick union
-    void connect(int p, int q)
+    /**
+     * Weighted quick union
+     * @return true if the two elements were not already connected, false otherwise
+     */
+    bool connect(int p, int q)
     {
         // Get the roots of each of the trees
         int p_root = root(p);
@@ -39,10 +41,7 @@ public:
 
         // If both of them belong to the same tree, they are already connected
         if (p_root == q_root)
-            return;
-
-        // Decrement the number of sets by 1 as we are merging two sets
-        num_sets--;
+            return false;
 
         // Attach the smaller size tree to the root of the larger size tree
         // and update the sizes
@@ -56,10 +55,10 @@ public:
             parent[q_root] = p_root;
             size[p_root] += size[q_root];
         }
+        return true;
     }
 
     bool are_connected(int p, int q) { return root(p) == root(q); }
-    int get_num_sets() { return num_sets; }
 };
 
 class Solution
