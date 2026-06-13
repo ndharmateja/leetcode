@@ -73,6 +73,11 @@ private:
      */
     static bool solution1(int n, const std::vector<std::vector<int>> &edges)
     {
+        // Base case
+        // If the number of edges is not n-1 => not a tree
+        if (edges.size() != n - 1)
+            return false;
+
         // For the set of edges to be a tree, the graph has to be minimally connected
         // or maximally acyclic
         // We can use Disjoint sets to keep track of the connected components
@@ -94,8 +99,9 @@ private:
             ds.connect(from, to);
         }
 
-        // At this point number of components should be 1
-        return ds.get_num_sets() == 1;
+        // At this point we can return true as there were n-1 edges exactly
+        // and we don't have a cycle
+        return true;
     }
 
     /**
