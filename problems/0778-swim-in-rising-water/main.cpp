@@ -130,8 +130,10 @@ private:
             for (int c{0}; c < n; c++)
                 reverse_lookup[grid[r][c]] = {r, c};
 
+        // Can start from 2 as even if start and end were 0 and 1
+        // as the grid size is atleast 2x2, they can't directly connect
         DisjointSets ds{n_square};
-        for (int t{1}; t < n_square; t++)
+        for (int t{2}; t < n_square; t++)
         {
             auto [r, c] = reverse_lookup[t];
             for (auto [dr, dc] : directions)
