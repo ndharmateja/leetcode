@@ -1,4 +1,5 @@
 #include <vector>
+#include <queue>
 #include <utility>
 #include <unordered_map>
 
@@ -58,6 +59,63 @@ private:
         return dfs_and_clone(node, map);
     }
 
+    /**
+     * Clones the graph node using BFS
+     *
+     * Theta(V + E) time and Theta(V) space
+     */
+    static Node *sol2(Node *node)
+    {
+        // Base case
+        if (!node)
+            return nullptr;
+
+        // Invariants:
+        // 1. The nodes added to the queue have already been cloned and in the map
+        // 2. The neighbours of the nodes in the queue are empty
+
+        // Create the clone of node and add the node to the queue to start BFS
+        Node *node_clone = new Node(node->val);
+        std::unordered_map<Node *, Node *> map;
+        map[node] = node_clone;
+        std::queue<Node *> queue;
+        queue.push(node);
+
+        // BFS main loop
+        while (!queue.empty())
+        {
+            // Dequeue the node and clone & add its neighbours as the
+            // neighbours of the cloned node
+            Node *curr = queue.front();
+            queue.pop();
+
+            // Get the corresponding cloned node (exists in the map as per the invariant)
+            Node *curr_clone = map[curr];
+            curr_clone->neighbors.reserve(curr->neighbors.size());
+
+            // For each of the neighbours, if it was already cloned
+            // we can get it from the map and add it as the neighbour of curr_clone
+            // Otherwise we can create the clone and add it to the queue
+            for (Node *neighbor : curr->neighbors)
+            {
+                // If the neighbour wasn't already cloned, we clone it and add it to the map
+                // and push it to the queue as we cloned it for the first time
+                auto [it, inserted] = map.try_emplace(neighbor, nullptr);
+                if (inserted)
+                {
+                    it->second = new Node(neighbor->val);
+                    queue.push(neighbor);
+                }
+
+                // Add the cloned neighbour as the neighbour of curr_clone
+                curr_clone->neighbors.push_back(it->second);
+            }
+        }
+
+        // Return the clone of the given node
+        return node_clone;
+    }
+
 public:
-    Node *cloneGraph(Node *node) { return sol1(node); }
+    Node *cloneGraph(Node *node) { return sol2(node); }
 };
