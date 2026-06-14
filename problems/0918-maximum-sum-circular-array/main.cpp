@@ -119,10 +119,10 @@ private:
         for (int i = 1; i < n; i++)
         {
             int curr = nums[i];
-            prev_max = std::max(prev_max + curr, prev_max);
+            prev_max = std::max(prev_max + curr, curr);
             global_max = std::max(global_max, prev_max);
 
-            prev_min = std::min(prev_min + curr, prev_max);
+            prev_min = std::min(prev_min + curr, curr);
             global_min = std::min(global_min, prev_min);
 
             total_sum += curr;
