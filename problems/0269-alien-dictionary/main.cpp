@@ -20,10 +20,10 @@ private:
      *   there is no information we can get about the letter ordering given
      *   just one word.
      */
-    static bool build_adj_list(const std::vector<std::string> &words,
-                               int start, int end, unsigned letter_index,
-                               std::bitset<676> &adj_matrix,
-                               std::array<int, 26> &in_degrees)
+    static bool build_adj_matrix(const std::vector<std::string> &words,
+                                 int start, int end, unsigned letter_index,
+                                 std::bitset<676> &adj_matrix,
+                                 std::array<int, 26> &in_degrees)
     {
         while (start < end && words[start].size() <= letter_index)
             start++;
@@ -75,7 +75,7 @@ private:
             // so now we can recursively call the function starting at letter_index + 1
             // if there are atleast 2 words in the range
             if (curr_range_index - range_start >= 2)
-                if (!build_adj_list(words, range_start, curr_range_index, letter_index + 1, adj_matrix, in_degrees))
+                if (!build_adj_matrix(words, range_start, curr_range_index, letter_index + 1, adj_matrix, in_degrees))
                     return false;
 
             // Update the range_char and range_start values with the new char
@@ -85,7 +85,7 @@ private:
 
         // The last range (if exists) wouldn't be processed in the for loop
         if (curr_range_index - range_start >= 2)
-            if (!build_adj_list(words, range_start, curr_range_index, letter_index + 1, adj_matrix, in_degrees))
+            if (!build_adj_matrix(words, range_start, curr_range_index, letter_index + 1, adj_matrix, in_degrees))
                 return false;
         return true;
     }
@@ -93,13 +93,13 @@ private:
     static std::string sol1(const std::vector<std::string> &words)
     {
         // Ideas:
-        // 1. indegrees computation during vs after building adj list
+        // 1. indegrees computation during vs after building adj matrix
         // 2. int8_t and uint8_t instead of ints at appropriate places (be careful of ops)
         // 3. Adjacent pairwise words comparison to build the adjacency matrix
         //
         // Improvements:
         // 1. std::bitset<676> instead of std::vector<std::vector<bool>> for adj matrix
-        // 2. return true/false from the build_adj_list method instead of throwing an exception
+        // 2. return true/false from the build_adj_matrix method instead of throwing an exception
         //   when there is an invalid order
 
         // Edge case
@@ -125,20 +125,18 @@ private:
             }
         }
 
-        // Build the adjacency list and the indegrees for the graph
+        // Build the adjacency matrix and the indegrees for the graph
         std::string result;
         std::bitset<676> adj_matrix;
-        bool is_valid = build_adj_list(words, 0, num_words, 0, adj_matrix, in_degrees);
+        bool is_valid = build_adj_matrix(words, 0, num_words, 0, adj_matrix, in_degrees);
         if (!is_valid)
             return "";
 
         // See solution 2 of problem 210 for more details
         std::queue<int> queue;
         for (int i = 0; i < 26; i++)
-        {
             if (!in_degrees[i])
                 queue.push(i);
-        }
 
         while (!queue.empty())
         {
