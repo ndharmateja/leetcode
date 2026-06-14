@@ -8,7 +8,7 @@ class Solution
      *
      * Theta(n) time and Theta(n) space complexity
      */
-    static int solution1(const std::vector<int> &nums)
+    static int sol1(const std::vector<int> &nums)
     {
         /**
          * * DP solution:
@@ -52,7 +52,7 @@ class Solution
      *
      * Theta(n) time and Theta(1) space complexity
      */
-    static int solution2(const std::vector<int> &nums)
+    static int sol2(const std::vector<int> &nums)
     {
         // We only need the previous value to compute the current value
         // and we can store the global max value in a new variable
@@ -78,7 +78,7 @@ class Solution
      *
      * Theta(n log n) time and Theta(log n) space (for recursion)
      */
-    static int solution3(const std::vector<int> &nums, int lo, int hi)
+    static int sol3(const std::vector<int> &nums, int lo, int hi)
     {
         // Base cases
         if (lo > hi)
@@ -103,8 +103,8 @@ class Solution
 
         // Recursively compute the left and right max subarray sums
         int mid = lo + (hi - lo) / 2;
-        int left_sum = solution3(nums, lo, mid);
-        int right_sum = solution3(nums, mid + 1, hi);
+        int left_sum = sol3(nums, lo, mid);
+        int right_sum = sol3(nums, mid + 1, hi);
 
         // Find the max cross subarray sum
         int cross_sum = max_suffix_sum(nums, lo, mid) + max_prefix_sum(nums, mid + 1, hi);
@@ -113,10 +113,10 @@ class Solution
         return std::max({left_sum, right_sum, cross_sum});
     }
 
-    static int solution3(const std::vector<int> &nums)
+    static int sol3(const std::vector<int> &nums)
     {
         int n{static_cast<int>(nums.size())};
-        return solution3(nums, 0, n - 1);
+        return sol3(nums, 0, n - 1);
     }
 
     static int max_prefix_sum(const std::vector<int> &nums, int lo, int hi)
@@ -157,7 +157,7 @@ class Solution
      * Theta(n) time and Theta(log n) space (for recursion)
      * Recurrence relation is T(n) = 2T(n/2) + Theta(1)
      */
-    static Result solution4(const std::vector<int> &nums, int lo, int hi)
+    static Result sol4(const std::vector<int> &nums, int lo, int hi)
     {
         // Base cases
         if (lo > hi)
@@ -167,8 +167,8 @@ class Solution
 
         // Find the results recursively on the left and right subarrays
         int mid = lo + (hi - lo) / 2;
-        Result left = solution4(nums, lo, mid);
-        Result right = solution4(nums, mid + 1, hi);
+        Result left = sol4(nums, lo, mid);
+        Result right = sol4(nums, mid + 1, hi);
 
         // Calculate the resulting values for the total array using the values
         // from the left and right subarrays
@@ -184,12 +184,12 @@ class Solution
         return total;
     }
 
-    static int solution4(const std::vector<int> &nums)
+    static int sol4(const std::vector<int> &nums)
     {
         int n{static_cast<int>(nums.size())};
-        return solution4(nums, 0, n - 1).max_subarray_sum;
+        return sol4(nums, 0, n - 1).max_subarray_sum;
     }
 
 public:
-    int maxSubArray(const std::vector<int> &nums) { return solution4(nums); }
+    int maxSubArray(const std::vector<int> &nums) { return sol2(nums); }
 };
