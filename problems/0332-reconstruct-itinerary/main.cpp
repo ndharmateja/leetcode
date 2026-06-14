@@ -10,7 +10,7 @@ private:
      * Ref: https://www.youtube.com/watch?v=8MpoO2zA2l4
      * Watch the above video to get a better idea
      *
-     * Theta(V + E) time and Theta(V + E) space
+     * Theta(E log E) time and Theta(V + E) space
      */
     static std::vector<std::string> sol1(const std::vector<std::vector<std::string>> &tickets)
     {
