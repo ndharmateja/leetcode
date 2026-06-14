@@ -96,6 +96,9 @@ private:
         // 1. indegrees computation during vs after building adj matrix
         // 2. int8_t and uint8_t instead of ints at appropriate places (be careful of ops)
         // 3. Adjacent pairwise words comparison to build the adjacency matrix
+        // 4. Explicit zeroing of the indegrees by going through all the chars of the words
+        //   vs adding an if condition to check if it is -1 before incrementing (num_chars also
+        //   has to be taken care of)
         //
         // Improvements:
         // 1. std::bitset<676> instead of std::vector<std::vector<bool>> for adj matrix
@@ -108,6 +111,8 @@ private:
         if (num_words == 1)
             return words.front();
 
+        // After this step, the indegrees for all the characters that are present will be 0
+        // and the indegrees for all the characters that are not present will be -1
         int num_chars{0};
         std::array<int, 26> in_degrees;
         in_degrees.fill(-1);
