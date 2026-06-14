@@ -136,8 +136,6 @@ private:
         std::queue<int> queue;
         for (int i = 0; i < 26; i++)
         {
-            if (in_degrees[i] == -1)
-                continue;
             if (!in_degrees[i])
                 queue.push(i);
         }
@@ -175,13 +173,3 @@ private:
 public:
     std::string foreignDictionary(const std::vector<std::string> &words) { return sol1(words); }
 };
-
-#include <iostream>
-int main()
-{
-    Solution s;
-    std::string result = s.foreignDictionary({"ax", "bx", "cx", "dx", "ex", "fx", "gx", "hx", "ix", "jx", "kx", "lx", "mx", "nx", "ox", "px", "qx", "rx", "sx", "tx", "ux", "vx", "wx", "xx", "yx", "zx"});
-    return 0;
-    // s.foreignDictionary({"hrn", "hrf", "er", "enn", "rfnn"});
-    // s.foreignDictionary({"z", "o"});
-}
