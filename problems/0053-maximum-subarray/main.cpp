@@ -21,6 +21,7 @@ class Solution
          * otherwise we add the sum of dp[i-1] to extend it with nums[i]
          * dp[i] = nums[i]            if dp[i-1] < 0
          *       = dp[i-1] + nums[i]  otherwise
+         * equivalently, dp[i] = max{dp[i-1] + nums[i], nums[i]}
          * * Order of filling
          * We will it from left to right as we only need the left value at
          * each point
@@ -32,14 +33,18 @@ class Solution
         std::vector<int> dp(n);
 
         // Base case
-        dp[0] = nums[0];
+        dp[0] = nums.front();
+        int global_max{nums.front()};
 
         // Fill the table from left to right
         for (int i = 1; i < n; i++)
-            dp[i] = (dp[i - 1] <= 0 ? 0 : dp[i - 1]) + nums[i];
+        {
+            dp[i] = std::max(dp[i - 1] + nums[i], nums[i]);
+            global_max = std::max(global_max, dp[i]);
+        }
 
         // Return the max value in the dp array
-        return *std::max_element(dp.begin(), dp.end());
+        return global_max;
     }
 
     /**
