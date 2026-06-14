@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <queue>
 #include <bitset>
+#include <algorithm>
 
 class Solution
 {
@@ -90,6 +91,49 @@ private:
         return true;
     }
 
+    static bool build_adj_matrix2(const std::vector<std::string> &words,
+                                  std::bitset<676> &adj_matrix,
+                                  std::array<int, 26> &in_degrees)
+    {
+        int num_words{static_cast<int>(words.size())};
+        for (int i{0}; i < num_words - 1; i++)
+        {
+            const std::string &curr = words[i];
+            const std::string &next = words[i + 1];
+            int curr_len{static_cast<int>(curr.size())}, next_len{static_cast<int>(next.size())};
+            int j{0}, min_chars{std::min(curr_len, next_len)};
+            while (j < min_chars && curr[j] == next[j])
+                j++;
+
+            // At this point, the prefixes curr[:j] and next[:j] are exactly same
+            // and we either reached the end of the smaller word or we found a mismatch
+            // If we reached the end of the second word and there are more chars
+            // in the first string, it is invalid
+            if (j == next_len && j < curr_len)
+                return false;
+
+            // If we reached the end of curr then curr is a prefix of prev
+            // and no information here (handles duplicate words and as well)
+            if (j == curr_len)
+                continue;
+
+            // At this point we can add an edge from curr[j] to next[j]
+            int curr_c = curr[j] - 'a', next_c = next[j] - 'a';
+            int row_major_index = curr_c * 26 + next_c;
+            auto has_edge = adj_matrix[row_major_index];
+            if (!has_edge)
+            {
+                has_edge = true;
+
+                // ! We can do this as we are prescanning and making all valid chars'
+                // ! indegrees to 0, so this won't be -1 at this point
+                ++in_degrees[next_c];
+            }
+        }
+
+        return true;
+    }
+
     static std::string sol1(const std::vector<std::string> &words)
     {
         // Ideas:
@@ -138,8 +182,9 @@ private:
 
         // Build the adjacency matrix and the indegrees for the graph
         std::bitset<676> adj_matrix;
-        bool is_valid = build_adj_matrix(words, 0, num_words, 0, adj_matrix, in_degrees);
-        if (!is_valid)
+        // if (build_adj_matrix(words, 0, num_words, 0, adj_matrix, in_degrees))
+        //     return "";
+        if (!build_adj_matrix2(words, adj_matrix, in_degrees))
             return "";
 
         // See solution 2 of problem 210 for more details (Kahn's algorithm)
