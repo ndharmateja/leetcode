@@ -131,14 +131,18 @@ private:
             }
         }
 
-        // Build the adjacency matrix and the indegrees for the graph
+        // Create the string for the result (we can reserve 26 as it is the max size to
+        // prevent reallocations)
         std::string result;
+        result.reserve(26);
+
+        // Build the adjacency matrix and the indegrees for the graph
         std::bitset<676> adj_matrix;
         bool is_valid = build_adj_matrix(words, 0, num_words, 0, adj_matrix, in_degrees);
         if (!is_valid)
             return "";
 
-        // See solution 2 of problem 210 for more details
+        // See solution 2 of problem 210 for more details (Kahn's algorithm)
         std::queue<int> queue;
         for (int i = 0; i < 26; i++)
             if (!in_degrees[i])
