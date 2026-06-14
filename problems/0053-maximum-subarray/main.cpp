@@ -22,6 +22,7 @@ class Solution
          * dp[i] = nums[i]            if dp[i-1] < 0
          *       = dp[i-1] + nums[i]  otherwise
          * equivalently, dp[i] = max{dp[i-1] + nums[i], nums[i]}
+         * equivalently, dp[i] = max{dp[i-1], 0} + nums[i]
          * * Order of filling
          * We will it from left to right as we only need the left value at
          * each point
@@ -65,7 +66,7 @@ class Solution
         // max subarray sum ending at index 'i-1'
         for (int i = 1; i < n; i++)
         {
-            prev_max = std::max(prev_max + nums[i], nums[i]);
+            prev_max = std::max(prev_max, 0) + nums[i];
             global_max = std::max(global_max, prev_max);
         }
 
