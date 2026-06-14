@@ -96,11 +96,45 @@ private:
     sol1(const std::vector<int> &nums) { return std::max(max_subarray_sum(nums),
                                                          max_subarray_sum_wrapped(nums)); }
 
-public:
-    int maxSubarraySumCircular(const std::vector<int> &nums) { return sol1(nums); }
-};
+    /**
+     * Theta(n) time and Theta(1) space
+     *
+     * Refer to solution 2 of problem 53 for more details
+     */
+    static int sol2(const std::vector<int> &nums)
+    {
+        // We only need the previous value to compute the current value
+        // and we can store the global max value in a new variable
+        // and we can update it accordingly as we keep calculating the dp values
+        int n{static_cast<int>(nums.size())};
+        int prev_max{nums[0]}, global_max{prev_max};
+        int prev_min{nums[0]}, global_min{prev_min};
+        int total_sum{nums[0]};
 
-int main()
-{
-    Solution().maxSubarraySumCircular({5, -3, 5});
-}
+        // Run Kadane's algorithm to find the minimum subarray sum
+        // and the maximum subarray sum
+        // As the wrapped around sum will be maximum if the leftover part
+        // if the middle chunk (leftover after taking the wraparound) is minimum
+        // So the max wrapped around subarray sum = total sum - min subarray sum
+        for (int i = 1; i < n; i++)
+        {
+            int curr = nums[i];
+            prev_max = std::max(prev_max + curr, prev_max);
+            global_max = std::max(global_max, prev_max);
+
+            prev_min = std::min(prev_min + curr, prev_max);
+            global_min = std::min(global_min, prev_min);
+
+            total_sum += curr;
+        }
+
+        if (global_max < 0)
+            return global_max;
+
+        // Return the max value in the dp array
+        return std::max(global_max, total_sum - global_min);
+    }
+
+public:
+    int maxSubarraySumCircular(const std::vector<int> &nums) { return sol2(nums); }
+};
