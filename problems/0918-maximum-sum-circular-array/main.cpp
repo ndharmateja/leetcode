@@ -23,7 +23,7 @@ private:
         // max subarray sum ending at index 'i-1'
         for (int i = 1; i < n; i++)
         {
-            prev_max = std::max(prev_max + nums[i], nums[i]);
+            prev_max = std::max(prev_max, 0) + nums[i];
             global_max = std::max(global_max, prev_max);
         }
 
