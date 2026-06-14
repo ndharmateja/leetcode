@@ -95,7 +95,8 @@ private:
         // Ideas:
         // 1. indegrees computation during vs after building adj matrix
         // 2. int8_t and uint8_t instead of ints at appropriate places (be careful of ops)
-        // 3. Adjacent pairwise words comparison to build the adjacency matrix
+        // 3. Eliminate queue and use the result string as the queue itself (as elements are
+        //   never removed from the final string/array)
         // 4. Explicit zeroing of the indegrees by going through all the chars of the words
         //   vs adding an if condition to check if it is -1 before incrementing (num_chars also
         //   has to be taken care of)
