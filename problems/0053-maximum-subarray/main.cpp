@@ -58,19 +58,19 @@ class Solution
         // and we can store the global max value in a new variable
         // and we can update it accordingly as we keep calculating the dp values
         int n{static_cast<int>(nums.size())};
-        int prev{nums[0]}, max_value{prev}, curr;
+        int prev_max{nums[0]}, global_max{prev_max};
 
         // Do the computations from left to right
+        // Invariant: At the start of iteration 'i', prev_max keeps track of the
+        // max subarray sum ending at index 'i-1'
         for (int i = 1; i < n; i++)
         {
-            curr = (prev <= 0 ? 0 : prev) + nums[i];
-            if (curr > max_value)
-                max_value = curr;
-            prev = curr;
+            prev_max = std::max(prev_max + nums[i], nums[i]);
+            global_max = std::max(global_max, prev_max);
         }
 
         // Return the max value in the dp array
-        return max_value;
+        return global_max;
     }
 
     /**
