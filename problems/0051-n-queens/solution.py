@@ -1,7 +1,8 @@
 from typing import List
 
 class Solution:
-    def solveNQueens(self, n: int) -> List[List[str]]:
+    @staticmethod
+    def sol1(n: int) -> List[List[str]]:
         # Invariant: (row, col) is a valid position for a queen
         def dfs(row, col):
             # Place the queen at (row, col)
@@ -58,3 +59,6 @@ class Solution:
         # c = 3 => "...Q"
         lookup = ["." * i + "Q" + "." * (n - 1 - i) for i in range(n)]
         return [[lookup[c] for c in board] for board in result_col_positions]
+    
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        return Solution.sol1(n)
