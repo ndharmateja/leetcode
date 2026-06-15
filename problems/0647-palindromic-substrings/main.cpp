@@ -84,6 +84,17 @@ private:
         return total_palindromic_substrings;
     }
 
+    /**
+     * TODO: Manacher's algo based solution
+     * Reference: https://www.youtube.com/watch?v=ppHGM2B6YtM
+     */
+    static int solution3(const std::string &s) {}
+
+    /**
+     * TODO: Palindromic Tree (EERTREE) based solution
+     */
+    static int solution4(const std::string &s) {}
+
 public:
     int countSubstrings(const std::string &s) { return solution2(s); }
 };
