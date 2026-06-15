@@ -3,7 +3,10 @@ from typing import List
 class Solution:
     @staticmethod
     def sol1(n: int) -> List[List[str]]:
-        # Invariant: (row, col) is a valid position for a queen
+        # Invariants: 
+        # 1. (row, col) is a valid position for a queen
+        # 2. col_visited[c] = True for all the column positions of the queens
+        #   in the rows 0 to row-1
         def dfs(row, col):
             # Place the queen at (row, col)
             col_positions[row] = col
