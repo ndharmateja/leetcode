@@ -9,10 +9,10 @@ private:
      * and add them all to S
      *
      * Eg: nums = {A, B, C}
-     * before i = 0, S = {{}}
-     * after i=0, S = {{}, {A}}
-     * after i=1, S = {{}, {A}, {B}, {A, B}}
-     * after i=2, S = {{}, {A}, {B}, {A, B}, {C}, {A, C}, {B, C}, {A, B, C}}
+     * Initially         : S = {{}}
+     * after processing A: S = {{}, {A}}
+     * after processing B: S = {{}, {A}, {B}, {A, B}}
+     * after processing C: S = {{}, {A}, {B}, {A, B}, {C}, {A, C}, {B, C}, {A, B, C}}
      */
     static std::vector<std::vector<int>> sol(const std::vector<int> &nums)
     {
