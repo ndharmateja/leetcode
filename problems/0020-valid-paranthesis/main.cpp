@@ -4,21 +4,13 @@
 class Solution
 {
 private:
-    static bool is_opening(char c) { return c == '(' || c == '[' || c == '{'; }
-    static bool is_closing(char c) { return c == ')' || c == ']' || c == '}'; }
-    static bool is_matching(char opening, char closing)
+    static inline bool is_opening(char c) { return c == '(' || c == '[' || c == '{'; }
+    static inline bool is_closing(char c) { return c == ')' || c == ']' || c == '}'; }
+    static inline bool is_matching(char opening, char closing)
     {
-        switch (opening)
-        {
-        case '(':
-            return closing == ')';
-        case '[':
-            return closing == ']';
-        case '{':
-            return closing == '}';
-        default:
-            return false;
-        }
+        return (opening == '(' && closing == ')') ||
+               (opening == '[' && closing == ']') ||
+               (opening == '{' && closing == '}');
     }
 
 public:
@@ -35,21 +27,23 @@ public:
             }
 
             // If it is a closing bracket, pop the stack and see if it matches
-            if (is_closing(c))
-            {
-                // If the stack is empty at this point, it means balancing is not valid
-                // as there is no opening bracket corresponding to the closing
-                if (stack.empty())
-                    return false;
+            // According to leetcode constraints, we only have opening and closing brackets
+            // so we don't need to check for other characters
+            // So at this point we have a closing bracket
+            // Normally, we would skip the other characters
 
-                // See if the top most char on the stack is matching with the curr char
-                char popped = stack.top();
-                if (!is_matching(popped, c))
-                    return false;
+            // If the stack is empty at this point, it means balancing is not valid
+            // as there is no opening bracket corresponding to the closing
+            if (stack.empty())
+                return false;
 
-                // Pop the opening bracket from the stack
-                stack.pop();
-            }
+            // See if the top most char on the stack is matching with the curr char
+            char popped = stack.top();
+            if (!is_matching(popped, c))
+                return false;
+
+            // Pop the opening bracket from the stack
+            stack.pop();
         }
 
         // At this point, if the stack is empty it means it is balanced
