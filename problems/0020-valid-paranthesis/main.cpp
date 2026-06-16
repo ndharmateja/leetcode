@@ -1,12 +1,10 @@
 #include <string>
-#include <stack>
 
 class Solution
 {
 private:
-    static inline bool is_opening(char c) { return c == '(' || c == '[' || c == '{'; }
-    static inline bool is_closing(char c) { return c == ')' || c == ']' || c == '}'; }
-    static inline bool is_matching(char opening, char closing)
+    static constexpr bool is_opening(char c) { return c == '(' || c == '[' || c == '{'; }
+    static constexpr bool is_matching(char opening, char closing)
     {
         return (opening == '(' && closing == ')') ||
                (opening == '[' && closing == ']') ||
@@ -14,15 +12,29 @@ private:
     }
 
 public:
-    bool isValid(std::string s)
+    bool isValid(const std::string &s)
     {
-        std::stack<char> stack;
-        for (unsigned char c : s)
+        // Edge case:
+        // If odd number of elements in the string, we can immediately return false
+        int n{static_cast<int>(s.size())};
+        if (n % 2 != 0)
+            return false;
+
+        // Use string as a stack for cache locality and small string optimization
+        // The max number of characters a stack can have is n / 2 for a valid paranthesis string
+        std::string stack;
+        stack.reserve(n / 2);
+        for (const char c : s)
         {
             // If it is an opening bracket, add it to the stack
             if (is_opening(c))
             {
-                stack.push(c);
+                // ! Optimization: If the number of opening brackets on the stack
+                // ! is already n/2, then we can immediately return false
+                if (stack.size() == n / 2)
+                    return false;
+
+                stack.push_back(c);
                 continue;
             }
 
@@ -38,12 +50,12 @@ public:
                 return false;
 
             // See if the top most char on the stack is matching with the curr char
-            char popped = stack.top();
+            char popped = stack.back();
             if (!is_matching(popped, c))
                 return false;
 
             // Pop the opening bracket from the stack
-            stack.pop();
+            stack.pop_back();
         }
 
         // At this point, if the stack is empty it means it is balanced
