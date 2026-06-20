@@ -204,7 +204,6 @@ private:
         // If this cell is already visited we skip it
         unsigned char char_rc = board[r][c];
         if (char_rc == '#')
-
             return;
 
         // ! We not only want the curr_node to be not null but we also need its count to be non-zero
