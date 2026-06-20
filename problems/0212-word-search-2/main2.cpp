@@ -226,10 +226,9 @@ private:
             trie.remove(buffer);
 
             // ! We could have had the pruning logic from below (to check if curr node's count became 0)
-            // ! here immediately after deleting the node but we need to maintain the invariant
-            // ! that buffer needs to be same after the call that it has before
-            // ! and visited state before the dfs call and after the dfs call should be same
-            // ! So to avoid special if condition here, we add an if condition to the next part
+            // ! here immediately after deleting the node, so that we could immediately exit the function
+            // ! But to maintain the invariant, we need to add code to reset the invariant (buffer and visited)
+            // ! here as well, so to avoid this code duplication we add an if condition to the next part
             // ! so that at the end the buffer and the visited are taken care of
         }
 
