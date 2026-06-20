@@ -97,7 +97,8 @@ namespace Solution2
 
         /**
          * Recursive function that deserializes a tree starting at index i
-         * Makes i point to the after the subtree rooted at the value starting at index 'i'
+         * Updates i (by reference) to point to the first character (if exists)
+         * after the end of the tree string that is rooted at the original index i
          *
          *       2              17
          *       ↓              ↓
@@ -111,8 +112,23 @@ namespace Solution2
          *
          * If we call deserialize(data, 2)
          * we need to parse the tree rooted at B
-         * and this function makes i point to 17 which is the closing parenthesis
-         * after the tree string of B ends
+         * and this function makes i point to 17 which is the index
+         * after the tree string rooted at B ends
+         *
+         *     0                      23
+         *     ↓                      ↓
+         * Eg: A(B(D()())(E()()))(C())
+         * is the tree
+         *       A
+         *      / \
+         *     B   C
+         *    / \
+         *   D   E
+         *
+         * If we call deserialize(data, 0)
+         * we need to parse the tree rooted at A
+         * and this function makes i point to 23 which is the index
+         * after the tree string rooted at A ends
          */
         static TreeNode *deserialize(const std::string &data, int &i)
         {
@@ -130,7 +146,7 @@ namespace Solution2
             // Create the root node
             TreeNode *root = new TreeNode(root_val);
 
-            // At this point i points to the closing paranthesis outside the left subtree
+            // At this point i points to the opening paranthesis of the left subtree
             //     i
             //     ↓
             // root(left-subtree)(right-subtree)
@@ -231,8 +247,8 @@ namespace Solution1
             result.push_back(')');
         }
 
-        static bool is_opening(char c) { return c == '('; }
-        static bool is_closing(char c) { return c == ')'; }
+        static inline bool is_opening(char c) { return c == '('; }
+        static inline bool is_closing(char c) { return c == ')'; }
 
         static int find_closing_paranthesis(const std::string &data, int start_at)
         {
