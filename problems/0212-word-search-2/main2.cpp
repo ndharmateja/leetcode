@@ -260,6 +260,8 @@ private:
          * Explanation:
          * 1. For the full implementation and explanation of the trie, see the following reference:
          * https://github.com/ndharmateja/data-structures-cpp/tree/master/data-structures/tries
+         * 2. main2.cpp is the base case version of main1.cpp which implements lookahed recursion (cleaner
+         *   code in both the wrapper function and in the loop of dfs).
          *
          * Improvements:
          * 1. Added the delete functionality (without deleting the actual nodes from memory
