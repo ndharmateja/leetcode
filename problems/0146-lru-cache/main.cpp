@@ -65,7 +65,7 @@ public:
     // remaining nodes is not changed
     // The unordered map maps the keys to the Nodes in the DLL for Theta(1) access
     // We are also reserving the map with capacity to prevent rehashes
-    LRUCache(int capacity) : capacity{capacity}, key_to_node_map{static_cast<size_t>(capacity)}
+    LRUCache(int capacity) : capacity{capacity}, key_to_node_map{static_cast<size_t>(capacity) + 1}
     {
         this->head_sentinel = new Node();
         this->tail_sentinel = new Node();
@@ -102,7 +102,8 @@ public:
     {
         // If key is already present, update the value
         // and make it most recently used
-        if (this->key_to_node_map.count(key))
+        auto [it, inserted] = this->key_to_node_map.try_emplace(key, nullptr);
+        if (!inserted)
         {
             Node *node = this->key_to_node_map.at(key);
             node->val = value;
@@ -113,17 +114,28 @@ public:
         // At this point they key is not already present
         // so we create the node corresponding to this key and value
         // and insert it at the end of the list as it is the most recently used
+        // Create node and insert it into the DLL and add the map entry
+        // and increment the size
+        Node *node = new Node{key, value};
+        insert_before(this->tail_sentinel, node);
+        it->second = node;
 
-        // If the cache is full, we remove the least recently used node
+        // If the cache exceeds capacity, we remove the least recently used node
         // which is the first node from the DLL and also from the map
-        // We are removing first before inserting the new node because
-        // we reserved the capacity of the unordered_map as the capacity itself
-        // If we insert first and then delete, the #elements in the map
-        // will be capacity + 1
+
+        // ! Old:
+        // ! We are removing first before inserting the new node because
+        // ! we reserved the capacity of the unordered_map as the capacity itself
+        // ! If we insert first and then delete, the #elements in the map
+        // ! will be capacity + 1
+        // Updated: the map's initial capacity is not "capacity + 1"
+        // This change was needed as we are using try_emplace above so that there would
+        // be exactly one hash function call and that would increase the map's size
+        // beyond capacity (when the map was already at capacity) if inserted newly
         // We can use map's size as the number of elements in our cache
         // (which is the number of nodes in the DLL) as we are only storing the
         // active keys in the hash map
-        if (key_to_node_map.size() == capacity)
+        if (key_to_node_map.size() > capacity)
         {
             // Delete the least recently used node from the DLL
             Node *to_delete = this->head_sentinel->next;
@@ -136,11 +148,5 @@ public:
             // Delete the key from the map
             this->key_to_node_map.erase(key_to_delete);
         }
-
-        // Create node and insert it into the DLL and add the map entry
-        // and increment the size
-        Node *node = new Node{key, value};
-        insert_before(this->tail_sentinel, node);
-        this->key_to_node_map[key] = node;
     }
 };
