@@ -70,11 +70,13 @@ namespace Solution2
         static int parse_integer(const std::string &data, int &i)
         {
             // Error checking. The character at should either be an int or a '-' char
-            unsigned char c = data[i];
-            if (!std::isdigit(c) && c != '-')
-                throw std::runtime_error("Invalid input");
+            // ! This is not required for the leetcode problem as we can assume the input is valid
+            // ! as we wrote the serializer too
+            // ! if (!std::isdigit(c) && c != '-')
+            // !   throw std::runtime_error("Invalid input");
 
             // Handle negative values
+            unsigned char c = data[i];
             bool is_negative = false;
             if (c == '-')
             {
