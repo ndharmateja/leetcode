@@ -245,50 +245,9 @@ private:
     }
 
     /**
-     * Recursively (memoized) finds the number of ways in which we can form
-     * the amount 't' using the first 'i' coins (coins[:i])
-     */
-    int get_num_coins_sol6(int i, int t,
-                           const std::vector<int> &coins,
-                           std::vector<std::vector<int>> &memo)
-    {
-        // If the answer is already in the memo, we return it
-        int &result = memo[i][t];
-        if (result != -1)
-            return result;
-
-        // ! Base cases are handled when the memo is created
-        // General case
-        int coin = coins[i - 1];
-        result = get_num_coins_sol6(i - 1, t, coins, memo) +
-                 (t >= coin ? get_num_coins_sol6(i, t - coin, coins, memo) : 0);
-        return result;
-    }
-
-    /**
-     * Top down (memoized) version of sol5
-     */
-    int sol6(int T, const std::vector<int> &coins)
-    {
-
-        // Create the memo with -1 values
-        int n{static_cast<int>(coins.size())};
-        std::vector<std::vector<int>> memo(n + 1, std::vector<int>(T + 1, -1));
-
-        // Fill the base cases
-        for (int i = 0; i <= n; i++)
-            memo[i][0] = 1;
-        for (int t = 1; t <= T; t++)
-            memo[0][t] = 0;
-
-        // Return the answer
-        return get_num_coins_sol6(n, T, coins, memo);
-    }
-
-    /**
      * Space optimized bottom up DP solution (corresponding to solution 5)
      */
-    int sol7(int T, const std::vector<int> &coins)
+    int sol6(int T, const std::vector<int> &coins)
     {
         // Create the dp table
         int n{static_cast<int>(coins.size())};
@@ -311,6 +270,47 @@ private:
 
         // Return the answer
         return static_cast<int>(dp[T]);
+    }
+
+    /**
+     * Recursively (memoized) finds the number of ways in which we can form
+     * the amount 't' using the first 'i' coins (coins[:i])
+     */
+    int get_num_coins_sol7(int i, int t,
+                           const std::vector<int> &coins,
+                           std::vector<std::vector<int>> &memo)
+    {
+        // If the answer is already in the memo, we return it
+        int &result = memo[i][t];
+        if (result != -1)
+            return result;
+
+        // ! Base cases are handled when the memo is created
+        // General case
+        int coin = coins[i - 1];
+        result = get_num_coins_sol7(i - 1, t, coins, memo) +
+                 (t >= coin ? get_num_coins_sol7(i, t - coin, coins, memo) : 0);
+        return result;
+    }
+
+    /**
+     * Top down (memoized) version of sol5
+     */
+    int sol7(int T, const std::vector<int> &coins)
+    {
+
+        // Create the memo with -1 values
+        int n{static_cast<int>(coins.size())};
+        std::vector<std::vector<int>> memo(n + 1, std::vector<int>(T + 1, -1));
+
+        // Fill the base cases
+        for (int i = 0; i <= n; i++)
+            memo[i][0] = 1;
+        for (int t = 1; t <= T; t++)
+            memo[0][t] = 0;
+
+        // Return the answer
+        return get_num_coins_sol7(n, T, coins, memo);
     }
 
 public:
