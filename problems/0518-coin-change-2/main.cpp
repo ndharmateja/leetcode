@@ -1,4 +1,5 @@
 #include <vector>
+#include <unordered_map>
 #include <cctype>
 
 class Solution
@@ -313,6 +314,51 @@ private:
         return get_num_coins_sol7(n, T, coins, memo);
     }
 
+    /**
+     * Recursively (memoized) finds the number of ways in which we can form
+     * the amount 't' using the first 'i' coins (coins[:i])
+     */
+    int get_num_coins_sol8(int i, int t,
+                           const std::vector<int> &coins,
+                           std::unordered_map<uint64_t, int> &memo)
+    {
+        // If the answer is already in the memo, we return it
+        uint64_t key = (static_cast<uint64_t>(i) << 32) | static_cast<uint32_t>(t);
+        auto [it, inserted] = memo.try_emplace(key, -1);
+        if (!inserted)
+            return it->second;
+
+        // ! Base cases are handled when the memo is created
+        // General case
+        int coin = coins[i - 1];
+        it->second = get_num_coins_sol8(i - 1, t, coins, memo) +
+                     (t >= coin ? get_num_coins_sol8(i, t - coin, coins, memo) : 0);
+        return it->second;
+    }
+
+    /**
+     * Top down (memoized) version of sol5
+     * Same as solution 7 except we use an unordered_map for the memo
+     * to account for sparse matrices
+     * The key is formed by packing the values of i and t into a single 64-bit integer
+     */
+    int sol8(int T, const std::vector<int> &coins)
+    {
+
+        // Create the memo with -1 values
+        int n{static_cast<int>(coins.size())};
+        std::unordered_map<uint64_t, int> memo;
+
+        // Fill the base cases
+        for (int i = 0; i <= n; i++)
+            memo[(static_cast<uint64_t>(i) << 32)] = 1;
+        for (int t = 1; t <= T; t++)
+            memo[static_cast<uint64_t>(t)] = 0;
+
+        // Return the answer
+        return get_num_coins_sol8(n, T, coins, memo);
+    }
+
 public:
-    int change(int amount, const std::vector<int> &coins) { return sol7(amount, coins); }
+    int change(int amount, const std::vector<int> &coins) { return sol6(amount, coins); }
 };
