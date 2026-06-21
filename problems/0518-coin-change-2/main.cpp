@@ -1,4 +1,5 @@
 #include <vector>
+#include <cctype>
 
 class Solution
 {
@@ -78,6 +79,108 @@ private:
         return dfs(nums, target, 0, 0, memo);
     }
 
+    /**
+     * Bottom up DP solution
+     */
+    int sol3(int T, const std::vector<int> &coins)
+    {
+        /**
+         * * DP solution
+         * dp[t][i] := the number ways we can form 't' using the first 'i' coins
+         * (Idea is similar to solution1 of problem 39. Combination Sum where we
+         * consider only "sorted" combinations where the order of the elements in
+         * the combination is same as that of nums but with the idea of max index
+         * instead of min index there)
+         * * Base cases
+         * dp[0][i] = 1
+         * dp[t][0] = 0 (for t > 0)
+         * * Recurrence relation
+         * dp[t][i] = dp[t][i-1] + dp[t-coins[i-1]][i]  if t >= coins[i-1]
+         *          = dp[t][i-1]                        otherwise
+         * If we use the ith coin (ith coin is coins[i-1]), we can still use any of the first 'i' coins
+         * as repetition is allowed, but if we don't use the ith coin we should
+         * only be using the first i-1 coins (to maintain the combination sum subsequence idea).
+         * * Order of filling
+         * Row by row from top to bottom, filling each row from left to right
+         * * Final answer
+         * dp[T][n] where T is the target and n is the number of coins
+         * * Running time
+         * #subproblems        = (n + 1)(T + 1)
+         * work per subproblem = Theta(1)
+         * total running time  = Theta(nT) which is pseudopolynomial as lg(T) is the size of input
+         */
+
+        // ! Note: even though the leetcode constraints explicitly mention that the result is
+        // ! going to fit in a 32 bit signed integer, there could be cases where the intermediate
+        // ! values could overflow. Eg: the target is odd and all the coins are only even
+        // ! 64 bit and even 128 bit signed integers won't work
+        // ! which is why we are using a 128 bit unsigned integer
+        // ! This is the reason why the top down solution is better as it would only compute
+        // ! intermediate results that are necessary for the final result
+
+        // Create the dp table
+        int n{static_cast<int>(coins.size())};
+        std::vector<std::vector<__uint128_t>> dp(T + 1, std::vector<__uint128_t>(n + 1));
+
+        // Base cases
+        // All values are zero initialized in the vector, so we don't need to
+        // explicitly set dp[t][0] = 0
+        for (int i = 0; i <= n; i++)
+            dp[0][i] = 1;
+
+        // Fill the table
+        for (int t = 1; t <= T; t++)
+            for (int i = 1; i <= n; i++)
+            {
+                int coin = coins[i - 1];
+                dp[t][i] = dp[t][i - 1] + (t >= coin ? dp[t - coin][i] : 0);
+            }
+
+        // Return the answer
+        return static_cast<int>(dp[T][n]);
+    }
+
+    /**
+     * Recursively (memoized) finds the number of ways in which we can form
+     * the amount 't' using the first 'i' coins (coins[:i])
+     */
+    int num_coins(int t, int i,
+                  const std::vector<int> &coins,
+                  std::vector<std::vector<int>> &memo)
+    {
+        // If the answer is already in the memo, we return it
+        int &result = memo[t][i];
+        if (result != -1)
+            return result;
+
+        // ! Base cases are handled when the memo is created
+        // General case
+        int coin = coins[i - 1];
+        result = num_coins(t, i - 1, coins, memo) +
+                 (t >= coin ? num_coins(t - coin, i, coins, memo) : 0);
+        return result;
+    }
+
+    /**
+     * Top down (memoized) version of sol3
+     */
+    int sol4(int T, const std::vector<int> &coins)
+    {
+
+        // Create the memo with -1 values
+        int n{static_cast<int>(coins.size())};
+        std::vector<std::vector<int>> memo(T + 1, std::vector<int>(n + 1, -1));
+
+        // Fill the base cases
+        for (int i = 0; i <= n; i++)
+            memo[0][i] = 1;
+        for (int t = 1; t <= T; t++)
+            memo[t][0] = 0;
+
+        // Return the answer
+        return num_coins(T, n, coins, memo);
+    }
+
 public:
-    int change(int amount, const std::vector<int> &coins) { return sol2(amount, coins); }
+    int change(int amount, const std::vector<int> &coins) { return sol3(amount, coins); }
 };
