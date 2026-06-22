@@ -63,6 +63,7 @@ private:
             distance++;
         }
 
+        // If we reach here, it means that there wasn't a path from the begin word to the end word
         return 0;
     }
 
@@ -164,6 +165,7 @@ private:
             distance++;
         }
 
+        // If we reach here, it means that there wasn't a path from the begin word to the end word
         return 0;
     }
 
@@ -310,7 +312,7 @@ private:
             distance++;
         }
 
-        // We won't reach here as the end word is guaranteed to be in the word list
+        // If we reach here, it means that there wasn't a path from the begin word to the end word
         return 0;
     }
 
@@ -522,7 +524,7 @@ private:
             distance_from_back++;
         }
 
-        // We would not reach here
+        // If we reach here, it means that there wasn't a path from the begin word to the end word
         return 0;
     }
 
