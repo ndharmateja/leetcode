@@ -504,6 +504,9 @@ private:
         result.reserve(n - k + 1);
 
         // Create the block wise prefix and suffix max values
+        // ! Note: Be mindful of these arrays as they are allocated on the stack
+        // ! which works for the given leetcode constraints. But if 'n' can get very high
+        // ! we can use vectors instead.
         int prefix[n], suffix[n];
         for (int l{0}, r{n - 1}; l < n; l++, r--)
         {
