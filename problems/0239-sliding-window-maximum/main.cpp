@@ -1,6 +1,8 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_set>
+#include <deque>
+#include <utility>
 
 // Reference: https://github.com/ndharmateja/data-structures-cpp/blob/master/data-structures/priority-queues/index-min-pq/index_min_pq.hpp
 // Removing type checking and error handling for leet code
@@ -244,6 +246,106 @@ private:
         return result;
     }
 
+    /**
+     * Monotonically decreasing deque solution
+     *
+     * Theta(n) time and Theta(k) space
+     */
+    static std::vector<int> sol3(const std::vector<int> &nums, int k)
+    {
+        /**
+         * Invariant:
+         * For a sliding window, we only store indices of the unique values of running
+         * maximum values going from right to left (for duplicate values, we store the
+         * index of the right most duplicate as it has a longer lifespan for future
+         * windows)
+         * Eg:
+         *                              0    1    2    3   4   5   6   7   8   9
+         *                              ↓    ↓    ↓    ↓   ↓   ↓   ↓   ↓   ↓   ↓
+         *       the sliding window: [  4,   2,   9, 100, 20, 19, 13, 14, 13, 13]
+         *     the running maximums: [100, 100, 100, 100, 20, 19, 14, 14, 13, 13]
+         *            unique values: [100, 20, 19, 14 ,13]
+         *
+         * We can store the pairs of (index, value) in the deque
+         *                   ------------------------------------------
+         *   deque: front <-  {3, 100} {4, 20} {5, 19} {7, 14} {9, 13}  <- back
+         *                   ------------------------------------------
+         *
+         * So we can easily find the maximum in a sliding window by getting the
+         * left most element in the unique values deque
+         */
+
+        // Edge cases
+        // (not necessary according to the leetcode problem constraints)
+        // if(nums.empty() || k <= 0 || k > n)
+        //     return {};
+
+        // Create the result and reserve the space
+        int n{static_cast<int>(nums.size())};
+        std::vector<int> result;
+        result.reserve(n - k + 1);
+
+        // Create the deque that stores the (index, value) pairs
+        std::deque<std::pair<int, int>> dq;
+
+        // start and end keep track of the bounds of the sliding window [start, end)
+        // start is inclusive and end is not inclusive
+        int start{0}, end{0};
+
+        // Process the first sliding window
+        // ! Note: we also push the result of this sliding window to the result
+        // ! to keep the invariant of the next loop
+        while (end < k)
+        {
+            // Remove all the numbers from the front that are less than or equal to
+            // the current number so that we can maintain the invariant
+            int num{nums[end]};
+            while (!dq.empty() && dq.back().second <= num)
+                dq.pop_back();
+
+            // Now either the queue is empty or the right most value is greater
+            // than the current number
+            // So we can push the number and increment end index
+            dq.push_back({end++, num});
+        }
+        result.push_back(dq.front().second);
+
+        // Invariant for this loop:
+        // [start, end) tracks exactly one sliding window at the start of the loop
+        // and its maximum has already been processed
+        // This is initially maintained as we completely processed the first sliding window
+        // before entering this loop
+        while (end < n)
+        {
+            // Remove all the numbers from the front that are less than or equal to
+            // the current number so that we can maintain the invariant
+            int num{nums[end]};
+            while (!dq.empty() && dq.back().second <= num)
+                dq.pop_back();
+
+            // Now either the queue is empty or the right most value is greater
+            // than the current number
+            // So we can push the number and increment end index
+            dq.push_back({end++, num});
+
+            // At this point the deque corresponds to a sliding window of length k+1
+            // To fix it, we increment start
+            start++;
+
+            // Now if the left most value's index is smaller than start, it is out of bounds
+            // so we remove it
+            if (dq.front().first < start)
+                dq.pop_front();
+
+            // At this point the deque corresponds to the new sliding window
+            // To keep the invariant, we process the maximum as well
+            result.push_back(dq.front().second);
+        }
+
+        // Return the result
+        return result;
+    }
+
 public:
-    std::vector<int> maxSlidingWindow(const std::vector<int> &nums, int k) { return sol2(nums, k); }
+    std::vector<int> maxSlidingWindow(const std::vector<int> &nums, int k) { return sol3(nums, k); }
 };
