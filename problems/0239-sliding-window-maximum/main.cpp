@@ -452,6 +452,61 @@ private:
         return result;
     }
 
+    /**
+     * TODO: Implement
+     *
+     * Theta(n) time and Theta(n) space
+     */
+    static std::vector<int> sol5(const std::vector<int> &nums, int k)
+    {
+        /**
+         * Explanation:
+         * 1. We use the prefix and suffix maximum values of each block of size 'k' (sliding window size)
+         * 2. Every sliding window is now either perfectly aligned with a block or exactly overlaps
+         *   two adjacent blocks
+         * 3. We get the maximum of a sliding window [i, j] based on the case:
+         *   Case 1: perfect alignment
+         *          The max for this window would be the max between the left most suffix max value (suffix[i])
+         *          and the right most prefix max value (prefix[j])
+         *   Case 2: overlaps two adjacent block
+         *          The max for this window would be the max of the left overlap (which is given by suffix[i])
+         *          and the max of the right overlap (prefix[j])
+         *   So, the sliding window max is always max{suffix[i], prefix[j]}
+         *
+         * Eg: nums = [1, 3, -1, -3, 5, 3, 6, 7]
+         *                       blocks: [1, 3, -1] [-3, 5, 3] [6, 7]
+         * block wise prefix max values: [1, 3,  3] [-3, 5, 5] [6, 7]
+         * block wise suffix max values: [3, 3, -1] [ 5, 5, 3] [7, 7]
+         *       example sliding window:    [          ]           => overlap => max = max(3, -3) = 3
+         *       example sliding window:                [        ] => overlap => max = max(5, 6) = 6
+         *       example sliding window:            [        ]     => no overlap => max = max(5, 3) = 5
+         *
+         * Note:
+         * 1. A bigger partition size doesn't work as a window could be in the middle of a partition block
+         *   in which case the partition prefix and suffix sums consider all the values in the block
+         *   instead of the window
+         *   Eg: block: [10, 4,   5,  6, 20]
+         *      prefix: [10, 10, 10, 10, 20]
+         *      suffix: [20, 20, 20, 20, 20]
+         *      and if the sliding window is of size 3 in the middle then we get a wrong answer
+         * 2. Similarly if the partition is smaller than the sliding window size, the window could overlap
+         *   multiple blocks => our logic of max{suffix[i], prefix[j]} won't work
+         */
+
+        // Edge cases
+        // (not necessary according to the leetcode problem constraints)
+        // if(nums.empty() || k <= 0 || k > n)
+        //     return {};
+
+        // Create the result and reserve the space
+        int n{static_cast<int>(nums.size())};
+        std::vector<int> result;
+        result.reserve(n - k + 1);
+
+        // Return the result
+        return result;
+    }
+
 public:
     std::vector<int> maxSlidingWindow(const std::vector<int> &nums, int k) { return sol4(nums, k); }
 };
