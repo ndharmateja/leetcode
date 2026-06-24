@@ -68,7 +68,7 @@ private:
     }
 
     /**
-     * Optimized version of solution 1 using #matchess
+     * Optimized version of solution 1 using #matches
      * Sliding window solution with character counts
      *
      * O(n2) time and Theta(ALPHABET_SIZE) space
@@ -82,13 +82,16 @@ private:
         if (n2 < n1)
             return false;
 
-        // Get the initial character counts to count the number of matches
-        // Eg: if needle is AAACB and the first 5 characters of haystack are ADABD, then the number of matches
-        // is equal to 23 (B, E, F, G, H, ..., X, Y, Z all have the same counts)
-        // So if the number of matches equals 26 (the alphabet size), then they are permutations of each other
-        // Unlike solution 1, where we we were comparing the whole char counts arrays of needle and
-        // the sliding window, we can just count the #matches in constant time as we add and remove
-        // characters from the sliding window
+        /**
+         * 1. Get the initial character counts to count the number of matches (A match is a character that
+         *   has the same count in needle and the sliding window)
+         *   Eg: if needle is AAACB and the first 5 characters of haystack are ADABD, then the number of matches
+         *      is equal to 23 (B=1, E=0, F=0, G=0, H=0, ..., X=0, Y=0, Z=0 all have the same counts)
+         * 2. So if the number of matches equals 26 (the alphabet size), then they are permutations of each other
+         * 3. Unlike solution 1, where we we were comparing the whole char counts arrays of needle and
+         *   the sliding window, we can just count the #matches in constant time as we add and remove
+         *   characters from the sliding window
+         */
 
         // We use a sliding window with same length as needle
         // Get the char counts of needle and also the sliding window (which is the
