@@ -453,7 +453,7 @@ private:
     }
 
     /**
-     * TODO: Implement
+     * Prefix and suffix max values of k-sized blocks solution
      *
      * Theta(n) time and Theta(n) space
      */
@@ -503,10 +503,27 @@ private:
         std::vector<int> result;
         result.reserve(n - k + 1);
 
+        // Create the block wise prefix and suffix max values
+        int prefix[n], suffix[n];
+        for (int l{0}, r{n - 1}; l < n; l++, r--)
+        {
+            prefix[l] = (l % k == 0)
+                            ? nums[l]
+                            : std::max(prefix[l - 1], nums[l]);
+            suffix[r] = (r == n - 1 || (r + 1) % k == 0)
+                            ? nums[r]
+                            : std::max(suffix[r + 1], nums[r]);
+        }
+
+        // Compute the sliding window max value and append to the result
+        // [start, end] keeps track of the sliding window (end inclusive)
+        for (int start{0}, end{k - 1}; end < n; start++, end++)
+            result.push_back(std::max(suffix[start], prefix[end]));
+
         // Return the result
         return result;
     }
 
 public:
-    std::vector<int> maxSlidingWindow(const std::vector<int> &nums, int k) { return sol4(nums, k); }
+    std::vector<int> maxSlidingWindow(const std::vector<int> &nums, int k) { return sol5(nums, k); }
 };
