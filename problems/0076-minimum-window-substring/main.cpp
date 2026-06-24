@@ -72,6 +72,9 @@ private:
         int opt_start{start}, opt_end{end};
 
         // The invariant for the window is maintained at the start of each loop
+        // We include end <= m here as we could try to better our solution
+        // even end reached the end of the pattern by incrementing start
+        // to get a more optimal sliding window
         while (end <= m)
         {
             // ! Note: We don't have to explicity decrement and increment num_chars_present
@@ -109,7 +112,11 @@ private:
                 opt_end = end;
             }
 
-            // TODO: add explanation why we need this check here
+            // As end could be 'm' when we enter the loop (the invariant being fixed in the
+            // previous iteration by the addition of the absolute last character of the text)
+            // We only enter the loop so that we can try and find a more optimal window
+            // by incrementing start
+            // Now that end is m and the invariant is broken, we can just exit
             if (end == m)
                 break;
 
