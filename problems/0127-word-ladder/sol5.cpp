@@ -83,6 +83,7 @@ private:
         // Create the pattern adjacency list
         // For each word, we create all patterns and add the word index to all the pattern keys
         std::unordered_map<std::string, std::vector<int>> pattern_adj_list;
+        pattern_adj_list.reserve(m * n);
         build_pattern_adj_list(begin_word, end_word, buffer, pattern_adj_list, word_list,
                                begin_word_index, end_word_index, m, n);
 
