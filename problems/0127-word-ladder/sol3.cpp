@@ -98,9 +98,10 @@ private:
         // So we need not keep track of the begin word in the visited vector
         // If the begin word occurred in the word list, then it will be kept track of
         // by its index
-        std::vector<bool> visited(n, false);
+        std::vector<bool> visited(n + 1, false);
         std::queue<int> queue;
         queue.push(begin_word_index);
+        visited[begin_word_index] = true;
 
         // BFS main loop
         // layer by layer to keep track of distance

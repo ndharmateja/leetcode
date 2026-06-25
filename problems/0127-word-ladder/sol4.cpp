@@ -40,8 +40,9 @@ private:
     }
 
     /**
-     * Bidirectional BFS where we use integer indices to track the words and use
-     * the strings in the word list as the single source of truth (like solution 3)
+     * Bidirectional BFS where we alternate exploring from the front and the back and
+     * use integer indices to track the words and use the strings in the word list
+     * as the single source of truth (like solution 3)
      */
     static int sol(const std::string &begin_word, const std::string &end_word,
                    const std::vector<std::string> &word_list)
@@ -96,12 +97,12 @@ private:
         // So we need not keep track of the begin word in the visited vector
         // If the begin word occurred in the word list, then it will be kept track of
         // by its index
-        std::vector<bool> front_visited(n, false);
+        std::vector<bool> front_visited(n + 1, false);
         std::queue<int> front_queue;
         front_queue.push(begin_word_index);
         front_visited[begin_word_index] = true;
 
-        std::vector<bool> back_visited(n, false);
+        std::vector<bool> back_visited(n + 1, false);
         std::queue<int> back_queue;
         back_queue.push(end_word_index);
         back_visited[end_word_index] = true;
