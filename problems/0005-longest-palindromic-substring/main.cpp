@@ -11,7 +11,7 @@ private:
     Eg: AAAA (fails for index 3)
 
     Bottom up DP solution
-    static std::string solution1(std::string s)
+    static std::string sol1(std::string s)
     {
         * DP solution:
         dp[i]: length of the longest palindromic substring ending at index i in the string
@@ -66,7 +66,7 @@ private:
      *
      * Theta(n^2) time and space complexity
      */
-    static std::string solution1(const std::string &s)
+    static std::string sol1(const std::string &s)
     {
         // Create a nxn DP array
         // dp[i][j] keeps track if s[i:j] is a palindrome (inclusive of i and j)
@@ -118,7 +118,7 @@ private:
      *
      * Theta(n^2) time and Theta(1) space complexity
      */
-    static std::string solution2(const std::string &s)
+    static std::string sol2(const std::string &s)
     {
         // Start at char at i and expand outwards to see if it is a palindrome
         // and if it is a palindrome
@@ -165,8 +165,8 @@ private:
      * TODO: Manacher's algorithm
      * A linear time solution based on KMP algorithm
      */
-    static std::string solution3(const std::string &s) { return ""; }
+    static std::string sol3(const std::string &s) { return ""; }
 
 public:
-    std::string longestPalindrome(std::string s) { return solution2(s); }
+    std::string longestPalindrome(std::string s) { return sol2(s); }
 };
