@@ -181,7 +181,7 @@ private:
      *
      * Theta(n^2) time and space complexity
      */
-    static int solution1(const std::string &s)
+    static int sol1(const std::string &s)
     {
         // Create a nxn DP array
         // dp[i][j] keeps track if s[i:j] is a palindrome (inclusive of i and j)
@@ -227,7 +227,7 @@ private:
      *
      * Theta(n^2) time and Theta(1) space complexity
      */
-    static int solution2(const std::string &s)
+    static int sol2(const std::string &s)
     {
         // Start at char at i and expand outwards to see if it is a palindrome
         // and if it is a palindrome
@@ -259,7 +259,7 @@ private:
      * Manacher's algorithm based solution
      * Theta(n) time and Theta(n) space
      */
-    static int solution3(const std::string &s)
+    static int sol3(const std::string &s)
     {
         Manachers m(s);
         return m.get_num_palindromic_substrings();
@@ -268,8 +268,8 @@ private:
     /**
      * TODO: Palindromic Tree (EERTREE) based solution
      */
-    static int solution4(const std::string &s) { return -1; }
+    static int sol4(const std::string &s) { return -1; }
 
 public:
-    int countSubstrings(const std::string &s) { return solution3(s); }
+    int countSubstrings(const std::string &s) { return sol3(s); }
 };
