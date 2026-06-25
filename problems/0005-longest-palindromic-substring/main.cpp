@@ -156,7 +156,7 @@ public:
      * Gets the total number of substrings contained within the given input string
      * Runs in Theta(n) time
      */
-    unsigned long long get_num_substrings() const
+    unsigned long long get_num_palindromic_substrings() const
     {
         // If for a center the radius is 7, the length of the longest palindrome at
         // that center is 7 which means the number of palindromes (length 1, 3, 5, 7)
