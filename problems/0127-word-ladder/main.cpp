@@ -10,7 +10,8 @@ private:
      * BFS based solution that finds the neighbours dynamically for each word
      * by mutating each character to a-z
      */
-    static int solution1(const std::string &begin_word, const std::string &end_word, const std::vector<std::string> &word_list)
+    static int sol1(const std::string &begin_word, const std::string &end_word,
+                    const std::vector<std::string> &word_list)
     {
         // Create a unordered set of the word list
         std::unordered_set<std::string> words_set;
@@ -70,7 +71,8 @@ private:
     /**
      * BFS based solution that builds the adjacency list of patterns
      */
-    static int solution2(const std::string &begin_word, const std::string &end_word, const std::vector<std::string> &word_list)
+    static int sol2(const std::string &begin_word, const std::string &end_word,
+                    const std::vector<std::string> &word_list)
     {
         /**
          * Create the adjacency list of patterns
@@ -170,5 +172,6 @@ private:
     }
 
 public:
-    int ladderLength(const std::string &begin_word, const std::string &end_word, const std::vector<std::string> &word_list) { return solution2(begin_word, end_word, word_list); }
+    int ladderLength(const std::string &begin_word, const std::string &end_word,
+                     const std::vector<std::string> &word_list) { return sol2(begin_word, end_word, word_list); }
 };
