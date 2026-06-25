@@ -90,12 +90,6 @@ private:
             return 0;
 
         // Create the queue and visited for BFS
-        // The visited vector need not be of size n+1 even though the begin word if
-        // not present in the word list has an index of n+1 as, if the begin word is not
-        // in the word list, it would not appear in any of the adjacency list keys
-        // So we need not keep track of the begin word in the visited vector
-        // If the begin word occurred in the word list, then it will be kept track of
-        // by its index
         std::vector<bool> front_visited(n + 1, false);
         std::queue<int> front_queue;
         front_queue.push(begin_word_index);
