@@ -4,6 +4,7 @@
 #include <numeric>
 
 /**
+ * Stripped down version of the full class
  * For full details, see the following reference:
  * ref: https://github.com/ndharmateja/data-structures-cpp/blob/master/algorithms/manachers/manachers.hpp
  */
@@ -36,7 +37,7 @@ class Manachers
 
 private:
     static inline const char DELIMITER = '#';
-    int str_len, aug_len;
+    int aug_len;
     std::vector<int> radii;
     std::string str, aug;
     int longest_palindrome_len{0}, longest_palindrome_center{0};
@@ -81,8 +82,7 @@ private:
     }
 
 public:
-    Manachers(const std::string &input) : str_len{static_cast<int>(input.size())},
-                                          aug_len{2 * str_len + 1}, radii(aug_len), str{input}
+    Manachers(const std::string &input) : aug_len{2 * static_cast<int>(input.size()) + 1}, radii(aug_len), str{input}
     {
         // Create the augmented string with the delimiter (default is #)
         // to be able to detect even lengthed palindromes
@@ -97,42 +97,6 @@ public:
         // Run Manacher's algorithm which will update the radii vector
         run_manachers();
     }
-
-    /**
-     * Returns if the substring in the range [start, end) is a palindrome
-     * start is inclusive but end is exclusive
-     */
-    bool is_palindrome(int start, int end) const
-    {
-        // Check out of bounds and invalid bounds
-        if (start < 0 || end > str_len || start > end)
-            return false;
-
-        // If start == end or start == end - 1
-        // it means we are looking at 0 and 1 lengthed substrings
-        // which will always be palindromes
-        if (start == end || start == end - 1)
-            return true;
-
-        // [start, end-1] is the range we are looking for
-        // corresponding indices in the augmented string = [2*start + 1, 2*(end-1) + 1]
-        // Center in the augmented string
-        // = [(2start + 1) + (2(end-1) + 1)] / 2 = start + (end-1) + 1 = start + end
-        // int substr_len{end - start};
-        // int center = {start + end};
-
-        // The radius at this center tells us the length of the palindrome centered here
-        // so if this length is greater than or equal to the substring length
-        // then it is a palindrome
-        // return radii[center] >= substr_len
-        return radii[start + end] >= (end - start);
-    }
-
-    /**
-     * Gets the length of the longest palindrome contained within the given input string
-     * Runs in Theta(1) time
-     */
-    int get_longest_palindrome_length() const { return longest_palindrome_len; }
 
     /**
      * Gets the longest palindrome contained within the given input string (returns the
@@ -150,25 +114,6 @@ public:
         // longest_palindrome_center is 15 and the start index in the string is (15-9)/2 = 3
         int start_index = (longest_palindrome_center - longest_palindrome_len) / 2;
         return str.substr(start_index, longest_palindrome_len);
-    }
-
-    /**
-     * Gets the total number of substrings contained within the given input string
-     * Runs in Theta(n) time
-     */
-    unsigned long long get_num_palindromic_substrings() const
-    {
-        // If for a center the radius is 7, the length of the longest palindrome at
-        // that center is 7 which means the number of palindromes (length 1, 3, 5, 7)
-        // is (radius + 1) / 2
-        // Works the same for even length radius as well, if the radius is 8,
-        // the number of palindromes (length 2, 4, 6, 8) is (radius + 1) / 2
-        // So the total number of palindromes
-        // = ((radius[0] + 1)/2 + (radius[1] + 1)/2 + .. + (radius[aug_len-1] + 1)/2)
-        // We can't simplify the above statement further as we need the floor of each of the terms
-        // before adding
-        return std::accumulate(radii.begin(), radii.end(), 0ULL, [](unsigned long long sum, int r)
-                               { return sum + (r + 1) / 2; });
     }
 };
 
