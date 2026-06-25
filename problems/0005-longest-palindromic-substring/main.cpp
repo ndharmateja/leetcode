@@ -120,62 +120,62 @@ public:
 class Solution
 {
 private:
-    /*
-    !Invalid solution
-    Doesn't work as we are not considering smaller lengths of palindromes that at end i-1
-    for forming a palindrome that ends at i
-    Eg: AAAA (fails for index 3)
-
-    Bottom up DP solution
-    static std::string sol1(std::string s)
-    {
-        * DP solution:
-        dp[i]: length of the longest palindromic substring ending at index i in the string
-        * Base case:
-        dp[0] = 1
-        * Recurrence relation:
-        dp[i] = dp[i-1] + 2   if       (i-1) - dp[i-1] >= 0 and s[i] == s[(i-1) - dp[i-1]]
-              = 3             else if  i - 2 >= 0           and s[i] == s[i-2]
-              = 2             else if  s[i] == s[i-1]
-              = 1             otherwise
-        * Order of filling:
-        from left to right as we only need the value on the left
-        * Final answer:
-        max_i = the index for which dp[i] is max
-        max_length = dp[max_i]
-        then the s[max_i + 1 - max_length: max_i + 1] is the longest palindromic substring
-        int n{static_cast<int>(s.size())};
-        std::vector<int> dp(n);
-
-        Base case:
-        dp[0] = 1;
-
-        Fill the array from left to right
-        int max_index{0}, max_length{1};
-        for (int i = 1; i < n; i++)
-        {
-            int prev_value = dp[i - 1];
-            if ((i - 1) - prev_value >= 0 && s[i] == s[(i - 1) - prev_value])
-            dp[i] = prev_value + 2;
-            else if (i - 2 >= 0 && s[i] == s[i - 2])
-            dp[i] = 3;
-            else if (s[i] == s[i - 1])
-            dp[i] = 2;
-            else
-            dp[i] = 1;
-
-            Keep track of the max value and index in the dp array
-            if (dp[i] > max_length)
-            {
-                max_length = dp[i];
-                max_index = i;
-            }
-        }
-
-        Get the substring ending at max_index (inclusive) of length max_value
-        return s.substr(max_index + 1 - max_length, max_length);
-    }
-    */
+    /**
+     * !Invalid solution
+     * Doesn't work as we are not considering smaller lengths of palindromes that at end i-1
+     * for forming a palindrome that ends at i
+     * Eg: AAAA (fails for index 3)
+     *
+     * Bottom up DP solution
+     * static std::string sol1(std::string s)
+     * {
+     *     * DP solution:
+     *     dp[i]: length of the longest palindromic substring ending at index i in the string
+     *     * Base case:
+     *     dp[0] = 1
+     *     * Recurrence relation:
+     *     dp[i] = dp[i-1] + 2   if       (i-1) - dp[i-1] >= 0 and s[i] == s[(i-1) - dp[i-1]]
+     *           = 3             else if  i - 2 >= 0           and s[i] == s[i-2]
+     *           = 2             else if  s[i] == s[i-1]
+     *           = 1             otherwise
+     *     * Order of filling:
+     *     from left to right as we only need the value on the left
+     *     * Final answer:
+     *     max_i = the index for which dp[i] is max
+     *     max_length = dp[max_i]
+     *     then the s[max_i + 1 - max_length: max_i + 1] is the longest palindromic substring
+     *     int n{static_cast<int>(s.size())};
+     *     std::vector<int> dp(n);
+     *
+     *     Base case:
+     *     dp[0] = 1;
+     *
+     *     Fill the array from left to right
+     *     int max_index{0}, max_length{1};
+     *     for (int i = 1; i < n; i++)
+     *     {
+     *         int prev_value = dp[i - 1];
+     *         if ((i - 1) - prev_value >= 0 && s[i] == s[(i - 1) - prev_value])
+     *         dp[i] = prev_value + 2;
+     *         else if (i - 2 >= 0 && s[i] == s[i - 2])
+     *         dp[i] = 3;
+     *         else if (s[i] == s[i - 1])
+     *         dp[i] = 2;
+     *         else
+     *         dp[i] = 1;
+     *
+     *         Keep track of the max value and index in the dp array
+     *         if (dp[i] > max_length)
+     *         {
+     *             max_length = dp[i];
+     *             max_index = i;
+     *         }
+     *     }
+     *
+     *     Get the substring ending at max_index (inclusive) of length max_value
+     *     return s.substr(max_index + 1 - max_length, max_length);
+     * }
+     */
 
     /**
      * Bottom up 2D DP solution
