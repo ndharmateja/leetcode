@@ -77,6 +77,14 @@ private:
         return dp[0][0];
     }
 
+    /**
+     * TODO: Space optimized version of solution 3
+     *
+     * Theta(mn) time and Theta(m) space
+     * where m = len(pattern) and n = len(text)
+     */
+    static bool sol4(const std::string &text, const std::string &re) { return false; }
+
     static bool recurse(const int i, const int j, const int n, const int m,
                         const std::string &text, const std::string &re,
                         std::vector<std::vector<int8_t>> &memo)
@@ -120,7 +128,7 @@ private:
      * Theta(mn) time and Theta(mn) space
      * where m = len(pattern) and n = len(text)
      */
-    static bool sol4(const std::string &text, const std::string &re)
+    static bool sol5(const std::string &text, const std::string &re)
     {
         // Create the memo and recurse and return the result
         int n(static_cast<int>(text.size())), m{static_cast<int>(re.size())};
@@ -129,5 +137,5 @@ private:
     }
 
 public:
-    bool isMatch(const std::string &text, const std::string &re) { return sol4(text, re); }
+    bool isMatch(const std::string &text, const std::string &re) { return sol5(text, re); }
 };
