@@ -13,7 +13,7 @@ private:
     {
         // The number of distinct elements is atmost n/2 + 1
         // as more than half of the elements are the same majority element
-        int n{static_cast<int>(nums.size())}, half_n{n / 2};
+        int half_n{static_cast<int>(nums.size()) / 2};
         std::unordered_map<int, int> counts;
         counts.reserve(half_n + 1);
 
@@ -78,13 +78,13 @@ private:
 
         // If either of the left/right majority element (if exists) is the total majority
         // element in the range, we return it
-        int n{hi - lo + 1}, half_n{n / 2};
-        if (left_majority != NO_MAJORITY)
-            if (std::count(nums.begin() + lo, nums.begin() + hi + 1, left_majority) > half_n)
-                return left_majority;
-        if (right_majority != NO_MAJORITY)
-            if (std::count(nums.begin() + lo, nums.begin() + hi + 1, right_majority) > half_n)
-                return right_majority;
+        int half_n{(hi - lo + 1) / 2};
+        if (left_majority != NO_MAJORITY &&
+            std::count(nums.begin() + lo, nums.begin() + hi + 1, left_majority) > half_n)
+            return left_majority;
+        if (right_majority != NO_MAJORITY &&
+            std::count(nums.begin() + lo, nums.begin() + hi + 1, right_majority) > half_n)
+            return right_majority;
 
         // If we reach here, either one/both halves didn't have a majority element
         // or the majority element candidates from each half wasn't a majority element
