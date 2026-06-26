@@ -23,8 +23,15 @@ private:
          * dp[i][j] := true   if text[i:] can be matched with re[j:]
          *             false  otherwise
          * * Base cases
-         * dp[n][j] = true   if j == m (an empty regex can match an empty string)
-         *          = false  otherwise (an empty regex cannot match a non-empty string)
+         * dp[i][m] = true   if i == n
+         *          = false  otherwise (if i < n)
+         * Explanation:
+         * Case 1: An empty regex can match an empty string
+         * Case 2: An empty regex cannot match a non-empty string
+         * Note that we cannot directly say if a non-empty regex matches an empty string.
+         * Eg: A*B* matches "", but A*B doesn't match ""
+         * So we don't take it as a base case
+         *
          * * Recurrence relation
          * match(i, j) := (i < n) && (text[i] == re[j] || re[j] == '.')
          * match(i, j) is true if i is a valid index in the text and it matches with re[j]
@@ -35,6 +42,17 @@ private:
          *             || (match(i, j) && dp[i+1][j])   (if the next character is a * in the re)
          *          = match(i, j) && dp[i+1][j+1]      otherwise
          *                                              (j < m && re[j] != '*' && re[j+1] != '*')
+         * Explanation:
+         * Case 1: The regex pattern cannot start with a '*', so dp[i][j] is false if re[j] is '*'
+         * Case 2: If the next character in the re is a '*', then we have two choices
+         *        1. We take zero copies of re[j], in which case text[i:] has to match with re[j+2]
+         *        2. We take one copy of character at re[j], in which case either re[j] is '.' or
+         *          text[i] has to match with re[j] and text[i+1:] has to match with re[j:] (we don't
+         *          move the 'j' pointer)
+         * Case 3: This is the case where the current char is not a '*' and the next char is not a '*'
+         *        in the re. So we should have a match (either re[j] == '.' or text[i] == re[j]) and
+         *        text[i+1:] has to match with re[j+1:]
+         *
          * * Order of filling
          * We need the values on the bottom, bottom right, two steps to the right
          * so we fill the table row by row going from bottom to top filling
