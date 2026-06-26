@@ -96,18 +96,12 @@ private:
 
         // Base cases
         if (j == m)
-        {
-            result = i == n;
-            return result;
-        }
+            return result = (i == n);
 
         // If re[j] is a '*', this should be false
         // but we don't need to explicitly set it
         if (re[j] == '*')
-        {
-            result = false;
-            return result;
-        }
+            return result = false;
 
         // Handle the case where the next character in the re is a '*'
         if (j + 1 < m && re[j + 1] == '*')
