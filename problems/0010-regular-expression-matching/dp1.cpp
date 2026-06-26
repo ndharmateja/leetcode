@@ -148,6 +148,51 @@ private:
         return recurse(0, 0, n, m, text, re, memo);
     }
 
+    /**
+     * Bottom up DP solution
+     * Exactly same as solution 3 but the dp table's rows and columns are in reverse
+     * Though solution 3 is very intuitive, cache performance is very poor as we
+     * are going in the reverse row major order
+     * dp[i][j] will be storing the answer for dp[n-i][m-j] instead
+     *
+     * Theta(mn) time and Theta(mn) space
+     * where m = len(pattern) and n = len(text)
+     */
+    static bool sol6(const std::string &text, const std::string &re)
+    {
+        // Create the DP table
+        int n(static_cast<int>(text.size())), m{static_cast<int>(re.size())};
+        std::vector<std::vector<char>> dp(n + 1, std::vector<char>(m + 1, false));
+
+        // Base cases
+        // The dp table is init with false, so we don't have to explicitly set false
+        dp[0][0] = true;
+
+        // Fill the table
+        for (int i = 0; i <= n; i++)
+            for (int j = 1; j <= m; j++)
+            {
+                // Find the complement i and j for the indexes into the text and re
+                int i_complement{n - i}, j_complement{m - j};
+
+                // If re[j] is a '*', this should be false
+                // but we don't need to explicitly set it
+                if (re[j_complement] == '*')
+                    continue;
+
+                // Handle the case where the next character in the re is a '*'
+                if (j_complement + 1 < m && re[j_complement + 1] == '*')
+                    dp[i][j] = dp[i][j - 2] || (is_match(i_complement, j_complement, n, text, re) && dp[i - 1][j]);
+
+                // Handle the remaining case (where re[j] is a normal character or '.')
+                else
+                    dp[i][j] = is_match(i_complement, j_complement, n, text, re) && dp[i - 1][j - 1];
+            }
+
+        // Return the answer
+        return dp[n][m];
+    }
+
 public:
-    bool isMatch(const std::string &text, const std::string &re) { return sol5(text, re); }
+    bool isMatch(const std::string &text, const std::string &re) { return sol6(text, re); }
 };
