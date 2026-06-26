@@ -100,5 +100,5 @@ private:
     static int sol3(const std::vector<int> &nums) { return sol3(nums, 0, nums.size() - 1); }
 
 public:
-    int majorityElement(const std::vector<int> &nums) { return sol3(nums); }
+    int majorityElement(const std::vector<int> &nums) { return sol2(nums); }
 };
