@@ -48,21 +48,16 @@ private:
 
         for (int i = 0; i < aug_len; i++)
         {
-            // Find the mirror of the current index around the active center
             int i_mirror = 2 * active_center - i;
 
             int &curr_radius = radii[i];
             if (i < active_right_boundary)
                 curr_radius = std::min(active_right_boundary - i, radii[i_mirror]);
 
-            // Step 3: The Expansion Loop
-            // This only actually iterates if we are in Case 3, or if 'i' is past 'R' entirely.
             while (i - 1 - curr_radius >= 0 && i + 1 + curr_radius < aug_len &&
                    aug[i - 1 - curr_radius] == aug[i + 1 + curr_radius])
                 curr_radius++;
 
-            // Step 4: The Handoff (Update the Active Center)
-            // If this palindrome pushed the frontier further right, it dethrones the old center.
             if (i + curr_radius > active_right_boundary)
             {
                 active_center = i;
