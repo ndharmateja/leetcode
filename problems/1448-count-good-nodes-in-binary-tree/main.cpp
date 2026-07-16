@@ -22,7 +22,7 @@ private:
         if (!root)
             return 0;
 
-        // If the root's value is greater than the maximum so far along from the original root
+        // If the root's value >= the maximum so far along from the original root
         // to the subtree's root, then the subtree root is a good node
         // and its value can be considered as the new max_along path to root
         int count = 0;
