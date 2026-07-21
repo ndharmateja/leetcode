@@ -7,6 +7,9 @@
 
 class Solution
 {
+    /**
+     * Theta(26n) time and Theta(26)=Theta(1) space
+     */
     static int sol1(const std::string &s, int k)
     {
         std::array<int, 26> char_counts{};
