@@ -227,6 +227,64 @@ class Solution
         return -1;
     }
 
+    /**
+     * Same as solution 4, except we don't shrink the sliding window
+     * as we already recorded that size, we don't need to look at smaller sizes.
+     * So if invariant is broken we can just slide it until we find a better size
+     *
+     * TODO: add explanation for all solutions
+     */
+    static int sol5(const std::string &s, int k)
+    {
+        int start{0}, end{0}, n{static_cast<int>(s.size())};
+        int global_max{0}, max_char_count{0};
+        int new_count;
+        int start_c, end_c;
+        bool is_sliding_window_valid;
+        std::array<int, 26> char_counts{};
+
+        while (end <= n)
+        {
+            // Check if the sliding window is valid and record it if valid
+            is_sliding_window_valid = max_char_count >= (end - start) - k;
+            if (is_sliding_window_valid)
+                global_max = std::max(global_max, end - start);
+
+            // If the window reaches the end (can't move right anymore)
+            // we can return the result
+            if (end == n)
+                return global_max;
+
+            // If the invariant does not hold true we can just slide the window
+            // of the same length by one step to the right
+            if (!is_sliding_window_valid)
+            {
+                // If start character is same as the end character, then the counts won't change
+                start_c = s[start++] - 'A';
+                end_c = s[end++] - 'A';
+                if (start_c == end_c)
+                    continue;
+
+                // Remove start char counts from the window
+                // Add end char counts to the window
+                --char_counts[start_c];
+                max_char_count = std::max(max_char_count, ++char_counts[end_c]);
+            }
+
+            // If the invariant does hold true, we can add the end char to the sliding window
+            // and increase the sliding window's length by 1
+            else
+            {
+                end_c = s[end++] - 'A';
+                max_char_count = std::max(max_char_count, ++char_counts[end_c]);
+            }
+        }
+
+        // We would never reach here as we exit from the loop itself once the
+        // window reaches the end
+        return -1;
+    }
+
 public:
-    int characterReplacement(const std::string &s, int k) { return sol4(s, k); }
+    int characterReplacement(const std::string &s, int k) { return sol5(s, k); }
 };
