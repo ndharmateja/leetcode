@@ -151,6 +151,65 @@ private:
         return -1;
     }
 
+    /**
+     * Runs DFS from the start node using only nodes that have elevation
+     * less than or equal to the given elevation and returns if the start
+     * and the end nodes are connected
+     */
+    static bool are_connected(const std::vector<std::vector<int>> &grid, int elevation)
+    {
+    }
+
+    /**
+     * Binary search + DFS solution
+     */
+    static int sol3(const std::vector<std::vector<int>> &grid)
+    {
+        // Base case
+        int n{static_cast<int>(grid.size())};
+        if (n == 1)
+            return 0;
+
+        // Init variables
+        int n_square{n * n};
+        int start{grid[0][0]}, end{grid[n - 1][n - 1]};
+
+        // If start/end is n^2-1 or n^2-2, we can return that value
+        // ! Buggy:
+        // ! If start = 15 and end = 14, it returns 14 as the answer
+        // ! if (end == n_square - 1 || end == n_square - 2)
+        // !     return end;
+        // ! if (start == n_square - 1 || start == n_square - 2)
+        // !     return start;
+        int max_start_end = std::max(start, end);
+        if (max_start_end >= n_square - 2)
+            return max_start_end;
+
+        // Run binary search on the elevation in the search space [2, n^2-1]
+        // We can start at hi=n^2-2 as we are already recording n^2-1 as the
+        // start solution
+        int lo{2}, hi{n_square - 2}, mid;
+        int solution{n_square - 1};
+        while (lo <= hi)
+        {
+            // If the elevation mid works, then we can look for a better solution
+            mid = lo + (hi - lo) / 2;
+            if (are_connected(grid, mid))
+            {
+                solution = mid;
+                hi = mid - 1;
+            }
+
+            // If this doesn't work, we look for the actual solution in the
+            // right half
+            else
+                lo = mid + 1;
+        }
+
+        // Return the answer
+        return solution;
+    }
+
 public:
     // Ideas:
     // 1. Disjoint sets solution
