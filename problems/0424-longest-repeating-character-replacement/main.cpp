@@ -208,17 +208,18 @@ class Solution
                 freq_of_freq[new_count - 1]--;
                 freq_of_freq[new_count]++;
                 max_char_count = std::max(max_char_count, new_count);
-
-                continue;
             }
 
             // If the invariant does hold true, we can add the end char to the sliding window
             // and increase the sliding window's length by 1
-            end_c = s[end++] - 'A';
-            new_count = ++char_counts[end_c];
-            freq_of_freq[new_count - 1]--;
-            freq_of_freq[new_count]++;
-            max_char_count = std::max(max_char_count, new_count);
+            else
+            {
+                end_c = s[end++] - 'A';
+                new_count = ++char_counts[end_c];
+                freq_of_freq[new_count - 1]--;
+                freq_of_freq[new_count]++;
+                max_char_count = std::max(max_char_count, new_count);
+            }
         }
 
         // We would never reach here as we exit from the loop itself once the
