@@ -154,6 +154,70 @@ class Solution
         return global_max;
     }
 
+    /**
+     * Same as solution 3, except we don't shrink the sliding window
+     * as we already recorded that size, we don't have to shrink.
+     * So if invariant is broken we can just slide it until we find a better size
+     */
+    static int sol4(const std::string &s, int k)
+    {
+        int start{0}, end{0}, n{static_cast<int>(s.size())};
+        int global_max{0}, max_char_count{0};
+        int new_count;
+        int start_c, end_c;
+
+        std::array<int, 26> char_counts{};
+        std::vector<char> freq_of_freq(n + 1);
+        freq_of_freq[0] = 26;
+
+        while (end < n)
+        {
+            // If the invariant does not hold true we can just slide the window
+            // of the same length by one step to the right
+            if (!(max_char_count >= (end - start) - k))
+            {
+                // If start character is same as the end character, then the counts won't change
+                start_c = s[start++] - 'A';
+                end_c = s[end++] - 'A';
+                if (start_c == end_c)
+                    continue;
+
+                // Remove start char counts from the window
+                new_count = --char_counts[start_c];
+                freq_of_freq[new_count + 1]--;
+                freq_of_freq[new_count]++;
+                if (!freq_of_freq[max_char_count])
+                    max_char_count = new_count;
+
+                // Add end char counts to the window
+                new_count = ++char_counts[end_c];
+                freq_of_freq[new_count - 1]--;
+                freq_of_freq[new_count]++;
+                max_char_count = std::max(max_char_count, new_count);
+
+                continue;
+            }
+
+            // At this point the invariant is satisfied, so we can record this length
+            // and then increase the window size by 1
+            global_max = std::max(global_max, end - start);
+
+            // Add the end char to the sliding window
+            end_c = s[end++] - 'A';
+            new_count = ++char_counts[end_c];
+            freq_of_freq[new_count - 1]--;
+            freq_of_freq[new_count]++;
+            max_char_count = std::max(max_char_count, new_count);
+        }
+
+        // We need to check and update global max at the end
+        // This is for the case where adding the last character creates the biggest sliding window
+        // but that is not recorded in the loop as we don't enter when end==n
+        if (max_char_count >= (end - start) - k)
+            global_max = std::max(global_max, end - start);
+        return global_max;
+    }
+
 public:
-    int characterReplacement(const std::string &s, int k) { return sol3(s, k); }
+    int characterReplacement(const std::string &s, int k) { return sol4(s, k); }
 };
