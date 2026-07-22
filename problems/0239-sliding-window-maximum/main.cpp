@@ -264,7 +264,7 @@ private:
          *                              ↓    ↓    ↓    ↓   ↓   ↓   ↓   ↓   ↓   ↓
          *       the sliding window: [  4,   2,   9, 100, 20, 19, 13, 14, 13, 13]
          *     the running maximums: [100, 100, 100, 100, 20, 19, 14, 14, 13, 13]
-         *            unique values: [100, 20, 19, 14 ,13]
+         *            unique values: [100, 20, 19, 14, 13]
          *
          * We can store the pairs of (index, value) in the deque
          *                   ------------------------------------------
