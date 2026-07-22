@@ -20,6 +20,14 @@ private:
         if (m < n)
             return "";
 
+        // Variables
+        // pattern_counts   : keeps track of the count of each character in the pattern
+        // num_unique_chars : keeps track of the number of unique characters in the pattern
+        // window_counts    : keeps track of the count of each character (that is present in the pattern)
+        //                   in the window
+        // num_chars_present: keeps track of the number of characters in the window which
+        //                   appear atleast its count number of times in the pattern
+
         // Compute the char counts and num unique characters in the pattern
         std::array<int, ALPHABET_SIZE> pattern_counts{0};
         int num_unique_chars{0};
