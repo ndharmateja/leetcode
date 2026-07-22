@@ -477,13 +477,13 @@ private:
          *                       blocks: [1, 3, -1] [-3, 5, 3] [6, 7]
          * block wise prefix max values: [1, 3,  3] [-3, 5, 5] [6, 7]
          * block wise suffix max values: [3, 3, -1] [ 5, 5, 3] [7, 7]
-         *       example sliding window:    [          ]           => overlap => max = max(3, -3) = 3
-         *       example sliding window:                [        ] => overlap => max = max(5, 6) = 6
-         *       example sliding window:            [        ]     => no overlap => max = max(5, 5) = 5
+         *       example sliding window:    [          ]           => overlap    => max = max(3, -3) = 3
+         *       example sliding window:                [        ] => overlap    => max = max(5,  6) = 6
+         *       example sliding window:            [        ]     => no overlap => max = max(5,  5) = 5
          *
          * Note:
          * 1. A bigger partition size doesn't work as a window could be in the middle of a partition block
-         *   in which case the partition prefix and suffix sums consider all the values in the block
+         *   in which case the partition prefix and suffix maximums would consider all the values in the block
          *   instead of the window
          *   Eg: block: [10, 4,   5,  6, 20]
          *      prefix: [10, 10, 10, 10, 20]
