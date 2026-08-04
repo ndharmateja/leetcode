@@ -54,7 +54,8 @@ private:
 
         // [start, end) keeps track of the sliding window
         // Invariant is that the sliding window contains each character atleast its count
-        // number of times
+        // number of times such that [start, end-1) doesn't contain all the characters
+        // from the pattern atleast for each of its counts
         // Initially the sliding window is empty, so we increment end until it contains
         // all the characters of the pattern
         // We keep track of the variable num_chars_present which indicates the number of chars
@@ -83,7 +84,8 @@ private:
         }
 
         // At this point if num_chars_present < num_unique_chars it means that we don't have
-        // a solution
+        // a solution (because if num_chars_present < num_unique_chars, then that would only
+        // happen if end == m which means we haven't found a valid window from the text)
         if (num_chars_present < num_unique_chars)
             return "";
 
@@ -99,9 +101,9 @@ private:
         {
             // ! Note: We don't have to explicity decrement and increment num_chars_present
             // ! when we break and fix it as we are going to fix the invariant once we
-            // ! break it
+            // ! break it. We don't need it essentially anymore after the initial window.
             // Keep removing characters from the start of the window until a character present
-            // in the pattern is dropped, which breaks the invariant for the first time
+            // in the pattern is dropped below its count, which breaks the invariant for the first time
             // Eg: if window is ADKHSITHSABDC and the pattern is ABC
             //    we keep removing characters until the window becomes BDC
             unsigned char c;
