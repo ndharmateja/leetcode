@@ -193,7 +193,9 @@ private:
      *
      * Theta(n log k) time and Theta(n) space
      * as at any point (after adding the first k elements) there are
-     * exactly k elements in the index max pq
+     * exactly k elements in the index max pq but space is still Theta(n)
+     * because the IndexMaxPQ requires Theta(n) space to store the keys
+     * based on indices 0 to n-1
      */
     static std::vector<int> sol1(const std::vector<int> &nums, int k)
     {
