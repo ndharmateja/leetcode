@@ -6,6 +6,18 @@ class Solution
 private:
     static inline const int ALPHABET_SIZE{52};
 
+    /**
+     * Returns the index of the character
+     * Eg:
+     * a: 0
+     * b: 1
+     * ...
+     * z: 25
+     * A: 26
+     * B: 27
+     * ...
+     * Z: 51
+     */
     static inline int get_index(unsigned char c)
     {
         if ('a' <= c && c <= 'z')
